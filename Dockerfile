@@ -1,12 +1,15 @@
 # Use Node.js LTS version
 FROM node:24-alpine AS base
 
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
+ENV CI=true
+
 # Install all dependencies including devDependencies for build stage
 FROM base AS build-deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
 RUN pnpm ci
 
 # Rebuild the source code only when needed
@@ -31,8 +34,9 @@ RUN adduser --system --uid 1001 sveltekit
 
 # Copy package files and install production dependencies
 COPY --from=builder --chown=sveltekit:nodejs /app/package.json ./package.json
-COPY --from=builder --chown=sveltekit:nodejs /app/package-lock.json* ./
-RUN pnpm ci --omit=dev && pnpm cache clean --force
+COPY --from=builder --chown=sveltekit:nodejs /app/pnpm-lock.yaml* ./
+COPY --from=builder --chown=sveltekit:nodejs /app/pnpm-workspace.yaml* ./
+RUN pnpm ci --prod && pnpm cache delete '*' && pnpm store prune
 
 # Copy built application
 COPY --from=builder --chown=sveltekit:nodejs /app/build ./build
