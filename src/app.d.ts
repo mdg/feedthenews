@@ -3,8 +3,12 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
+		interface Locals {
+			csrf_token: string | null;
+		}
+		interface PageData {
+			csrf_token: string | null;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

@@ -16,6 +16,7 @@ kill_timeout = '5s'
   HOST = '::'
   NODE_ENV = 'production'
   PORT = '3000'
+  API_BASE_URL = 'http://fpoker-api.internal:4100'
 
 [http_service]
   internal_port = 3000
