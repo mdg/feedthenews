@@ -5,9 +5,11 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			csrf_token: string | null;
+			user: { id: string; name: string; phone: string } | null;
 		}
 		interface PageData {
 			csrf_token: string | null;
+			user: { id: string; name: string; phone: string } | null;
 		}
 		// interface PageState {}
 		// interface Platform {}
