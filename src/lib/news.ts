@@ -41,11 +41,16 @@ export interface NewsApi {
 	verifySignIn(phone: string, code: string): Promise<ApiResult<SignInVerifyResult>>;
 }
 
-export function newsApi(): NewsApi {
+export function newsApi(csrfToken?: string | null): NewsApi {
 	async function post<T>(path: string, payload: unknown): Promise<ApiResult<T>> {
+		const headers: Record<string, string> = { 'content-type': 'application/json' };
+
+		console.log('csrfToken: '+ csrfToken);
+		if (csrfToken) headers['x-csrf-token'] = csrfToken;
+
 		const res = await fetch(path, {
 			method: 'POST',
-			headers: { 'content-type': 'application/json' },
+			headers,
 			credentials: 'include',
 			body: JSON.stringify(payload)
 		});

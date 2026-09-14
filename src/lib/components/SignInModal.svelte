@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { newsApi } from '$lib/news';
 
 	interface Props {
@@ -8,20 +9,43 @@
 	let { onClose }: Props = $props();
 
 	let phone = $state('');
+	let code = $state('');
+	let step: 'phone' | 'code' = $state('phone');
 	let submitting = $state(false);
 	let status: { kind: 'error' | 'success'; message: string } | null = $state(null);
 
-	async function submit() {
+	async function submitPhone() {
 		if (!phone.trim() || submitting) return;
 
 		submitting = true;
 		status = null;
 
 		try {
-			const res = await newsApi().requestSignIn(phone.trim());
+			const res = await newsApi(page.data.csrf_token).requestSignIn(phone.trim());
 
 			if (res.body.success) {
-				status = { kind: 'success', message: res.body.message };
+				step = 'code';
+			} else {
+				status = { kind: 'error', message: res.body.error };
+			}
+		} catch {
+			status = { kind: 'error', message: 'Could not reach the server. Please try again.' };
+		} finally {
+			submitting = false;
+		}
+	}
+
+	async function verifyCode() {
+		if (!code.trim() || submitting) return;
+
+		submitting = true;
+		status = null;
+
+		try {
+			const res = await newsApi(page.data.csrf_token).verifySignIn(phone, code.trim());
+
+			if (res.body.success) {
+				window.location.reload();
 			} else {
 				status = { kind: 'error', message: res.body.error };
 			}
@@ -34,7 +58,8 @@
 
 	function onFormSubmit(event: SubmitEvent) {
 		event.preventDefault();
-		submit();
+		if (step === 'phone') submitPhone();
+		else verifyCode();
 	}
 </script>
 
@@ -57,21 +82,40 @@
 	>
 		<h2 class="font-serif text-2xl font-bold text-stone-900">Sign In</h2>
 		<p class="mt-1 text-sm text-stone-500">
-			Enter your phone number to receive a verification code.
+			{#if step === 'phone'}
+				Enter your phone number to receive a verification code.
+			{:else}
+				Enter the verification code sent to {phone}.
+			{/if}
 		</p>
 
 		<form onsubmit={onFormSubmit}>
-			<label for="phone" class="mt-4 block text-sm font-medium text-stone-700">
-				Phone number
-			</label>
-			<input
-				id="phone"
-				type="tel"
-				bind:value={phone}
-				placeholder="+1 555 555 5555"
-				autocomplete="tel"
-				class="mt-1 w-full rounded-md border-stone-300 shadow-sm focus:border-stone-500 focus:ring-stone-500"
-			/>
+			{#if step === 'phone'}
+				<label for="phone" class="mt-4 block text-sm font-medium text-stone-700">
+					Phone number
+				</label>
+				<input
+					id="phone"
+					type="tel"
+					bind:value={phone}
+					placeholder="+1 555 555 5555"
+					autocomplete="tel"
+					class="mt-1 w-full rounded-md border-stone-300 shadow-sm focus:border-stone-500 focus:ring-stone-500"
+				/>
+			{:else}
+				<label for="code" class="mt-4 block text-sm font-medium text-stone-700">
+					Verification code
+				</label>
+				<input
+					id="code"
+					type="text"
+					bind:value={code}
+					placeholder="6-digit code"
+					autocomplete="one-time-code"
+					inputmode="numeric"
+					class="mt-1 w-full rounded-md border-stone-300 shadow-sm focus:border-stone-500 focus:ring-stone-500"
+				/>
+			{/if}
 		</form>
 
 		{#if status}
@@ -92,11 +136,11 @@
 				Cancel
 			</button>
 			<button
-				onclick={submit}
-				disabled={submitting || !phone.trim()}
+				onclick={step === 'phone' ? submitPhone : verifyCode}
+				disabled={submitting || (step === 'phone' ? !phone.trim() : !code.trim())}
 				class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
 			>
-				{submitting ? 'Sending…' : 'Sign In'}
+				{submitting ? 'Sending…' : step === 'phone' ? 'Sign In' : 'Verify Code'}
 			</button>
 		</div>
 	</div>

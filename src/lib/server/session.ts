@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 
-export const CSRF_COOKIE_NAME = '_csrf_token';
+export const CSRF_COOKIE_NAME = '_feedthenews_key';
 
 export interface SessionBootstrap {
 	csrfToken: string | null;
