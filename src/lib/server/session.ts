@@ -20,10 +20,15 @@ export async function bootstrapSession(allCookies?: string | null): Promise<Sess
 	const headers: Record<string, string> = {};
 	if (allCookies) headers.cookie = allCookies;
 
-	const res = await fetch(`${baseUrl}/ssr/session`, {
-		method: 'POST',
-		headers
-	});
+	let res: Response;
+	try {
+		res = await fetch(`${baseUrl}/ssr/session`, {
+			method: 'POST',
+			headers
+		});
+	} catch {
+		return { csrfToken: null, user: null, cookies: [] };
+	}
 
 	if (!res.ok) {
 		return { csrfToken: null, user: null, cookies: [] };
