@@ -45,7 +45,6 @@ export function newsApi(csrfToken?: string | null): NewsApi {
 	async function post<T>(path: string, payload: unknown): Promise<ApiResult<T>> {
 		const headers: Record<string, string> = { 'content-type': 'application/json' };
 
-		console.log('csrfToken: '+ csrfToken);
 		if (csrfToken) headers['x-csrf-token'] = csrfToken;
 
 		const res = await fetch(path, {

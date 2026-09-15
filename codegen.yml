@@ -1,0 +1,23 @@
+schema: http://localhost:4100/fetch/query
+documents: 'src/query/*.graphql'
+generates:
+  src/lib/generated/query.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-generic-sdk
+    config:
+      # Generate a generic SDK that works with any GraphQL client
+      usingObservableFrom: false
+      # Add proper typing for the generated functions
+      operationResultSuffix: Result
+      # Generate proper function names
+      namingConvention:
+        enumValues: 'keep'
+      # Make the generated code more readable
+      skipTypename: true
+      # Generate helper types
+      scalars:
+        DateTime: string
+        Date: string
+        JSON: any

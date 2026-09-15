@@ -1,0 +1,11 @@
+query GetProfile {
+	user {
+		name
+		email
+		phone
+		privacy
+		status
+		userType
+		isStaff
+	}
+}

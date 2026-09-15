@@ -17,10 +17,20 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"codegen": "graphql-codegen --config codegen.yml && pnpm run fix-imports",
+		"codegen:watch": "graphql-codegen --config codegen.yml --watch",
+		"codegen:mut": "graphql-codegen --config codegen.mut.yml && pnpm run fix-imports",
+		"codegen:mut:watch": "graphql-codegen --config codegen.mut.yml --watch",
+		"codegen:all": "pnpm run codegen && pnpm run codegen:mut",
+		"fix-imports": "sed -i \"s/import { DocumentNode } from 'graphql';/import type { DocumentNode } from 'graphql';/g\" src/lib/generated/*.ts"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "latest",
+		"@graphql-codegen/cli": "^5.0.7",
+		"@graphql-codegen/typescript": "^4.1.6",
+		"@graphql-codegen/typescript-generic-sdk": "^3.1.0",
+		"@graphql-codegen/typescript-operations": "^4.6.1",
 		"@inlang/paraglide-js": "^2.18.2",
 		"@storybook/addon-a11y": "10.6.0",
 		"@storybook/addon-docs": "10.6.0",
@@ -36,6 +46,8 @@
 		"@types/node": "^24",
 		"@vitest/browser-playwright": "^4.1.8",
 		"@vitest/coverage-v8": "^4.1.8",
+		"graphql": "^16.14.2",
+		"graphql-tag": "^2.12.7",
 		"playwright": "^1.60.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
@@ -48,5 +60,11 @@
 		"vite": "^8.0.16",
 		"vitest": "^4.1.8",
 		"vitest-browser-svelte": "^2.1.1"
+	},
+	"dependencies": {
+		"@opentelemetry/api": "^1.9.1",
+		"@opentelemetry/auto-instrumentations-node": "^0.80.0",
+		"@opentelemetry/exporter-trace-otlp-http": "^0.222.0",
+		"@opentelemetry/sdk-node": "^0.222.0"
 	}
 }
