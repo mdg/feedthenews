@@ -15,7 +15,7 @@
 		</a>
 
 		{#if page.data.user}
-			<span class="text-sm font-medium text-stone-900">{page.data.user.name}</span>
+			<a href="/member/profile" class="text-sm font-medium text-stone-900">{page.data.user.name}</a>
 		{:else}
 			<button
 				onclick={onSignIn}
