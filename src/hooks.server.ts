@@ -16,7 +16,8 @@ const handleParaglide: Handle = ({ event, resolve }) =>
 	});
 
 const handleSession: Handle = async ({ event, resolve }) => {
-	const { csrfToken, user, cookies } = await bootstrapSession();
+	const cookieHeader = event.request.headers.get('cookie');
+	const { csrfToken, user, cookies } = await bootstrapSession(cookieHeader);
 
 	event.locals.csrf_token = csrfToken;
 	event.locals.user = user;

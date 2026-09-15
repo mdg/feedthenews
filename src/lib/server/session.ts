@@ -14,11 +14,15 @@ export interface SessionBootstrap {
 	cookies: string[];
 }
 
-export async function bootstrapSession(): Promise<SessionBootstrap> {
+export async function bootstrapSession(allCookies?: string | null): Promise<SessionBootstrap> {
 	const baseUrl = env.API_BASE_URL ?? 'http://localhost:4100';
 
+	const headers: Record<string, string> = {};
+	if (allCookies) headers.cookie = allCookies;
+
 	const res = await fetch(`${baseUrl}/ssr/session`, {
-		method: 'POST'
+		method: 'POST',
+		headers
 	});
 
 	if (!res.ok) {
