@@ -10,7 +10,9 @@
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-{@render children()}
+<div class="min-h-screen bg-stone-200 text-stone-900">
+	{@render children()}
+</div>
 
 <div style="display:none">
 	{#each locales as locale (locale)}

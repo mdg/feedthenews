@@ -7,7 +7,7 @@
 
 <svelte:head><title>Welcome | Feed The News</title></svelte:head>
 
-<div class="min-h-screen bg-stone-100 text-stone-900">
+<div class="min-h-screen">
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-24">
