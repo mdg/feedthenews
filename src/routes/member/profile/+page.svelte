@@ -48,6 +48,7 @@
 			savedName = res.user?.setName ?? name;
 			editingName = false;
 			status = { kind: 'success', message: 'Name updated.' };
+			window.location.reload();
 		} catch {
 			status = { kind: 'error', message: 'Could not update your name. Please try again.' };
 		} finally {
