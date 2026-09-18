@@ -39,6 +39,7 @@ export type SignInVerifyResult = SignInVerifySuccess | SignInVerifyFailure;
 export interface NewsApi {
 	requestSignIn(phone: string): Promise<ApiResult<RequestSignInResult>>;
 	verifySignIn(phone: string, code: string): Promise<ApiResult<SignInVerifyResult>>;
+	signOut(): Promise<ApiResult<Record<string, never>>>;
 }
 
 export function newsApi(csrfToken?: string | null): NewsApi {
@@ -54,7 +55,8 @@ export function newsApi(csrfToken?: string | null): NewsApi {
 			body: JSON.stringify(payload)
 		});
 
-		const body = (await res.json()) as T;
+		const text = await res.text();
+		const body = (text ? JSON.parse(text) : {}) as T;
 
 		return {
 			status: res.status,
@@ -64,6 +66,7 @@ export function newsApi(csrfToken?: string | null): NewsApi {
 
 	return {
 		requestSignIn: (phone) => post('/fetch/sign-in', { phone }),
-		verifySignIn: (phone, code) => post('/fetch/sign-in/verify', { phone, code })
+		verifySignIn: (phone, code) => post('/fetch/sign-in/verify', { phone, code }),
+		signOut: () => post('/fetch/sign-out', {})
 	};
 }

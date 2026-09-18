@@ -3,6 +3,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 	import { fetchMut } from '$lib/graph';
+	import { newsApi } from '$lib/news';
 
 	let { data } = $props();
 
@@ -13,7 +14,21 @@
 	let newName = $state(initialName);
 	let savedName = $state(initialName);
 	let saving = $state(false);
+	let signingOut = $state(false);
 	let status: { kind: 'error' | 'success'; message: string } | null = $state(null);
+
+	async function signOut() {
+		if (signingOut) return;
+		signingOut = true;
+
+		try {
+			await newsApi(page.data.csrf_token).signOut();
+		} catch {
+			// fall through and still navigate away
+		} finally {
+			window.location.reload();
+		}
+	}
 
 	async function saveName() {
 		const name = newName.trim();
@@ -63,7 +78,18 @@
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
-		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
+		<div class="flex items-center justify-between">
+			<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
+
+			<button
+				type="button"
+				onclick={signOut}
+				disabled={signingOut}
+				class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				{signingOut ? 'Signing out…' : 'Sign Out'}
+			</button>
+		</div>
 
 		{#if userProfile}
 			<dl
