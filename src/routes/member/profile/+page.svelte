@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
+	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { fetchMut } from '$lib/graph';
 	import { newsApi } from '$lib/news';
 
@@ -80,6 +81,8 @@
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
+
+		<Breadcrumb href="/member" label="Dashboard" />
 
 		{#if userProfile}
 			<dl
