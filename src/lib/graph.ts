@@ -64,7 +64,7 @@ export async function mutFetcher<T, TVars>(
 	options?: { fetch: any }
 ): Promise<T> {
 	// mutations are only run client side
-	const url = '/dev/mut';
+	const url = '/fetch/mut';
 	const fetch_f = options?.fetch ?? fetch;
 
 	const headers: Record<string, string> = {
