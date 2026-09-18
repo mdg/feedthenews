@@ -78,18 +78,7 @@
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
-		<div class="flex items-center justify-between">
-			<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
-
-			<button
-				type="button"
-				onclick={signOut}
-				disabled={signingOut}
-				class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-50"
-			>
-				{signingOut ? 'Signing out…' : 'Sign Out'}
-			</button>
-		</div>
+		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
 
 		{#if userProfile}
 			<dl
@@ -182,6 +171,17 @@
 		{:else}
 			<p class="mt-8 text-sm text-stone-600">No profile available.</p>
 		{/if}
+
+		<div class="mt-12 border-t border-stone-300 pt-6">
+			<button
+				type="button"
+				onclick={signOut}
+				disabled={signingOut}
+				class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				{signingOut ? 'Signing out…' : 'Sign Out'}
+			</button>
+		</div>
 	</main>
 </div>
 
