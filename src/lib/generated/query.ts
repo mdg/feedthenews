@@ -17,9 +17,16 @@ export type Scalars = {
   NaiveDateTime: { input: any; output: any; }
 };
 
+export type RootMaker = {
+  name?: Maybe<Scalars['String']['output']>;
+  sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
+  status?: Maybe<UserStatus>;
+  userType?: Maybe<UserType>;
+};
+
 export type RootQueryType = {
+  maker?: Maybe<RootMaker>;
   search?: Maybe<RootSearch>;
-  sponsoredUser?: Maybe<RootSponsoredUser>;
   user?: Maybe<RootUser>;
   /** Get the current News API version */
   version?: Maybe<Scalars['String']['output']>;
@@ -27,13 +34,6 @@ export type RootQueryType = {
 
 export type RootSearch = {
   makers?: Maybe<UserSet>;
-};
-
-export type RootSponsoredUser = {
-  name?: Maybe<Scalars['String']['output']>;
-  sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
-  status?: Maybe<UserStatus>;
-  userType?: Maybe<UserType>;
 };
 
 export type RootUser = {

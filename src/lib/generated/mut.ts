@@ -41,7 +41,7 @@ export type RootUserMutSetNameArgs = {
 
 
 export type RootUserMutSponsorArgs = {
-  user?: InputMaybe<Scalars['String']['input']>;
+  maker?: InputMaybe<Scalars['String']['input']>;
 };
 
 
