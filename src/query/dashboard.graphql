@@ -1,11 +1,13 @@
 query GetDashboard {
 	user {
 		sponsorships {
-			status
-			anonymous
-			insertedAt
-			maker {
-				name
+			items {
+				status
+				anonymous
+				insertedAt
+				maker {
+					name
+				}
 			}
 		}
 		subscription {
@@ -16,8 +18,11 @@ query GetDashboard {
 	}
 	maker {
 		sponsorships {
-			sponsor {
-				name
+			items {
+				insertedAt
+				sponsor {
+					name
+				}
 			}
 		}
 	}

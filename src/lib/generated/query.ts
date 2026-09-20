@@ -30,7 +30,7 @@ export type RootMaker = {
   isMaker?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
-  sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
+  sponsorships?: Maybe<SponsorshipSet>;
   status?: Maybe<UserStatus>;
   userType?: Maybe<UserType>;
 };
@@ -55,7 +55,7 @@ export type RootUser = {
   phone?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   privacy?: Maybe<UserPrivacy>;
-  sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
+  sponsorships?: Maybe<SponsorshipSet>;
   status?: Maybe<UserStatus>;
   subscription?: Maybe<SubRef>;
   userType?: Maybe<UserType>;
@@ -69,6 +69,11 @@ export type Sponsorship = {
   sponsor?: Maybe<UserRef>;
   status?: Maybe<SubscriptionStatus>;
   statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+};
+
+export type SponsorshipSet = {
+  items?: Maybe<Array<Maybe<Sponsorship>>>;
+  next?: Maybe<Scalars['String']['output']>;
 };
 
 export type SubRef = {
@@ -99,8 +104,8 @@ export type UserRef = {
 };
 
 export type UserSet = {
+  items?: Maybe<Array<Maybe<UserRef>>>;
   next?: Maybe<Scalars['String']['output']>;
-  users?: Maybe<Array<Maybe<UserRef>>>;
 };
 
 export enum UserStatus {
@@ -121,7 +126,7 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { user?: { sponsorships?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, maker?: { sponsorships?: Array<{ sponsor?: { name?: string | null } | null } | null> | null } | null };
+export type GetDashboardQueryResult = { user?: { sponsorships?: { items?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null } | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, maker?: { sponsorships?: { items?: Array<{ insertedAt?: any | null, sponsor?: { name?: string | null } | null } | null> | null } | null } | null };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -133,11 +138,13 @@ export const GetDashboardDocument = gql`
     query GetDashboard {
   user {
     sponsorships {
-      status
-      anonymous
-      insertedAt
-      maker {
-        name
+      items {
+        status
+        anonymous
+        insertedAt
+        maker {
+          name
+        }
       }
     }
     subscription {
@@ -148,8 +155,11 @@ export const GetDashboardDocument = gql`
   }
   maker {
     sponsorships {
-      sponsor {
-        name
+      items {
+        insertedAt
+        sponsor {
+          name
+        }
       }
     }
   }

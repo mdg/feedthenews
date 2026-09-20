@@ -38,9 +38,15 @@ export type RootQueryType = {
 
 export type RootUserMut = {
   cancelSubscription?: Maybe<SubRef>;
+  setIsMaker?: Maybe<Scalars['Boolean']['output']>;
   setName?: Maybe<Scalars['String']['output']>;
   sponsor?: Maybe<Sponsorship>;
   subscribe?: Maybe<SubRef>;
+};
+
+
+export type RootUserMutSetIsMakerArgs = {
+  isMaker?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -82,6 +88,7 @@ export enum SubscriptionStatus {
 }
 
 export type UserRef = {
+  isMaker?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;
@@ -98,6 +105,7 @@ export enum UserStatus {
 }
 
 export enum UserType {
+  IMPORT = 'IMPORT',
   SYSTEM = 'SYSTEM',
   USER = 'USER'
 }
