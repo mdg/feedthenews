@@ -14,6 +14,11 @@
 	const sponsorships = $derived(
 		(data.dashboard.user?.sponsorships ?? []).filter((s) => s != null)
 	);
+	const sponsors = $derived(
+		(data.dashboard.maker?.sponsorships ?? []).flatMap((s) =>
+			s?.sponsor?.name ? [s.sponsor.name] : []
+		)
+	);
 	const dateFmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
 	function formatDate(value: unknown) {
 		return value ? dateFmt.format(new Date(String(value))) : '—';
@@ -29,6 +34,21 @@
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
 			{page.data.user?.name}
 		</h1>
+
+		{#if data.dashboard.maker}
+			<section class="mt-8">
+				<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsors</h2>
+				{#if sponsors.length > 0}
+					<ul class="mt-4 max-w-md divide-y divide-stone-200 rounded-lg bg-white shadow-sm">
+						{#each sponsors as name (name)}
+							<li class="px-6 py-4 text-sm font-semibold text-stone-900">{name}</li>
+						{/each}
+					</ul>
+				{:else}
+					<p class="mt-4 text-sm text-stone-500">No sponsors yet</p>
+				{/if}
+			</section>
+		{/if}
 
 		<section class="mt-8">
 			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsorships</h2>

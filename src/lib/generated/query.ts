@@ -27,6 +27,7 @@ export enum PlatformType {
 }
 
 export type RootMaker = {
+  isMaker?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
@@ -48,6 +49,7 @@ export type RootSearch = {
 
 export type RootUser = {
   email?: Maybe<Scalars['String']['output']>;
+  isMaker?: Maybe<Scalars['Boolean']['output']>;
   isStaff?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
@@ -89,6 +91,7 @@ export enum UserPrivacy {
 }
 
 export type UserRef = {
+  isMaker?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;
@@ -110,6 +113,7 @@ export enum UserStatus {
 }
 
 export enum UserType {
+  IMPORT = 'IMPORT',
   SYSTEM = 'SYSTEM',
   USER = 'USER'
 }
@@ -117,7 +121,7 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { user?: { sponsorships?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null };
+export type GetDashboardQueryResult = { user?: { sponsorships?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, maker?: { sponsorships?: Array<{ sponsor?: { name?: string | null } | null } | null> | null } | null };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -140,6 +144,13 @@ export const GetDashboardDocument = gql`
       amt
       status
       insertedAt
+    }
+  }
+  maker {
+    sponsorships {
+      sponsor {
+        name
+      }
     }
   }
 }

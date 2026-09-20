@@ -14,4 +14,11 @@ query GetDashboard {
 			insertedAt
 		}
 	}
+	maker {
+		sponsorships {
+			sponsor {
+				name
+			}
+		}
+	}
 }
