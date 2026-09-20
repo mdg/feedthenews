@@ -30,9 +30,9 @@
 			{page.data.user?.name}
 		</h1>
 
-		{#if sponsorships.length > 0}
-			<section class="mt-8">
-				<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsorships</h2>
+		<section class="mt-8">
+			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsorships</h2>
+			{#if sponsorships.length > 0}
 				<table class="mt-4 max-w-md rounded-lg bg-white shadow-sm text-sm">
 					<thead>
 						<tr class="border-b border-stone-200 text-left">
@@ -62,12 +62,14 @@
 						{/each}
 					</tbody>
 				</table>
-			</section>
-		{/if}
+			{:else}
+				<p class="mt-4 text-sm text-stone-500">No active sponsorships</p>
+			{/if}
+		</section>
 
-		{#if data.dashboard.user?.subscription}
-			<section class="mt-8">
-				<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Subscription</h2>
+		<section class="mt-8">
+			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Subscription</h2>
+			{#if data.dashboard.user?.subscription}
 				<dl
 					class="mt-4 grid max-w-md grid-cols-1 gap-x-8 gap-y-4 rounded-lg bg-white p-6 shadow-sm sm:grid-cols-2"
 				>
@@ -90,8 +92,10 @@
 						</dd>
 					</div>
 				</dl>
-			</section>
-		{/if}
+			{:else}
+				<p class="mt-4 text-sm text-stone-500">No active subscription</p>
+			{/if}
+		</section>
 	</main>
 </div>
 
