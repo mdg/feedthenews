@@ -17,8 +17,18 @@ export type Scalars = {
   NaiveDateTime: { input: any; output: any; }
 };
 
+export enum PlatformType {
+  ACTIVITYPUB = 'ACTIVITYPUB',
+  ATPROTO = 'ATPROTO',
+  FEEDTHENEWS = 'FEEDTHENEWS',
+  PODCAST = 'PODCAST',
+  WEBSITE = 'WEBSITE',
+  YOUTUBE = 'YOUTUBE'
+}
+
 export type RootMaker = {
   name?: Maybe<Scalars['String']['output']>;
+  platformType?: Maybe<PlatformType>;
   sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
   status?: Maybe<UserStatus>;
   userType?: Maybe<UserType>;
@@ -41,6 +51,7 @@ export type RootUser = {
   isStaff?: Maybe<Scalars['Boolean']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
+  platformType?: Maybe<PlatformType>;
   privacy?: Maybe<UserPrivacy>;
   sponsorships?: Maybe<Array<Maybe<Sponsorship>>>;
   status?: Maybe<UserStatus>;
@@ -79,6 +90,7 @@ export enum UserPrivacy {
 
 export type UserRef = {
   name?: Maybe<Scalars['String']['output']>;
+  platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;
   userType?: Maybe<UserType>;
 };

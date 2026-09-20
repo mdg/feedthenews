@@ -17,6 +17,15 @@ export type Scalars = {
   NaiveDateTime: { input: any; output: any; }
 };
 
+export enum PlatformType {
+  ACTIVITYPUB = 'ACTIVITYPUB',
+  ATPROTO = 'ATPROTO',
+  FEEDTHENEWS = 'FEEDTHENEWS',
+  PODCAST = 'PODCAST',
+  WEBSITE = 'WEBSITE',
+  YOUTUBE = 'YOUTUBE'
+}
+
 export type RootMutationType = {
   /** Placeholder mutation; replaced once the News domain is defined */
   ping?: Maybe<Scalars['String']['output']>;
@@ -74,6 +83,7 @@ export enum SubscriptionStatus {
 
 export type UserRef = {
   name?: Maybe<Scalars['String']['output']>;
+  platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;
   userType?: Maybe<UserType>;
 };
