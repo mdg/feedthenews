@@ -1,0 +1,9 @@
+query GetDashboard {
+	user {
+		subscription {
+			amt
+			status
+			insertedAt
+		}
+	}
+}

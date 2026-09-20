@@ -114,12 +114,28 @@ export enum UserType {
   USER = 'USER'
 }
 
+export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDashboardQueryResult = { user?: { subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null };
+
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProfileQueryResult = { user?: { name?: string | null, email?: string | null, phone?: string | null, privacy?: UserPrivacy | null, status?: UserStatus | null, userType?: UserType | null, isStaff?: boolean | null } | null };
 
 
+export const GetDashboardDocument = gql`
+    query GetDashboard {
+  user {
+    subscription {
+      amt
+      status
+      insertedAt
+    }
+  }
+}
+    `;
 export const GetProfileDocument = gql`
     query GetProfile {
   user {
@@ -136,6 +152,9 @@ export const GetProfileDocument = gql`
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    GetDashboard(variables?: GetDashboardQueryVariables, options?: C): Promise<GetDashboardQueryResult> {
+      return requester<GetDashboardQueryResult, GetDashboardQueryVariables>(GetDashboardDocument, variables, options) as Promise<GetDashboardQueryResult>;
+    },
     GetProfile(variables?: GetProfileQueryVariables, options?: C): Promise<GetProfileQueryResult> {
       return requester<GetProfileQueryResult, GetProfileQueryVariables>(GetProfileDocument, variables, options) as Promise<GetProfileQueryResult>;
     }
