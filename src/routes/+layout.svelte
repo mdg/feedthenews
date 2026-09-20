@@ -5,13 +5,17 @@
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import Footer from '$lib/components/Footer.svelte';
 
 	let { children } = $props();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-<div class="min-h-screen bg-stone-200 text-stone-900">
-	{@render children()}
+<div class="flex min-h-screen flex-col bg-stone-200 text-stone-900">
+	<div class="flex-1">
+		{@render children()}
+	</div>
+	<Footer />
 </div>
 
 <div style="display:none">
