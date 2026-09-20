@@ -117,7 +117,7 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { user?: { subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null };
+export type GetDashboardQueryResult = { user?: { sponsorships?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -128,6 +128,14 @@ export type GetProfileQueryResult = { user?: { name?: string | null, email?: str
 export const GetDashboardDocument = gql`
     query GetDashboard {
   user {
+    sponsorships {
+      status
+      anonymous
+      insertedAt
+      maker {
+        name
+      }
+    }
     subscription {
       amt
       status

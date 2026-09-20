@@ -1,5 +1,13 @@
 query GetDashboard {
 	user {
+		sponsorships {
+			status
+			anonymous
+			insertedAt
+			maker {
+				name
+			}
+		}
 		subscription {
 			amt
 			status
