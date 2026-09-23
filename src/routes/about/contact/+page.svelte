@@ -109,8 +109,8 @@
 		<section class="mt-6 rounded-lg bg-white p-6 shadow-sm">
 			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Response Time</h2>
 			<p class="mt-2 text-base leading-7 text-stone-600">
-				We typically respond to inquiries within 24-48 hours during business days. For urgent
-				issues, please mention "URGENT" in your subject line.
+				We typically respond to inquiries within 24-48 hours
+				during business days.
 			</p>
 		</section>
 
