@@ -67,7 +67,7 @@
 					<div>
 						<h3 class="font-serif text-lg font-bold text-stone-900">Social Media</h3>
 						<a
-							href="https://bsky.app/profile/lapsu.bsky.social"
+							href="https://bsky.app/profile/feedthenews.org"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="mt-1 inline-block font-medium text-stone-900 underline hover:text-stone-600"
