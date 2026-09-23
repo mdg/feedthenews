@@ -12,5 +12,9 @@
 				Privacy
 			</a>
 		</nav>
+		<!--
+		The Feed The News web UI is open source.
+		See the repo at https://github.com/mdg/feedthenews
+		-->
 	</div>
 </footer>
