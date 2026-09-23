@@ -12,10 +12,10 @@
 	);
 
 	const sponsorships = $derived(
-		(data.dashboard.user?.sponsorships ?? []).filter((s) => s != null)
+		(data.dashboard.user?.sponsorships?.items ?? []).filter((s) => s != null)
 	);
 	const sponsors = $derived(
-		(data.dashboard.maker?.sponsorships ?? []).flatMap((s) =>
+		(data.dashboard.maker?.sponsorships?.items ?? []).flatMap((s) =>
 			s?.sponsor?.name ? [s.sponsor.name] : []
 		)
 	);
