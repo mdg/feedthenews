@@ -134,8 +134,13 @@
 						How much does Feed The News cost?
 					</h3>
 					<p class="mt-2 text-base leading-7 text-stone-600">
-						Feed The News charges a small fee for transactions and the rest goes to support whoever
-						you choose.
+						Sponsors only give as much as they want.
+						Feed The News charges a small fee for
+						transactions and the rest goes to
+						support whoever you choose.
+						The system is designed to minimize fees
+						and further reducing fees is a top
+						priority.
 					</p>
 				</div>
 			</section>
