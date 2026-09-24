@@ -79,6 +79,41 @@
 						</p>
 					</div>
 				</div>
+
+				<div class="mt-6 flex items-start gap-4">
+					<div
+						class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-stone-200 text-stone-700"
+					>
+						<svg
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							class="h-6 w-6"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"
+							/>
+						</svg>
+					</div>
+					<div>
+						<h3 class="font-serif text-lg font-bold text-stone-900">Source Code</h3>
+						<a
+							href="https://github.com/mdg/feedthenews"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="mt-1 inline-block font-medium text-stone-900 underline hover:text-stone-600"
+						>
+							Feed The News Repository
+						</a>
+						<p class="mt-1 text-sm text-stone-500">
+							Check out the code or report an issue on Github
+						</p>
+					</div>
+				</div>
 			</section>
 
 			<section class="rounded-lg bg-white p-6 shadow-sm">
@@ -109,8 +144,7 @@
 		<section class="mt-6 rounded-lg bg-white p-6 shadow-sm">
 			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Response Time</h2>
 			<p class="mt-2 text-base leading-7 text-stone-600">
-				We typically respond to inquiries within 24-48 hours
-				during business days.
+				We typically respond to inquiries within 24-48 hours during business days.
 			</p>
 		</section>
 
