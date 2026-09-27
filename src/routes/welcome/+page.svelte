@@ -12,7 +12,7 @@
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-24">
-		<h1 class="font-serif text-5xl leading-tight font-black tracking-tight md:text-7xl">
+		<h1 class="font-serif text-4xl leading-tight font-black tracking-tight md:text-5xl">
 			Basic Income for Your Favorite Journalists
 		</h1>
 
