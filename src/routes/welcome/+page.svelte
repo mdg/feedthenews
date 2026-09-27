@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
+	import routing from '$lib/assets/routing.png';
 
 	let signInOpen = $state(false);
 </script>
@@ -15,11 +16,45 @@
 			Basic Income for Your Favorite Journalists
 		</h1>
 
-		<p class="mt-8 max-w-2xl text-lg leading-relaxed text-stone-600">
-			Feed The News connects readers directly with the journalists they trust. Your contributions
-			provide a steady, sustainable income for the reporters covering the stories that matter — free
-			from ad revenue, clickbait, and paywalls.
-		</p>
+		<div class="mt-8 max-w-2xl space-y-6 text-lg leading-relaxed text-stone-600">
+			<p>
+				Local newspapers are doing regular layoffs, going digital-only, or often closing entirely.
+				Our favorite journalists are left to go independent, trying to do the same great reporting
+				without the same resources supporting them.
+			</p>
+
+			<p>
+				The best way to support journalists and their
+				publications is to subscribe to their work.
+				But the reality is that most of us can't afford
+				to subscribe to everything. With so many
+				people going independent, the number of potential
+				subscriptions can become overwhelming.
+			</p>
+
+			<p>
+				Feed The News tries to address this problem by
+				letting you take a little extra money each
+				month and give it to your favorite journalists.
+				However much you want to give, we take care
+				of distributing it to each of the people you want to
+				fund. Then we take all the money given
+				to each recipient and provide them a single payment.
+			</p>
+
+			<p>
+				Here's an example of what it might look like for 3
+				fans of US Soccer supporting 5 independent journalists.
+			</p>
+		</div>
+
+		<img
+			src={routing}
+			alt="Diagram of donations distributed from readers to journalists"
+			class="mt-8 rounded-lg shadow-sm"
+		/>
+
+		<p class="mt-6 text-lg text-stone-600 italic">Think of it like a monthly Go Fund Me.</p>
 	</main>
 </div>
 
