@@ -88,7 +88,7 @@ export enum SubscriptionStatus {
 }
 
 export type UserRef = {
-  isMaker?: Maybe<Scalars['Boolean']['output']>;
+  isMaker: Scalars['Boolean']['output'];
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;

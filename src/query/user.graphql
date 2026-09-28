@@ -1,0 +1,9 @@
+query GetUser($user: String!) {
+	user(name: $user) {
+		name
+		isSubscriber
+		isMaker
+		countSponsoring
+		countSponsors
+	}
+}

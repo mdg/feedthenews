@@ -26,8 +26,19 @@ export enum PlatformType {
   YOUTUBE = 'YOUTUBE'
 }
 
+export type PublicUser = {
+  countSponsoring: Scalars['Int']['output'];
+  countSponsors: Scalars['Int']['output'];
+  isMaker: Scalars['Boolean']['output'];
+  isSubscriber: Scalars['Boolean']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  platformType?: Maybe<PlatformType>;
+  status?: Maybe<UserStatus>;
+  userType?: Maybe<UserType>;
+};
+
 export type RootMaker = {
-  isMaker?: Maybe<Scalars['Boolean']['output']>;
+  isMaker: Scalars['Boolean']['output'];
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   sponsorships?: Maybe<SponsorshipSet>;
@@ -39,8 +50,14 @@ export type RootQueryType = {
   search?: Maybe<RootSearch>;
   sessionMaker?: Maybe<RootMaker>;
   sessionUser?: Maybe<RootUser>;
+  user?: Maybe<PublicUser>;
   /** Get the current News API version */
   version?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type RootQueryTypeUserArgs = {
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type RootSearch = {
@@ -48,9 +65,12 @@ export type RootSearch = {
 };
 
 export type RootUser = {
+  countSponsoring: Scalars['Int']['output'];
+  countSponsors: Scalars['Int']['output'];
   email?: Maybe<Scalars['String']['output']>;
-  isMaker?: Maybe<Scalars['Boolean']['output']>;
+  isMaker: Scalars['Boolean']['output'];
   isStaff?: Maybe<Scalars['Boolean']['output']>;
+  isSubscriber: Scalars['Boolean']['output'];
   name?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
@@ -96,7 +116,7 @@ export enum UserPrivacy {
 }
 
 export type UserRef = {
-  isMaker?: Maybe<Scalars['Boolean']['output']>;
+  isMaker: Scalars['Boolean']['output'];
   name?: Maybe<Scalars['String']['output']>;
   platformType?: Maybe<PlatformType>;
   status?: Maybe<UserStatus>;
@@ -132,6 +152,13 @@ export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProfileQueryResult = { sessionUser?: { name?: string | null, email?: string | null, phone?: string | null, privacy?: UserPrivacy | null, status?: UserStatus | null, userType?: UserType | null, isStaff?: boolean | null } | null };
+
+export type GetUserQueryVariables = Exact<{
+  user: Scalars['String']['input'];
+}>;
+
+
+export type GetUserQueryResult = { user?: { name?: string | null, isSubscriber: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number } | null };
 
 
 export const GetDashboardDocument = gql`
@@ -178,6 +205,17 @@ export const GetProfileDocument = gql`
   }
 }
     `;
+export const GetUserDocument = gql`
+    query GetUser($user: String!) {
+  user(name: $user) {
+    name
+    isSubscriber
+    isMaker
+    countSponsoring
+    countSponsors
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -186,6 +224,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetProfile(variables?: GetProfileQueryVariables, options?: C): Promise<GetProfileQueryResult> {
       return requester<GetProfileQueryResult, GetProfileQueryVariables>(GetProfileDocument, variables, options) as Promise<GetProfileQueryResult>;
+    },
+    GetUser(variables: GetUserQueryVariables, options?: C): Promise<GetUserQueryResult> {
+      return requester<GetUserQueryResult, GetUserQueryVariables>(GetUserDocument, variables, options) as Promise<GetUserQueryResult>;
     }
   };
 }
