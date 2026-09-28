@@ -31,28 +31,28 @@ export type PublicUser = {
   countSponsors: Scalars['Int']['output'];
   isMaker: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  platformType?: Maybe<PlatformType>;
-  status?: Maybe<UserStatus>;
-  userType?: Maybe<UserType>;
+  name: Scalars['String']['output'];
+  platformType: PlatformType;
+  status: UserStatus;
+  userType: UserType;
 };
 
 export type RootMaker = {
   isMaker: Scalars['Boolean']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  platformType?: Maybe<PlatformType>;
-  sponsorships?: Maybe<SponsorshipSet>;
-  status?: Maybe<UserStatus>;
-  userType?: Maybe<UserType>;
+  name: Scalars['String']['output'];
+  platformType: PlatformType;
+  sponsorships: SponsorshipSet;
+  status: UserStatus;
+  userType: UserType;
 };
 
 export type RootQueryType = {
-  search?: Maybe<RootSearch>;
+  search: RootSearch;
   sessionMaker?: Maybe<RootMaker>;
   sessionUser?: Maybe<RootUser>;
-  user?: Maybe<PublicUser>;
+  user: PublicUser;
   /** Get the current News API version */
-  version?: Maybe<Scalars['String']['output']>;
+  version: Scalars['String']['output'];
 };
 
 
@@ -61,7 +61,7 @@ export type RootQueryTypeUserArgs = {
 };
 
 export type RootSearch = {
-  makers?: Maybe<UserSet>;
+  makers: UserSet;
 };
 
 export type RootUser = {
@@ -69,38 +69,38 @@ export type RootUser = {
   countSponsors: Scalars['Int']['output'];
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
-  isStaff?: Maybe<Scalars['Boolean']['output']>;
+  isStaff: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
-  platformType?: Maybe<PlatformType>;
-  privacy?: Maybe<UserPrivacy>;
-  sponsorships?: Maybe<SponsorshipSet>;
-  status?: Maybe<UserStatus>;
+  platformType: PlatformType;
+  privacy: UserPrivacy;
+  sponsorships: SponsorshipSet;
+  status: UserStatus;
   subscription?: Maybe<SubRef>;
-  userType?: Maybe<UserType>;
+  userType: UserType;
 };
 
 export type Sponsorship = {
-  anonymous?: Maybe<Scalars['Boolean']['output']>;
-  insertedAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  anonymous: Scalars['Boolean']['output'];
+  insertedAt: Scalars['NaiveDateTime']['output'];
   maker?: Maybe<UserRef>;
-  matching?: Maybe<Scalars['Boolean']['output']>;
+  matching: Scalars['Boolean']['output'];
   sponsor?: Maybe<UserRef>;
-  status?: Maybe<SubscriptionStatus>;
-  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  status: SubscriptionStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
 };
 
 export type SponsorshipSet = {
-  items?: Maybe<Array<Maybe<Sponsorship>>>;
+  items: Array<Sponsorship>;
   next?: Maybe<Scalars['String']['output']>;
 };
 
 export type SubRef = {
-  amt?: Maybe<Scalars['Int']['output']>;
-  insertedAt?: Maybe<Scalars['NaiveDateTime']['output']>;
-  status?: Maybe<SubscriptionStatus>;
-  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  amt: Scalars['Int']['output'];
+  insertedAt: Scalars['NaiveDateTime']['output'];
+  status: SubscriptionStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
 };
 
 export enum SubscriptionStatus {
@@ -117,14 +117,14 @@ export enum UserPrivacy {
 
 export type UserRef = {
   isMaker: Scalars['Boolean']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  platformType?: Maybe<PlatformType>;
-  status?: Maybe<UserStatus>;
-  userType?: Maybe<UserType>;
+  name: Scalars['String']['output'];
+  platformType: PlatformType;
+  status: UserStatus;
+  userType: UserType;
 };
 
 export type UserSet = {
-  items?: Maybe<Array<Maybe<UserRef>>>;
+  items: Array<UserRef>;
   next?: Maybe<Scalars['String']['output']>;
 };
 
@@ -146,19 +146,19 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { sessionUser?: { sponsorships?: { items?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null } | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, sessionMaker?: { sponsorships?: { items?: Array<{ insertedAt?: any | null, sponsor?: { name?: string | null } | null } | null> | null } | null } | null };
+export type GetDashboardQueryResult = { sessionUser?: { sponsorships: { items: Array<{ status: SubscriptionStatus, anonymous: boolean, insertedAt: any, maker?: { name: string } | null }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { sponsorships: { items: Array<{ insertedAt: any, sponsor?: { name: string } | null }> } } | null };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProfileQueryResult = { sessionUser?: { name?: string | null, email?: string | null, phone?: string | null, privacy?: UserPrivacy | null, status?: UserStatus | null, userType?: UserType | null, isStaff?: boolean | null } | null };
+export type GetProfileQueryResult = { sessionUser?: { name: string, email?: string | null, phone?: string | null, privacy: UserPrivacy, status: UserStatus, userType: UserType, isStaff: boolean } | null };
 
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
 }>;
 
 
-export type GetUserQueryResult = { user?: { name?: string | null, isSubscriber: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number } | null };
+export type GetUserQueryResult = { user: { name: string, isSubscriber: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number } };
 
 
 export const GetDashboardDocument = gql`

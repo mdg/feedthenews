@@ -46,7 +46,7 @@
 
 		try {
 			const res = await fetchMut(csrf).SetUserName({ newName: name });
-			savedName = res.sessionUser?.setName ?? name;
+			savedName = res.sessionUser.setName;
 			editingName = false;
 			status = { kind: 'success', message: 'Name updated.' };
 			window.location.reload();
@@ -155,15 +155,15 @@
 				</div>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Privacy</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.privacy ?? '—'}</dd>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.privacy}</dd>
 				</div>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Status</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.status ?? '—'}</dd>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.status}</dd>
 				</div>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">User type</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.userType ?? '—'}</dd>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{userProfile.userType}</dd>
 				</div>
 				{#if userProfile.isStaff}
 					<div>

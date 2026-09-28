@@ -28,20 +28,20 @@ export enum PlatformType {
 
 export type RootMutationType = {
   /** Placeholder mutation; replaced once the News domain is defined */
-  ping?: Maybe<Scalars['String']['output']>;
-  sessionUser?: Maybe<RootUserMut>;
+  ping: Scalars['String']['output'];
+  sessionUser: RootUserMut;
 };
 
 export type RootQueryType = {
-  zero?: Maybe<Scalars['Int']['output']>;
+  zero: Scalars['Int']['output'];
 };
 
 export type RootUserMut = {
   cancelSubscription?: Maybe<SubRef>;
-  setIsMaker?: Maybe<Scalars['Boolean']['output']>;
-  setName?: Maybe<Scalars['String']['output']>;
-  sponsor?: Maybe<Sponsorship>;
-  subscribe?: Maybe<SubRef>;
+  setIsMaker: Scalars['Boolean']['output'];
+  setName: Scalars['String']['output'];
+  sponsor: Sponsorship;
+  subscribe: SubRef;
 };
 
 
@@ -51,34 +51,34 @@ export type RootUserMutSetIsMakerArgs = {
 
 
 export type RootUserMutSetNameArgs = {
-  newName?: InputMaybe<Scalars['String']['input']>;
+  newName: Scalars['String']['input'];
 };
 
 
 export type RootUserMutSponsorArgs = {
-  maker?: InputMaybe<Scalars['String']['input']>;
+  maker: Scalars['String']['input'];
 };
 
 
 export type RootUserMutSubscribeArgs = {
-  amt?: InputMaybe<Scalars['Int']['input']>;
+  amt: Scalars['Int']['input'];
 };
 
 export type Sponsorship = {
-  anonymous?: Maybe<Scalars['Boolean']['output']>;
-  insertedAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  anonymous: Scalars['Boolean']['output'];
+  insertedAt: Scalars['NaiveDateTime']['output'];
   maker?: Maybe<UserRef>;
-  matching?: Maybe<Scalars['Boolean']['output']>;
+  matching: Scalars['Boolean']['output'];
   sponsor?: Maybe<UserRef>;
-  status?: Maybe<SubscriptionStatus>;
-  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  status: SubscriptionStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
 };
 
 export type SubRef = {
-  amt?: Maybe<Scalars['Int']['output']>;
-  insertedAt?: Maybe<Scalars['NaiveDateTime']['output']>;
-  status?: Maybe<SubscriptionStatus>;
-  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  amt: Scalars['Int']['output'];
+  insertedAt: Scalars['NaiveDateTime']['output'];
+  status: SubscriptionStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
 };
 
 export enum SubscriptionStatus {
@@ -89,10 +89,10 @@ export enum SubscriptionStatus {
 
 export type UserRef = {
   isMaker: Scalars['Boolean']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  platformType?: Maybe<PlatformType>;
-  status?: Maybe<UserStatus>;
-  userType?: Maybe<UserType>;
+  name: Scalars['String']['output'];
+  platformType: PlatformType;
+  status: UserStatus;
+  userType: UserType;
 };
 
 export enum UserStatus {
@@ -115,7 +115,7 @@ export type SetUserNameMutationVariables = Exact<{
 }>;
 
 
-export type SetUserNameMutationResult = { sessionUser?: { setName?: string | null } | null };
+export type SetUserNameMutationResult = { sessionUser: { setName: string } };
 
 
 export const SetUserNameDocument = gql`

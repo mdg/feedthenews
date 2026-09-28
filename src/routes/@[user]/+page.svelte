@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 
@@ -7,7 +6,7 @@
 
 	let signInOpen = $state(false);
 
-	const name = $derived(data.user.name ?? page.params.user);
+	const name = $derived(data.user.name);
 </script>
 
 <svelte:head><title>{name} | Feed The News</title></svelte:head>
@@ -31,12 +30,14 @@
 			</div>
 			<div>
 				<dt class="text-sm font-medium text-stone-500">Sponsoring</dt>
-				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsoring ?? 0}</dd>
+				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsoring}</dd>
 			</div>
-			<div>
-				<dt class="text-sm font-medium text-stone-500">Sponsors</dt>
-				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsors ?? 0}</dd>
-			</div>
+			{#if data.user.isMaker}
+				<div>
+					<dt class="text-sm font-medium text-stone-500">Sponsors</dt>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsors}</dd>
+				</div>
+			{/if}
 		</dl>
 	</main>
 </div>

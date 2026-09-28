@@ -13,12 +13,10 @@
 			: null
 	);
 
-	const sponsorships = $derived(
-		(data.dashboard.sessionUser?.sponsorships?.items ?? []).filter((s) => s != null)
-	);
+	const sponsorships = $derived(data.dashboard.sessionUser?.sponsorships.items ?? []);
 	const sponsors = $derived(
-		(data.dashboard.sessionMaker?.sponsorships?.items ?? []).flatMap((s) =>
-			s?.sponsor?.name ? [s.sponsor.name] : []
+		(data.dashboard.sessionMaker?.sponsorships.items ?? []).flatMap((s) =>
+			s.sponsor ? [s.sponsor.name] : []
 		)
 	);
 	const dateFmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
