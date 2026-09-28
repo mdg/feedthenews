@@ -1,5 +1,5 @@
 query GetProfile {
-	user {
+	sessionUser {
 		name
 		email
 		phone

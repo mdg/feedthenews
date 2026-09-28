@@ -36,9 +36,9 @@ export type RootMaker = {
 };
 
 export type RootQueryType = {
-  maker?: Maybe<RootMaker>;
   search?: Maybe<RootSearch>;
-  user?: Maybe<RootUser>;
+  sessionMaker?: Maybe<RootMaker>;
+  sessionUser?: Maybe<RootUser>;
   /** Get the current News API version */
   version?: Maybe<Scalars['String']['output']>;
 };
@@ -126,17 +126,17 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { user?: { sponsorships?: { items?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null } | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, maker?: { sponsorships?: { items?: Array<{ insertedAt?: any | null, sponsor?: { name?: string | null } | null } | null> | null } | null } | null };
+export type GetDashboardQueryResult = { sessionUser?: { sponsorships?: { items?: Array<{ status?: SubscriptionStatus | null, anonymous?: boolean | null, insertedAt?: any | null, maker?: { name?: string | null } | null } | null> | null } | null, subscription?: { amt?: number | null, status?: SubscriptionStatus | null, insertedAt?: any | null } | null } | null, sessionMaker?: { sponsorships?: { items?: Array<{ insertedAt?: any | null, sponsor?: { name?: string | null } | null } | null> | null } | null } | null };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProfileQueryResult = { user?: { name?: string | null, email?: string | null, phone?: string | null, privacy?: UserPrivacy | null, status?: UserStatus | null, userType?: UserType | null, isStaff?: boolean | null } | null };
+export type GetProfileQueryResult = { sessionUser?: { name?: string | null, email?: string | null, phone?: string | null, privacy?: UserPrivacy | null, status?: UserStatus | null, userType?: UserType | null, isStaff?: boolean | null } | null };
 
 
 export const GetDashboardDocument = gql`
     query GetDashboard {
-  user {
+  sessionUser {
     sponsorships {
       items {
         status
@@ -153,7 +153,7 @@ export const GetDashboardDocument = gql`
       insertedAt
     }
   }
-  maker {
+  sessionMaker {
     sponsorships {
       items {
         insertedAt
@@ -167,7 +167,7 @@ export const GetDashboardDocument = gql`
     `;
 export const GetProfileDocument = gql`
     query GetProfile {
-  user {
+  sessionUser {
     name
     email
     phone

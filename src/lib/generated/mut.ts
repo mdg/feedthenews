@@ -29,7 +29,7 @@ export enum PlatformType {
 export type RootMutationType = {
   /** Placeholder mutation; replaced once the News domain is defined */
   ping?: Maybe<Scalars['String']['output']>;
-  user?: Maybe<RootUserMut>;
+  sessionUser?: Maybe<RootUserMut>;
 };
 
 export type RootQueryType = {
@@ -115,12 +115,12 @@ export type SetUserNameMutationVariables = Exact<{
 }>;
 
 
-export type SetUserNameMutationResult = { user?: { setName?: string | null } | null };
+export type SetUserNameMutationResult = { sessionUser?: { setName?: string | null } | null };
 
 
 export const SetUserNameDocument = gql`
     mutation SetUserName($newName: String!) {
-  user {
+  sessionUser {
     setName(newName: $newName)
   }
 }

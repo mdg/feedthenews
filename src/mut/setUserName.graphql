@@ -1,5 +1,5 @@
 mutation SetUserName($newName: String!) {
-	user {
+	sessionUser {
 		setName(newName: $newName)
 	}
 }

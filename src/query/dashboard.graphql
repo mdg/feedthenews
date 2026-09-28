@@ -1,5 +1,5 @@
 query GetDashboard {
-	user {
+	sessionUser {
 		sponsorships {
 			items {
 				status
@@ -16,7 +16,7 @@ query GetDashboard {
 			insertedAt
 		}
 	}
-	maker {
+	sessionMaker {
 		sponsorships {
 			items {
 				insertedAt

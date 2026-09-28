@@ -8,7 +8,7 @@
 
 	let { data } = $props();
 
-	const userProfile = (() => data.profile.user)();
+	const userProfile = (() => data.profile.sessionUser)();
 	const initialName = userProfile?.name ?? '';
 	let signInOpen = $state(false);
 	let editingName = $state(false);
@@ -46,7 +46,7 @@
 
 		try {
 			const res = await fetchMut(csrf).SetUserName({ newName: name });
-			savedName = res.user?.setName ?? name;
+			savedName = res.sessionUser?.setName ?? name;
 			editingName = false;
 			status = { kind: 'success', message: 'Name updated.' };
 			window.location.reload();
