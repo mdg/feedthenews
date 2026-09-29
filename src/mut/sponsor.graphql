@@ -1,0 +1,7 @@
+mutation Sponsor($maker: String!) {
+	sessionUser {
+		sponsor(maker: $maker) {
+			status
+		}
+	}
+}

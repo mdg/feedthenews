@@ -37,11 +37,17 @@ export type RootQueryType = {
 };
 
 export type RootUserMut = {
+  cancelSponsorship: Sponsorship;
   cancelSubscription?: Maybe<SubRef>;
   setIsMaker: Scalars['Boolean']['output'];
   setName: Scalars['String']['output'];
   sponsor: Sponsorship;
   subscribe: SubRef;
+};
+
+
+export type RootUserMutCancelSponsorshipArgs = {
+  maker: Scalars['String']['input'];
 };
 
 
@@ -56,12 +62,18 @@ export type RootUserMutSetNameArgs = {
 
 
 export type RootUserMutSponsorArgs = {
+  anonymous?: InputMaybe<Scalars['Boolean']['input']>;
   maker: Scalars['String']['input'];
 };
 
 
 export type RootUserMutSubscribeArgs = {
   amt: Scalars['Int']['input'];
+};
+
+export type SessionUserUserData = {
+  followed: Scalars['Boolean']['output'];
+  sponsored: Scalars['Boolean']['output'];
 };
 
 export type Sponsorship = {
@@ -91,6 +103,7 @@ export type UserRef = {
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   platformType: PlatformType;
+  sessionUser?: Maybe<SessionUserUserData>;
   status: UserStatus;
   userType: UserType;
 };
@@ -117,6 +130,13 @@ export type SetUserNameMutationVariables = Exact<{
 
 export type SetUserNameMutationResult = { sessionUser: { setName: string } };
 
+export type SponsorMutationVariables = Exact<{
+  maker: Scalars['String']['input'];
+}>;
+
+
+export type SponsorMutationResult = { sessionUser: { sponsor: { status: SubscriptionStatus } } };
+
 
 export const SetUserNameDocument = gql`
     mutation SetUserName($newName: String!) {
@@ -125,11 +145,23 @@ export const SetUserNameDocument = gql`
   }
 }
     `;
+export const SponsorDocument = gql`
+    mutation Sponsor($maker: String!) {
+  sessionUser {
+    sponsor(maker: $maker) {
+      status
+    }
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     SetUserName(variables: SetUserNameMutationVariables, options?: C): Promise<SetUserNameMutationResult> {
       return requester<SetUserNameMutationResult, SetUserNameMutationVariables>(SetUserNameDocument, variables, options) as Promise<SetUserNameMutationResult>;
+    },
+    Sponsor(variables: SponsorMutationVariables, options?: C): Promise<SponsorMutationResult> {
+      return requester<SponsorMutationResult, SponsorMutationVariables>(SponsorDocument, variables, options) as Promise<SponsorMutationResult>;
     }
   };
 }
