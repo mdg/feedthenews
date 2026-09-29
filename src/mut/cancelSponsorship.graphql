@@ -1,0 +1,7 @@
+mutation CancelSponsorship($maker: String!) {
+	sessionUser {
+		cancelSponsorship(maker: $maker) {
+			status
+		}
+	}
+}

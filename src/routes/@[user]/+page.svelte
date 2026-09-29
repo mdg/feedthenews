@@ -14,8 +14,8 @@
 
 	const name = $derived(data.user.name);
 
-	async function sponsor() {
-		if (sponsored || submitting) return;
+	async function toggleSponsor() {
+		if (submitting) return;
 
 		const csrf = page.data.csrf_token as string | null;
 		if (!csrf) {
@@ -27,10 +27,15 @@
 		status = null;
 
 		try {
-			await fetchMut(csrf).Sponsor({ maker: data.user.name });
-			sponsored = true;
+			if (sponsored) {
+				await fetchMut(csrf).CancelSponsorship({ maker: data.user.name });
+				sponsored = false;
+			} else {
+				await fetchMut(csrf).Sponsor({ maker: data.user.name });
+				sponsored = true;
+			}
 		} catch {
-			status = { kind: 'error', message: 'Could not sponsor this journalist. Please try again.' };
+			status = { kind: 'error', message: 'Could not update your sponsorship. Please try again.' };
 		} finally {
 			submitting = false;
 		}
@@ -50,7 +55,7 @@
 		{#if page.data.user}
 			<div class="mt-8 max-w-md">
 				<div class="flex justify-end">
-					<ToggleButton active={sponsored} disabled={submitting} onclick={sponsor}>
+					<ToggleButton active={sponsored} disabled={submitting} onclick={toggleSponsor}>
 						{sponsored ? 'Sponsored' : 'Sponsor'}
 					</ToggleButton>
 				</div>
