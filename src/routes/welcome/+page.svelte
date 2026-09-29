@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 	import routing from '$lib/assets/routing.png';
@@ -55,6 +56,16 @@
 		/>
 
 		<p class="mt-6 text-lg text-stone-600 italic">Think of it like a monthly Go Fund Me.</p>
+
+		{#if !page.data.user}
+			<button
+				type="button"
+				onclick={() => (signInOpen = true)}
+				class="mt-10 rounded-md bg-stone-900 px-6 py-3 text-base font-medium text-stone-50 hover:bg-stone-700"
+			>
+				Sign Up
+			</button>
+		{/if}
 	</main>
 </div>
 
