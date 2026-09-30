@@ -34,7 +34,8 @@
 			</p>
 
 			<p>
-				Feed The News tries to address this problem by
+				Feed The News tries to address this problem
+				with crowdfunding by
 				letting you take a little extra money each
 				month and give it to your favorite journalists.
 				However much you want to give, we take care
@@ -47,15 +48,16 @@
 				Here's an example of what it might look like for 3
 				fans of US Soccer supporting 5 independent journalists.
 			</p>
+
+			<a name="routing-diagram"/>
+			<img
+				src={routing}
+				alt="Diagram of donations distributed from readers to journalists"
+				class="mt-8 rounded-lg shadow-sm"
+			/>
+
+			<p>Think of it like a monthly GoFundMe.</p>
 		</div>
-
-		<img
-			src={routing}
-			alt="Diagram of donations distributed from readers to journalists"
-			class="mt-8 rounded-lg shadow-sm"
-		/>
-
-		<p class="mt-6 text-lg text-stone-600 italic">Think of it like a monthly Go Fund Me.</p>
 
 		{#if !page.data.user}
 			<button
