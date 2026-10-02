@@ -18,3 +18,5 @@ specifically targetting journalism and to start with, soccer journalism in the U
 This app is a SvelteKit application to implement the web user interface for the
 Feed The News application.
 It gets data from a GraphQL API.
+
+`make code` regenerates the GraphQL libraries

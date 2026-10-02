@@ -5,6 +5,7 @@ query GetUser($user: String!) {
 		isMaker
 		countSponsoring
 		countSponsors
+		avatar
 		sessionUser {
 			sponsored
 		}

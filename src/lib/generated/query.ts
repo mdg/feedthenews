@@ -27,12 +27,15 @@ export enum PlatformType {
 }
 
 export type PublicUser = {
+  avatar?: Maybe<Scalars['String']['output']>;
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
+  did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   isMember: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   sessionUser?: Maybe<SessionUserUserData>;
   status: UserStatus;
@@ -40,8 +43,11 @@ export type PublicUser = {
 };
 
 export type RootMaker = {
+  avatar?: Maybe<Scalars['String']['output']>;
+  did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   sessionUser?: Maybe<SessionUserUserData>;
   sponsorships: SponsorshipSet;
@@ -68,14 +74,17 @@ export type RootSearch = {
 };
 
 export type RootUser = {
+  avatar?: Maybe<Scalars['String']['output']>;
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
+  did?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   isMember: Scalars['Boolean']['output'];
   isStaff: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   privacy: UserPrivacy;
@@ -126,8 +135,11 @@ export enum UserPrivacy {
 }
 
 export type UserRef = {
+  avatar?: Maybe<Scalars['String']['output']>;
+  did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   sessionUser?: Maybe<SessionUserUserData>;
   status: UserStatus;
@@ -169,7 +181,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, avatar?: string | null, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -224,6 +236,7 @@ export const GetUserDocument = gql`
     isMaker
     countSponsoring
     countSponsors
+    avatar
     sessionUser {
       sponsored
     }

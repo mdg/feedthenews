@@ -48,6 +48,9 @@
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
+		{#if data.user.avatar}
+			<img src={data.user.avatar} alt={`${name}'s avatar`} class="h-24 w-24 rounded-full object-cover" />
+		{/if}
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
 			@{name}
 		</h1>
