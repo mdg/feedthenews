@@ -71,7 +71,7 @@
 			<div>
 				<dt class="text-sm font-medium text-stone-500">Subscriber</dt>
 				<dd class="mt-1 text-sm font-semibold text-stone-900">
-					{data.user.isSubscriber ? 'Yes' : 'No'}
+					{data.user.isMember ? 'Yes' : 'No'}
 				</dd>
 			</div>
 			<div>

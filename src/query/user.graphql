@@ -1,7 +1,7 @@
 query GetUser($user: String!) {
 	user(name: $user) {
 		name
-		isSubscriber
+		isMember
 		isMaker
 		countSponsoring
 		countSponsors

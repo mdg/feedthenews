@@ -30,6 +30,7 @@ export type PublicUser = {
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
   isMaker: Scalars['Boolean']['output'];
+  isMember: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   platformType: PlatformType;
@@ -71,6 +72,7 @@ export type RootUser = {
   countSponsors: Scalars['Int']['output'];
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
+  isMember: Scalars['Boolean']['output'];
   isStaff: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -167,7 +169,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isSubscriber: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -218,7 +220,7 @@ export const GetUserDocument = gql`
     query GetUser($user: String!) {
   user(name: $user) {
     name
-    isSubscriber
+    isMember
     isMaker
     countSponsoring
     countSponsors
