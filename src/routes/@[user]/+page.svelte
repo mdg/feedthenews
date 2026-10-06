@@ -9,11 +9,11 @@
 	let { data } = $props();
 
 	let signInOpen = $state(false);
-	let sponsored = $state((() => data.user.sessionUser?.sponsored ?? false)());
+	let sponsored = $state((() => data.profile.sessionUser?.sponsored ?? false)());
 	let submitting = $state(false);
 	let status: { kind: 'error'; message: string } | null = $state(null);
 
-	const name = $derived(data.user.name);
+	const name = $derived(data.profile.name);
 
 	async function toggleSponsor() {
 		if (submitting) return;
@@ -29,10 +29,10 @@
 
 		try {
 			if (sponsored) {
-				await fetchMut(csrf).CancelSponsorship({ maker: data.user.name });
+				await fetchMut(csrf).CancelSponsorship({ maker: data.profile.name });
 				sponsored = false;
 			} else {
-				await fetchMut(csrf).Sponsor({ maker: data.user.name });
+				await fetchMut(csrf).Sponsor({ maker: data.profile.name });
 				sponsored = true;
 			}
 		} catch {
@@ -49,11 +49,11 @@
 	<Header onSignIn={() => (signInOpen = true)} />
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
-		{#if data.user.avatar}
-			<img src={data.user.avatar} alt={`${name}'s avatar`} class="h-24 w-24 rounded-full object-cover" />
+		{#if data.profile.avatar}
+			<img src={data.profile.avatar} alt={`${name}'s avatar`} class="h-24 w-24 rounded-full object-cover" />
 		{/if}
 	<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-		<Username name={name} platformType={data.user.platformType} />
+		<Username name={name} platformType={data.profile.platformType} />
 	</h1>
 
 		{#if page.data.user && page.data.user.name !== name}
@@ -72,7 +72,7 @@
 		<dl
 			class="mt-4 grid max-w-md grid-cols-1 gap-x-8 gap-y-4 rounded-lg bg-white p-6 shadow-sm sm:grid-cols-2"
 		>
-		{#if data.user.isMember}
+		{#if data.profile.isMember}
 			<div>
 				<dt class="text-sm font-medium text-stone-500">
 					<span
@@ -96,16 +96,16 @@
 				</dt>
 			</div>
 		{/if}
-		{#if data.user.countSponsoring > 0}
+		{#if data.profile.countSponsoring > 0}
 			<div>
 				<dt class="text-sm font-medium text-stone-500">Sponsoring</dt>
-				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsoring}</dd>
+				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.profile.countSponsoring}</dd>
 			</div>
 		{/if}
-			{#if data.user.isMaker}
+			{#if data.profile.isMaker}
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Sponsors</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{data.user.countSponsors}</dd>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{data.profile.countSponsors}</dd>
 				</div>
 			{/if}
 		</dl>
