@@ -88,6 +88,7 @@ export type Sponsorship = {
 
 export type SubRef = {
   amt: Scalars['Int']['output'];
+  checkoutUrl?: Maybe<Scalars['String']['output']>;
   insertedAt: Scalars['NaiveDateTime']['output'];
   status: SubscriptionStatus;
   statusAt: Scalars['NaiveDateTime']['output'];
@@ -96,12 +97,16 @@ export type SubRef = {
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
   CANCELLED = 'CANCELLED',
-  PAUSED = 'PAUSED'
+  PAUSED = 'PAUSED',
+  PENDING = 'PENDING'
 }
 
 export type UserRef = {
+  avatar?: Maybe<Scalars['String']['output']>;
+  did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   sessionUser?: Maybe<SessionUserUserData>;
   status: UserStatus;

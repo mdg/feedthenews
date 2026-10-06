@@ -117,6 +117,7 @@ export type SponsorshipSet = {
 
 export type SubRef = {
   amt: Scalars['Int']['output'];
+  checkoutUrl?: Maybe<Scalars['String']['output']>;
   insertedAt: Scalars['NaiveDateTime']['output'];
   status: SubscriptionStatus;
   statusAt: Scalars['NaiveDateTime']['output'];
@@ -125,7 +126,8 @@ export type SubRef = {
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
   CANCELLED = 'CANCELLED',
-  PAUSED = 'PAUSED'
+  PAUSED = 'PAUSED',
+  PENDING = 'PENDING'
 }
 
 export enum UserPrivacy {
@@ -181,7 +183,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, avatar?: string | null, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, avatar?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -237,6 +239,7 @@ export const GetUserDocument = gql`
     countSponsoring
     countSponsors
     avatar
+    platformType
     sessionUser {
       sponsored
     }
