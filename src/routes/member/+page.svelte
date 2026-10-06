@@ -32,7 +32,7 @@
 
 	<main class="mx-auto w-full max-w-5xl px-6 py-12">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-			{page.data.user?.name}
+			{page.data.sessionUser?.name}
 		</h1>
 
 		{#if data.dashboard.sessionMaker}

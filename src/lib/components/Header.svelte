@@ -14,8 +14,8 @@
 			Feed The News
 		</a>
 
-		{#if page.data.user}
-			<a href="/member/profile" class="text-sm font-medium text-stone-900">{page.data.user.name}</a>
+		{#if page.data.sessionUser}
+			<a href="/member/profile" class="text-sm font-medium text-stone-900">{page.data.sessionUser.name}</a>
 		{:else}
 			<button
 				onclick={onSignIn}

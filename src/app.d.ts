@@ -9,7 +9,7 @@ declare global {
 		}
 		interface PageData {
 			csrf_token: string | null;
-			user: { id: string; name: string; phone: string } | null;
+			sessionUser: { id: string; name: string; phone: string } | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

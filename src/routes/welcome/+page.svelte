@@ -59,7 +59,7 @@
 			<p>Think of it like a monthly GoFundMe.</p>
 		</div>
 
-		{#if !page.data.user}
+		{#if !page.data.sessionUser}
 			<button
 				type="button"
 				onclick={() => (signInOpen = true)}

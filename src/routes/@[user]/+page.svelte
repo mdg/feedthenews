@@ -56,7 +56,7 @@
 		<Username name={name} platformType={data.profile.platformType} />
 	</h1>
 
-		{#if page.data.user && page.data.user.name !== name}
+		{#if page.data.sessionUser && page.data.sessionUser.name !== name}
 			<div class="mt-8 max-w-md">
 				<div class="flex justify-end">
 					<ToggleButton active={sponsored} disabled={submitting} onclick={toggleSponsor}>
