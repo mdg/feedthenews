@@ -109,6 +109,17 @@
 				</div>
 			{/if}
 		</dl>
+
+		{#if data.profile.isMaker && data.profile.patreon}
+			<a
+				href={`https://www.patreon.com/${data.profile.patreon}`}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+			>
+				Subscribe on Patreon
+			</a>
+		{/if}
 	</main>
 </div>
 

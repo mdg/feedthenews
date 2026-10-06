@@ -3,6 +3,7 @@ query GetUser($user: String!) {
 		name
 		isMember
 		isMaker
+		patreon
 		countSponsoring
 		countSponsors
 		avatar

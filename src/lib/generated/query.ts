@@ -183,7 +183,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, countSponsoring: number, countSponsors: number, avatar?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -236,6 +236,7 @@ export const GetUserDocument = gql`
     name
     isMember
     isMaker
+    patreon
     countSponsoring
     countSponsors
     avatar
