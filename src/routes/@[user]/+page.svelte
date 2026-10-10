@@ -66,17 +66,6 @@
 		<p class="mt-2 max-w-md text-sm text-stone-600">{data.profile.description}</p>
 	{/if}
 
-	{#if data.profile.platformType === PlatformType.ATPROTO}
-		<a
-			href={`https://bsky.app/profile/${name}`}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="mt-2 inline-block text-sm font-medium text-[#1185fe] hover:underline"
-		>
-			Open Bluesky
-		</a>
-	{/if}
-
 		{#if page.data.sessionUser && page.data.sessionUser.name !== name}
 			<div class="mt-8 max-w-md">
 				<div class="flex justify-end">
@@ -131,16 +120,28 @@
 			{/if}
 		</dl>
 
+	<div class="mt-4 flex items-center gap-3">
 		{#if data.profile.isMaker && patreonName}
 			<a
 				href={`https://www.patreon.com/${patreonName}`}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+				class="inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
 			>
 				Subscribe on Patreon
 			</a>
 		{/if}
+		{#if data.profile.platformType === PlatformType.ATPROTO}
+			<a
+				href={`https://bsky.app/profile/${name}`}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-block text-sm font-medium text-[#1185fe] hover:underline"
+			>
+				Open on Bluesky
+			</a>
+		{/if}
+	</div>
 	</main>
 	</div>
 </div>
