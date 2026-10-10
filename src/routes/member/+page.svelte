@@ -49,45 +49,6 @@
 		{/if}
 
 		<section class="mt-8">
-			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsorships</h2>
-			{#if sponsorships.length > 0}
-				<table class="mt-4 max-w-md rounded-lg bg-white text-sm shadow-sm">
-					<thead>
-						<tr class="border-b border-stone-200 text-left">
-							<th scope="col" class="px-6 py-3 font-medium text-stone-500">Recipient</th>
-							<th scope="col" class="w-32 px-6 py-3 text-center font-medium text-stone-500"
-								>Anonymous</th
-							>
-							<th scope="col" class="w-40 px-6 py-3 font-medium text-stone-500">Since</th>
-						</tr>
-					</thead>
-					<tbody class="divide-y divide-stone-200">
-						{#each sponsorships as sponsorship (sponsorship.maker?.name)}
-							<tr>
-								<td class="px-6 py-4 font-semibold text-stone-900">
-									{sponsorship.maker?.name ?? 'Unknown'}
-								</td>
-								<td class="px-6 py-4 text-center">
-									<input
-										type="checkbox"
-										checked={sponsorship.anonymous ?? false}
-										disabled
-										class="h-4 w-4 rounded border-stone-300 text-stone-900 focus:ring-stone-500"
-									/>
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-stone-500">
-									{formatDate(sponsorship.insertedAt)}
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				<p class="mt-4 text-sm text-stone-500">No active sponsorships</p>
-			{/if}
-		</section>
-
-		<section class="mt-8">
 			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Subscription</h2>
 			{#if data.dashboard.sessionUser?.subscription}
 				<dl
