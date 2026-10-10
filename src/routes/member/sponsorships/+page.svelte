@@ -1,5 +1,6 @@
 <script lang="ts">
 	import MainLayout from '$lib/components/MainLayout.svelte';
+	import Label from '$lib/components/Label.svelte';
 	import Username from '$lib/components/Username.svelte';
 
 	let { data } = $props();
@@ -39,21 +40,22 @@
 								/>
 							</a>
 							<p class="mt-0.5 text-xs text-stone-500">
-								Since {formatDate(sponsorship.insertedAt)}{sponsorship.anonymous
-									? ' · Anonymous'
-									: ''}
-								{sponsorship.matching ? ' · Matching' : ''}
+								Since {formatDate(sponsorship.insertedAt)}
 							</p>
 						</div>
 
-						<span
-							class="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium {sponsorship.status ===
-							'ACTIVE'
-								? 'bg-green-100 text-green-800'
-								: 'bg-stone-100 text-stone-600'}"
-						>
-							{String(sponsorship.status).toLowerCase()}
-						</span>
+						<div class="flex shrink-0 items-center gap-1.5">
+							{#if sponsorship.anonymous}
+								<Label label="Anonymous" tone="amber" />
+							{/if}
+							{#if sponsorship.matching}
+								<Label label="Matching" tone="stone" />
+							{/if}
+							<Label
+								label={String(sponsorship.status).toLowerCase()}
+								tone={sponsorship.status === 'ACTIVE' ? 'green' : 'stone'}
+							/>
+						</div>
 					</li>
 				{/each}
 			</ul>

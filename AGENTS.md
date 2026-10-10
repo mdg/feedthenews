@@ -12,6 +12,7 @@ specifically targetting journalism and to start with, soccer journalism in the U
 ## Never
 
 * **Never** change the line wrapping on an existing file to make the lines longer
+* **Never** reset local changes back to an earlier value if they have not be requested
 
 ## Stack
 
