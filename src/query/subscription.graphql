@@ -1,11 +1,3 @@
-query GetSessionSubscription {
-	sessionUser {
-		subscription {
-			status
-		}
-	}
-}
-
 query GetSubscription {
 	sessionUser {
 		subscription {

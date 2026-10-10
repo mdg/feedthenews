@@ -187,11 +187,6 @@ export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
 
-export type GetSessionSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetSessionSubscriptionQueryResult = { sessionUser?: { subscription?: { status: SubscriptionStatus } | null } | null };
-
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -270,15 +265,6 @@ export const GetSponsorshipsDocument = gql`
   }
 }
     `;
-export const GetSessionSubscriptionDocument = gql`
-    query GetSessionSubscription {
-  sessionUser {
-    subscription {
-      status
-    }
-  }
-}
-    `;
 export const GetSubscriptionDocument = gql`
     query GetSubscription {
   sessionUser {
@@ -319,9 +305,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetSponsorships(variables?: GetSponsorshipsQueryVariables, options?: C): Promise<GetSponsorshipsQueryResult> {
       return requester<GetSponsorshipsQueryResult, GetSponsorshipsQueryVariables>(GetSponsorshipsDocument, variables, options) as Promise<GetSponsorshipsQueryResult>;
-    },
-    GetSessionSubscription(variables?: GetSessionSubscriptionQueryVariables, options?: C): Promise<GetSessionSubscriptionQueryResult> {
-      return requester<GetSessionSubscriptionQueryResult, GetSessionSubscriptionQueryVariables>(GetSessionSubscriptionDocument, variables, options) as Promise<GetSessionSubscriptionQueryResult>;
     },
     GetSubscription(variables?: GetSubscriptionQueryVariables, options?: C): Promise<GetSubscriptionQueryResult> {
       return requester<GetSubscriptionQueryResult, GetSubscriptionQueryVariables>(GetSubscriptionDocument, variables, options) as Promise<GetSubscriptionQueryResult>;

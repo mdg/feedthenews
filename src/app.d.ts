@@ -5,11 +5,25 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			csrf_token: string | null;
-			user: { id: string; name: string; phone: string } | null;
+			user: {
+				id: string;
+				name: string;
+				phone: string;
+				isSubscriber: boolean;
+				isStaff: boolean;
+				userType: string;
+			} | null;
 		}
 		interface PageData {
 			csrf_token: string | null;
-			sessionUser: { id: string; name: string; phone: string } | null;
+			sessionUser: {
+				id: string;
+				name: string;
+				phone: string;
+				isSubscriber: boolean;
+				isStaff: boolean;
+				userType: string;
+			} | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

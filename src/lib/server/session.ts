@@ -6,6 +6,9 @@ export interface SessionUser {
 	id: string;
 	name: string;
 	phone: string;
+	isSubscriber: boolean;
+	isStaff: boolean;
+	userType: string;
 }
 
 export interface SessionBootstrap {
