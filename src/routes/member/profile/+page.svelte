@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { fetchMut } from '$lib/graph';
@@ -79,7 +80,11 @@
 <div class="min-h-screen">
 	<Header onSignIn={() => (signInOpen = true)} />
 
-	<main class="mx-auto w-full max-w-5xl px-6 py-12">
+	<div class="flex">
+		<Sidebar />
+
+		<main class="flex-1">
+			<div class="mx-auto w-full max-w-5xl px-6 py-12">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
 
 		<Breadcrumb href="/member" label="Dashboard" />
@@ -186,7 +191,9 @@
 				{signingOut ? 'Signing out…' : 'Sign Out'}
 			</button>
 		</div>
-	</main>
+	</div>
+		</main>
+	</div>
 </div>
 
 {#if signInOpen}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 
 	let { data } = $props();
@@ -30,7 +31,11 @@
 <div class="min-h-screen">
 	<Header onSignIn={() => (signInOpen = true)} />
 
-	<main class="mx-auto w-full max-w-5xl px-6 py-12">
+	<div class="flex">
+		<Sidebar />
+
+		<main class="flex-1">
+			<div class="mx-auto w-full max-w-5xl px-6 py-12">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
 			{page.data.sessionUser?.name}
 		</h1>
@@ -118,7 +123,9 @@
 				<p class="mt-4 text-sm text-stone-500">No active subscription</p>
 			{/if}
 		</section>
-	</main>
+	</div>
+		</main>
+	</div>
 </div>
 
 {#if signInOpen}
