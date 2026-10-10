@@ -9,8 +9,8 @@
 
 	const menu: { label: string; href: string }[] = [
 		{ label: 'Home', href: '/' },
-		// { label: 'Search', href: '/search' },
-		// { label: 'Sponsorships', href: '/sponsorships' },
+		// { label: 'Discover', href: '/discover' },
+		{ label: 'Sponsorships', href: '/member/sponsorships' },
 		// { label: 'Sponsors', href: '/sponsors' },
 		// { label: 'History', href: '/history' }
 	];

@@ -182,6 +182,11 @@ export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProfileQueryResult = { sessionUser?: { name: string, email?: string | null, phone?: string | null, privacy: UserPrivacy, status: UserStatus, userType: UserType, isStaff: boolean } | null };
 
+export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
+
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
 }>;
@@ -234,6 +239,27 @@ export const GetProfileDocument = gql`
   }
 }
     `;
+export const GetSponsorshipsDocument = gql`
+    query GetSponsorships {
+  sessionUser {
+    sponsorships {
+      items {
+        status
+        anonymous
+        matching
+        insertedAt
+        statusAt
+        maker {
+          name
+          platformType
+          avatar
+        }
+      }
+      next
+    }
+  }
+}
+    `;
 export const GetUserDocument = gql`
     query GetUser($user: String!) {
   user(name: $user) {
@@ -260,6 +286,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetProfile(variables?: GetProfileQueryVariables, options?: C): Promise<GetProfileQueryResult> {
       return requester<GetProfileQueryResult, GetProfileQueryVariables>(GetProfileDocument, variables, options) as Promise<GetProfileQueryResult>;
+    },
+    GetSponsorships(variables?: GetSponsorshipsQueryVariables, options?: C): Promise<GetSponsorshipsQueryResult> {
+      return requester<GetSponsorshipsQueryResult, GetSponsorshipsQueryVariables>(GetSponsorshipsDocument, variables, options) as Promise<GetSponsorshipsQueryResult>;
     },
     GetUser(variables: GetUserQueryVariables, options?: C): Promise<GetUserQueryResult> {
       return requester<GetUserQueryResult, GetUserQueryVariables>(GetUserDocument, variables, options) as Promise<GetUserQueryResult>;

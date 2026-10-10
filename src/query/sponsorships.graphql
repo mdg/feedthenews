@@ -1,0 +1,19 @@
+query GetSponsorships {
+	sessionUser {
+		sponsorships {
+			items {
+				status
+				anonymous
+				matching
+				insertedAt
+				statusAt
+				maker {
+					name
+					platformType
+					avatar
+				}
+			}
+			next
+		}
+	}
+}
