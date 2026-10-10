@@ -14,6 +14,10 @@
 	let status: { kind: 'error'; message: string } | null = $state(null);
 
 	const name = $derived(data.profile.name);
+	const patreonName = $derived(
+		data.profile.patreon?.replace(/^https?:\/\/(www\.)?patreon\.com\//i, '').replace(/\/+$/, '') ??
+			null
+	);
 
 	async function toggleSponsor() {
 		if (submitting) return;
@@ -110,9 +114,9 @@
 			{/if}
 		</dl>
 
-		{#if data.profile.isMaker && data.profile.patreon}
+		{#if data.profile.isMaker && patreonName}
 			<a
-				href={`https://www.patreon.com/${data.profile.patreon}`}
+				href={`https://www.patreon.com/${patreonName}`}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
