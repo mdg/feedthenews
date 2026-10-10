@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Sidebar from '$lib/components/Sidebar.svelte';
 
-	let { children, showReserved = true, onSignIn }: { children: any; showReserved?: boolean; onSignIn?: () => void } = $props();
+	let {
+		children,
+		showReserved = true,
+		onSignIn
+	}: { children: any; showReserved?: boolean; onSignIn?: () => void } = $props();
 </script>
 
 <div class="min-h-screen">

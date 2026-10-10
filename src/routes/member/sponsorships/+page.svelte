@@ -1,5 +1,6 @@
 <script lang="ts">
 	import MainLayout from '$lib/components/MainLayout.svelte';
+	import MemberContent from '$lib/components/MemberContent.svelte';
 	import Label from '$lib/components/Label.svelte';
 	import Username from '$lib/components/Username.svelte';
 
@@ -14,9 +15,7 @@
 <svelte:head><title>Sponsorships | Feed The News</title></svelte:head>
 
 <MainLayout>
-	<div class="mx-auto w-full max-w-2xl">
-		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Sponsorships</h1>
-
+	<MemberContent title="Sponsorships">
 		{#if data.sponsorships.length > 0}
 			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
 				{#each data.sponsorships as sponsorship, i (i)}
@@ -62,5 +61,5 @@
 		{:else}
 			<p class="mt-8 text-sm text-stone-500">No active sponsorships</p>
 		{/if}
-	</div>
+</MemberContent>
 </MainLayout>

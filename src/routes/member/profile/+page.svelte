@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import MainLayout from '$lib/components/MainLayout.svelte';
+	import MemberContent from '$lib/components/MemberContent.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { fetchMut } from '$lib/graph';
@@ -77,9 +78,7 @@
 <svelte:head><title>Profile | Feed The News</title></svelte:head>
 
 <MainLayout>
-	<div class="mx-auto w-full max-w-2xl">
-		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Profile</h1>
-
+	<MemberContent title="Profile">
 		{#if userProfile}
 			<dl
 				class="mt-8 grid max-w-md grid-cols-1 gap-x-8 gap-y-4 rounded-lg bg-white p-6 shadow-sm sm:grid-cols-2"
@@ -182,7 +181,7 @@
 				{signingOut ? 'Signing out…' : 'Sign Out'}
 			</button>
 		</div>
-	</div>
+</MemberContent>
 </MainLayout>
 
 {#if signInOpen}

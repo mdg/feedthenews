@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import MainLayout from '$lib/components/MainLayout.svelte';
+	import MemberContent from '$lib/components/MemberContent.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 
 	let { data } = $props();
@@ -28,10 +29,7 @@
 <svelte:head><title>Dashboard | Feed The News</title></svelte:head>
 
 <MainLayout>
-	<div class="mx-auto w-full max-w-2xl">
-		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-			Dashboard
-		</h1>
+	<MemberContent title="Dashboard">
 
 		{#if data.dashboard.sessionMaker}
 			<section class="mt-8">
@@ -47,7 +45,7 @@
 				{/if}
 			</section>
 		{/if}
-	</div>
+</MemberContent>
 </MainLayout>
 
 {#if signInOpen}

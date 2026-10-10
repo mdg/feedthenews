@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import MainLayout from '$lib/components/MainLayout.svelte';
+	import MemberContent from '$lib/components/MemberContent.svelte';
 	import Label from '$lib/components/Label.svelte';
 	import { fetchQuery } from '$lib/graph';
 	import type { GetSubscriptionQueryResult } from '$lib/generated/query';
@@ -56,22 +56,20 @@
 <svelte:head><title>Subscription | Feed The News</title></svelte:head>
 
 <MainLayout>
-	<div class="mx-auto w-full max-w-2xl">
-		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">Subscription</h1>
-
-		{#if !isSubscriber}
-			<div class="mt-8 rounded-xl bg-white p-8 text-center shadow-sm">
-				<p class="text-sm text-stone-600">You don't have an active subscription.</p>
-				<a
-					href="/member/subscribe"
-					class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-				>
-					Subscribe
-				</a>
-			</div>
-		{:else if error}
-			<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
-		{:else if subscription}
+	<MemberContent title="Subscription" {loading}>
+	{#if !isSubscriber}
+		<div class="mt-8 rounded-xl bg-white p-8 text-center shadow-sm">
+			<p class="text-sm text-stone-600">You don't have an active subscription.</p>
+			<a
+				href="/member/subscribe"
+				class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+			>
+				Subscribe
+			</a>
+		</div>
+	{:else if error}
+		<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
+	{:else if subscription}
 			<dl
 				class="mt-8 grid grid-cols-1 gap-x-8 gap-y-4 rounded-xl bg-white p-6 shadow-sm sm:grid-cols-2"
 			>
@@ -91,5 +89,5 @@
 				</div>
 			</dl>
 		{/if}
-	</div>
+	</MemberContent>
 </MainLayout>
