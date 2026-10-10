@@ -12,13 +12,15 @@
 	let subscription = $state<
 		NonNullable<GetSubscriptionQueryResult['sessionUser']>['subscription']
 	>(undefined);
-	let loading = $state(false);
+	let loading = $state(true);
 	let error = $state(false);
 
 	$effect(() => {
-		if (!isSubscriber) return;
+		if (!isSubscriber) {
+			loading = false;
+			return;
+		}
 
-		loading = true;
 		error = false;
 
 		fetchQuery()
@@ -67,8 +69,6 @@
 					Subscribe
 				</a>
 			</div>
-		{:else if loading}
-			<p class="mt-8 text-sm text-stone-500">Loading…</p>
 		{:else if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
 		{:else if subscription}

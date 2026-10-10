@@ -30,7 +30,7 @@
 <MainLayout>
 	<div class="mx-auto w-full max-w-2xl">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-			{page.data.sessionUser?.name}
+			Dashboard
 		</h1>
 
 		{#if data.dashboard.sessionMaker}
