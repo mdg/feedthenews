@@ -42,8 +42,4 @@
 			{/each}
 		</nav>
 	</div>
-
-	<div class="p-4">
-		<p class="px-3 text-xs text-stone-400">Support journalism that matters.</p>
-	</div>
 </aside>
