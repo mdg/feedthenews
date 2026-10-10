@@ -5,6 +5,7 @@
 	import ToggleButton from '$lib/components/ToggleButton.svelte';
 	import Username from '$lib/components/Username.svelte';
 	import { fetchMut } from '$lib/graph';
+	import { PlatformType } from '$lib/generated/query';
 
 	let { data } = $props();
 
@@ -59,6 +60,21 @@
 	<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
 		<Username name={name} platformType={data.profile.platformType} />
 	</h1>
+
+	{#if data.profile.description}
+		<p class="mt-2 max-w-md text-sm text-stone-600">{data.profile.description}</p>
+	{/if}
+
+	{#if data.profile.platformType === PlatformType.ATPROTO}
+		<a
+			href={`https://bsky.app/profile/${name}`}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="mt-2 inline-block text-sm font-medium text-[#1185fe] hover:underline"
+		>
+			Open Bluesky
+		</a>
+	{/if}
 
 		{#if page.data.sessionUser && page.data.sessionUser.name !== name}
 			<div class="mt-8 max-w-md">

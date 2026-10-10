@@ -30,6 +30,7 @@ export type PublicUser = {
   avatar?: Maybe<Scalars['String']['output']>;
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   isMember: Scalars['Boolean']['output'];
@@ -44,6 +45,7 @@ export type PublicUser = {
 
 export type RootMaker = {
   avatar?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -77,6 +79,7 @@ export type RootUser = {
   avatar?: Maybe<Scalars['String']['output']>;
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
@@ -138,6 +141,7 @@ export enum UserPrivacy {
 
 export type UserRef = {
   avatar?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -183,7 +187,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, description?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -240,6 +244,7 @@ export const GetUserDocument = gql`
     countSponsoring
     countSponsors
     avatar
+    description
     platformType
     sessionUser {
       sponsored
