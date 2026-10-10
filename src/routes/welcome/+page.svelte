@@ -49,8 +49,8 @@
 				fans of US Soccer supporting 5 independent journalists.
 			</p>
 
-			<a id="routing-diagram"></a>
 			<img
+				id="routing-diagram"
 				src={routing}
 				alt="Diagram of donations distributed from readers to journalists"
 				class="mt-8 rounded-lg shadow-sm"

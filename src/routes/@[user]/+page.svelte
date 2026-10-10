@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import Header from '$lib/components/Header.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 	import ToggleButton from '$lib/components/ToggleButton.svelte';
 	import Username from '$lib/components/Username.svelte';
 	import { fetchMut } from '$lib/graph';
@@ -51,9 +51,10 @@
 <svelte:head><title>{name} | Feed The News</title></svelte:head>
 
 <div class="min-h-screen">
-	<Header onSignIn={() => (signInOpen = true)} />
+	<div class="flex">
+		<Sidebar />
 
-	<main class="mx-auto w-full max-w-5xl px-6 py-12">
+		<main class="flex-1 px-6 py-12">
 		{#if data.profile.avatar}
 			<img src={data.profile.avatar} alt={`${name}'s avatar`} class="h-24 w-24 rounded-full object-cover" />
 		{/if}
@@ -141,6 +142,7 @@
 			</a>
 		{/if}
 	</main>
+	</div>
 </div>
 
 {#if signInOpen}
