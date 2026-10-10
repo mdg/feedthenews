@@ -1,10 +1,42 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import MainLayout from '$lib/components/MainLayout.svelte';
 	import MemberContent from '$lib/components/MemberContent.svelte';
 	import Label from '$lib/components/Label.svelte';
 	import Username from '$lib/components/Username.svelte';
+	import { fetchQuery } from '$lib/graph';
+	import type { GetSponsorshipsQueryResult } from '$lib/generated/query';
 
-	let { data } = $props();
+	const sessionUser = $derived(page.data.sessionUser);
+
+	let sponsorships = $state<
+		NonNullable<GetSponsorshipsQueryResult['sessionUser']>['sponsorships']['items']
+	>([]);
+	let loading = $state(true);
+	let error = $state(false);
+
+	$effect(() => {
+		if (!sessionUser) {
+			goto('/welcome');
+			return;
+		}
+
+		loading = true;
+		error = false;
+
+		fetchQuery()
+			.GetSponsorships()
+			.then((res) => {
+				sponsorships = res.sessionUser?.sponsorships.items ?? [];
+			})
+			.catch(() => {
+				error = true;
+			})
+			.finally(() => {
+				loading = false;
+			});
+	});
 
 	const dateFmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
 	function formatDate(value: unknown) {
@@ -15,10 +47,12 @@
 <svelte:head><title>Sponsorships | Feed The News</title></svelte:head>
 
 <MainLayout>
-	<MemberContent title="Sponsorships">
-		{#if data.sponsorships.length > 0}
+	<MemberContent title="Sponsorships" {loading}>
+		{#if error}
+			<p class="mt-8 text-sm text-red-600">Could not load your sponsorships. Please try again.</p>
+		{:else if sponsorships.length > 0}
 			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
-				{#each data.sponsorships as sponsorship, i (i)}
+				{#each sponsorships as sponsorship, i (i)}
 					<li class="flex items-center gap-4 px-6 py-4">
 						{#if sponsorship.maker?.avatar}
 							<img
@@ -61,5 +95,5 @@
 		{:else}
 			<p class="mt-8 text-sm text-stone-500">No active sponsorships</p>
 		{/if}
-</MemberContent>
+	</MemberContent>
 </MainLayout>
