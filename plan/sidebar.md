@@ -7,12 +7,33 @@ Partially implemented:
 - Sidebar exists (`src/lib/components/Sidebar.svelte`) and is used on
   `/@[user]`, `/member`, and `/member/profile`.
 - Page content is centered next to the sidebar
-  (`flex-1` main + `mx-auto max-w-5xl` inner wrapper).
+  (`flex-1` main + `mx-auto max-w-5xl` inner wrapper); this ad-hoc wrapper
+  will be replaced by the `MainLayout` component (step 0 below).
 - "Open Bluesky" link moved next to "Subscribe on Patreon" in a shared
   button row below the stats.
 - Description is displayed under the name.
 
 ## Remaining Work
+
+### 0. MainLayout component
+
+Create `src/lib/components/MainLayout.svelte` as the shared page shell:
+
+- Three-column flex row, left to right: `[ Sidebar ][ Main Content ][ Reserved Space ]`.
+- `Main Content` is a slot (`flex-1`); `Sidebar` rendered by the layout on
+  the left; `Reserved Space` is a fixed-width empty column on the right
+  (same width as the sidebar, e.g. `w-64`) so the content column is
+  optically centered rather than pushed against the right edge.
+- The whole `[ sidebar | content | reserved ]` group is centered on the
+  page: an outer wrapper (`mx-auto` with a max width, e.g. `max-w-7xl`)
+  so equal gutters appear on wide screens.
+- Reserved space could later host contextual widgets (e.g. "who to
+  sponsor" suggestions); for now it stays empty or is hidden below `xl`.
+- Replace the ad-hoc `flex` + `mx-auto max-w-5xl` wrappers currently in
+  `/@[user]`, `/member`, and `/member/profile` with `MainLayout`, moving
+  each page's content into the slot.
+- Props/slots: default slot for content; optional prop to suppress the
+  reserved column if a page ever needs full width.
 
 ### 1. Remove the top Header on sidebar pages
 
@@ -52,9 +73,10 @@ Replace the loose stack with a single profile card:
 
 ### 5. Responsive
 
-- `lg+`: sidebar + centered content side-by-side (current flex layout).
-- Below `lg`: sidebar hidden or collapses to a top bar (out of scope for
-  now).
+- `lg+`: sidebar + centered content + reserved space side-by-side via
+  `MainLayout`.
+- Below `lg`: reserved space hidden; below `md` the sidebar collapses to a
+  top bar (out of scope for now).
 - Card identity row wraps: avatar above name on small screens
   (`flex flex-col sm:flex-row`).
 
