@@ -47,36 +47,6 @@
 				{/if}
 			</section>
 		{/if}
-
-		<section class="mt-8">
-			<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Subscription</h2>
-			{#if data.dashboard.sessionUser?.subscription}
-				<dl
-					class="mt-4 grid max-w-md grid-cols-1 gap-x-8 gap-y-4 rounded-lg bg-white p-6 shadow-sm sm:grid-cols-2"
-				>
-					<div>
-						<dt class="text-sm font-medium text-stone-500">Monthly amount</dt>
-						<dd class="mt-1 text-sm font-semibold text-stone-900">
-							${data.dashboard.sessionUser.subscription.amt} / month
-						</dd>
-					</div>
-					<div>
-						<dt class="text-sm font-medium text-stone-500">Status</dt>
-						<dd class="mt-1 text-sm font-semibold text-stone-900">
-							{data.dashboard.sessionUser.subscription.status}
-						</dd>
-					</div>
-					<div>
-						<dt class="text-sm font-medium text-stone-500">Since</dt>
-						<dd class="mt-1 text-sm font-semibold text-stone-900">
-							{insertedAtLabel}
-						</dd>
-					</div>
-				</dl>
-			{:else}
-				<p class="mt-4 text-sm text-stone-500">No active subscription</p>
-			{/if}
-		</section>
 	</div>
 </MainLayout>
 

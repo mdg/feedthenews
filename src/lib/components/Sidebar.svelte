@@ -7,7 +7,7 @@
 
 	let { onSignIn }: Props = $props();
 
-	const isSubscriber = $derived(page.data.isSubscriber === true);
+	const isSubscriber = $derived(page.data.sessionUser?.isSubscriber);
 
 	const menu = $derived.by(() => {
 		const items: { label: string; href: string }[] = [
