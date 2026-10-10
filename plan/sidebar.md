@@ -49,15 +49,21 @@ shows, wasting vertical space. Plan:
 
 Replace the loose stack with a single profile card:
 
-- Horizontal identity row: avatar (rounded-full, ring-1 ring-stone-200)
-  beside name + description + chips, stacked vertically.
+- Sponsor button above the user name: the Sponsor/Sponsored `ToggleButton`
+  sits at the top of the card (right-aligned or full-width row above the
+  identity row), so the primary action is visible without scrolling and
+  ahead of the name.
+- Horizontal identity row below it: avatar (rounded-full, ring-1
+  ring-stone-200) beside name + description + chips, stacked vertically.
 - Description clamped to 2-3 lines (`line-clamp-3`) with a title tooltip
   for overflow.
 
-### 3. Move the Sponsor action into the card
+### 3. Sponsor action placement
 
-- Card footer row (border-t border-stone-200): Sponsor toggle + Patreon +
-  Bluesky links grouped as external actions.
+- Sponsor toggle sits above the user name (top of the identity card, see
+  step 2).
+- Card footer row (border-t border-stone-200) keeps the external links
+  (Patreon + Bluesky) grouped together.
 - Keep inline status/error message under the buttons.
 - Remove the standalone right-aligned toggle container.
 
