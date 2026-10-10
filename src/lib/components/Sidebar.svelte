@@ -9,10 +9,10 @@
 
 	const menu: { label: string; href: string }[] = [
 		{ label: 'Home', href: '/' },
-		{ label: 'Search', href: '/search' },
-		{ label: 'Sponsorships', href: '/sponsorships' },
-		{ label: 'Sponsors', href: '/sponsors' },
-		{ label: 'History', href: '/history' }
+		// { label: 'Search', href: '/search' },
+		// { label: 'Sponsorships', href: '/sponsorships' },
+		// { label: 'Sponsors', href: '/sponsors' },
+		// { label: 'History', href: '/history' }
 	];
 
 	const isActive = (href: string) =>
