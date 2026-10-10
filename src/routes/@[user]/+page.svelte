@@ -63,31 +63,9 @@
 				{/if}
 
 				<div class="min-w-0">
-					<div class="flex flex-wrap items-center gap-3">
-						<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-							<Username name={name} platformType={data.profile.platformType} />
-						</h1>
-						{#if data.profile.isMember}
-							<span
-								class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 20 20"
-									fill="currentColor"
-									class="h-3.5 w-3.5"
-									aria-hidden="true"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-								Subscriber
-							</span>
-						{/if}
-					</div>
+					<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
+						<Username name={name} platformType={data.profile.platformType} />
+					</h1>
 
 					{#if data.profile.description}
 						<p class="mt-3 line-clamp-3 text-sm leading-relaxed text-stone-600" title={data.profile.description}>
@@ -97,7 +75,7 @@
 				</div>
 			</div>
 
-			<dl class="mt-8 grid grid-cols-3 divide-x divide-stone-200">
+			<dl class="mt-8 grid grid-cols-2 divide-x divide-stone-200">
 				<div class="px-4 text-center sm:px-6">
 					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsoring</dt>
 					<dd class="mt-1 text-2xl font-bold text-stone-900">
@@ -108,12 +86,6 @@
 					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsors</dt>
 					<dd class="mt-1 text-2xl font-bold text-stone-900">
 						{data.profile.isMaker && data.profile.countSponsors > 0 ? data.profile.countSponsors : '—'}
-					</dd>
-				</div>
-				<div class="px-4 text-center sm:px-6">
-					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Subscriber</dt>
-					<dd class="mt-1 text-2xl font-bold text-stone-900">
-						{data.profile.isMember ? 'Yes' : '—'}
 					</dd>
 				</div>
 			</dl>

@@ -7,13 +7,21 @@
 
 	let { onSignIn }: Props = $props();
 
-	const menu: { label: string; href: string }[] = [
-		{ label: 'Home', href: '/' },
-		// { label: 'Discover', href: '/discover' },
-		{ label: 'Sponsorships', href: '/member/sponsorships' },
-		// { label: 'Sponsors', href: '/sponsors' },
-		// { label: 'History', href: '/history' }
-	];
+	const isSubscriber = $derived(page.data.isSubscriber === true);
+
+	const menu = $derived.by(() => {
+		const items: { label: string; href: string }[] = [
+			{ label: 'Home', href: '/' },
+			// { label: 'Discover', href: '/discover' },
+			...(isSubscriber ? [] : [{ label: 'Subscribe', href: '/member/subscription' }]),
+			{ label: 'Sponsorships', href: '/member/sponsorships' },
+			...(isSubscriber ? [{ label: 'Subscription', href: '/member/subscription' }] : [])
+			// { label: 'Sponsors', href: '/sponsors' },
+			// { label: 'History', href: '/history' }
+		];
+
+		return items;
+	});
 
 	const isActive = (href: string) =>
 		href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href);

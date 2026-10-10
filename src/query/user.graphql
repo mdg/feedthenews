@@ -1,7 +1,6 @@
 query GetUser($user: String!) {
 	user(name: $user) {
 		name
-		isMember
 		isMaker
 		patreon
 		countSponsoring

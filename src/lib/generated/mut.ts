@@ -106,6 +106,7 @@ export type UserRef = {
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
+  isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;

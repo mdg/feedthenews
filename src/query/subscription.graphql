@@ -1,0 +1,18 @@
+query GetSessionSubscription {
+	sessionUser {
+		subscription {
+			status
+		}
+	}
+}
+
+query GetSubscription {
+	sessionUser {
+		subscription {
+			amt
+			status
+			insertedAt
+			statusAt
+		}
+	}
+}

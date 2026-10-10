@@ -33,7 +33,6 @@ export type PublicUser = {
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
-  isMember: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
@@ -48,6 +47,7 @@ export type RootMaker = {
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
+  isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
@@ -83,7 +83,6 @@ export type RootUser = {
   did?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
-  isMember: Scalars['Boolean']['output'];
   isStaff: Scalars['Boolean']['output'];
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -144,6 +143,7 @@ export type UserRef = {
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
+  isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
@@ -187,12 +187,22 @@ export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
 
+export type GetSessionSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSessionSubscriptionQueryResult = { sessionUser?: { subscription?: { status: SubscriptionStatus } | null } | null };
+
+export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSubscriptionQueryResult = { sessionUser?: { subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any } | null } | null };
+
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMember: boolean, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, description?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, description?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
 
 
 export const GetDashboardDocument = gql`
@@ -260,11 +270,31 @@ export const GetSponsorshipsDocument = gql`
   }
 }
     `;
+export const GetSessionSubscriptionDocument = gql`
+    query GetSessionSubscription {
+  sessionUser {
+    subscription {
+      status
+    }
+  }
+}
+    `;
+export const GetSubscriptionDocument = gql`
+    query GetSubscription {
+  sessionUser {
+    subscription {
+      amt
+      status
+      insertedAt
+      statusAt
+    }
+  }
+}
+    `;
 export const GetUserDocument = gql`
     query GetUser($user: String!) {
   user(name: $user) {
     name
-    isMember
     isMaker
     patreon
     countSponsoring
@@ -289,6 +319,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetSponsorships(variables?: GetSponsorshipsQueryVariables, options?: C): Promise<GetSponsorshipsQueryResult> {
       return requester<GetSponsorshipsQueryResult, GetSponsorshipsQueryVariables>(GetSponsorshipsDocument, variables, options) as Promise<GetSponsorshipsQueryResult>;
+    },
+    GetSessionSubscription(variables?: GetSessionSubscriptionQueryVariables, options?: C): Promise<GetSessionSubscriptionQueryResult> {
+      return requester<GetSessionSubscriptionQueryResult, GetSessionSubscriptionQueryVariables>(GetSessionSubscriptionDocument, variables, options) as Promise<GetSessionSubscriptionQueryResult>;
+    },
+    GetSubscription(variables?: GetSubscriptionQueryVariables, options?: C): Promise<GetSubscriptionQueryResult> {
+      return requester<GetSubscriptionQueryResult, GetSubscriptionQueryVariables>(GetSubscriptionDocument, variables, options) as Promise<GetSubscriptionQueryResult>;
     },
     GetUser(variables: GetUserQueryVariables, options?: C): Promise<GetUserQueryResult> {
       return requester<GetUserQueryResult, GetUserQueryVariables>(GetUserDocument, variables, options) as Promise<GetUserQueryResult>;
