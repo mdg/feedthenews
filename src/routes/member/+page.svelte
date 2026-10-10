@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import Header from '$lib/components/Header.svelte';
-	import Sidebar from '$lib/components/Sidebar.svelte';
+	import MainLayout from '$lib/components/MainLayout.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 
 	let { data } = $props();
@@ -28,14 +27,8 @@
 
 <svelte:head><title>Dashboard | Feed The News</title></svelte:head>
 
-<div class="min-h-screen">
-	<Header onSignIn={() => (signInOpen = true)} />
-
-	<div class="flex">
-		<Sidebar />
-
-		<main class="flex-1">
-			<div class="mx-auto w-full max-w-5xl px-6 py-12">
+<MainLayout>
+	<div class="mx-auto w-full max-w-2xl">
 		<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
 			{page.data.sessionUser?.name}
 		</h1>
@@ -124,9 +117,7 @@
 			{/if}
 		</section>
 	</div>
-		</main>
-	</div>
-</div>
+</MainLayout>
 
 {#if signInOpen}
 	<SignInModal onClose={() => (signInOpen = false)} />

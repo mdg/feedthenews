@@ -2,18 +2,20 @@
 
 ## Status
 
-Partially implemented:
+Implemented:
 
-- Sidebar exists (`src/lib/components/Sidebar.svelte`) and is used on
-  `/@[user]`, `/member`, and `/member/profile`.
-- Page content is centered next to the sidebar
-  (`flex-1` main + `mx-auto max-w-5xl` inner wrapper); this ad-hoc wrapper
-  will be replaced by the `MainLayout` component (step 0 below).
-- "Open Bluesky" link moved next to "Subscribe on Patreon" in a shared
-  button row below the stats.
-- Description is displayed under the name.
+- `MainLayout` component (`src/lib/components/MainLayout.svelte`):
+  `[ Sidebar ][ Content slot ][ Reserved Space ]` centered via an outer
+  `max-w-7xl` wrapper; reserved column hidden below `lg`.
+- Sidebar footer hosts the session user link or Sign In button; top
+  `Header` removed from `/@[user]`, `/member`, `/member/profile`.
+- `/@[user]`: single identity card — avatar beside name + Subscriber chip +
+  clamped description, 3-column divide-x stats grid with `—` placeholders,
+  and a card footer grouping Sponsor toggle, Patreon, and Bluesky links.
+- `/member` and `/member/profile` migrated onto `MainLayout` with centered
+  `max-w-2xl` content.
 
-## Remaining Work
+## Deferred (see Out of Scope)
 
 ### 0. MainLayout component
 

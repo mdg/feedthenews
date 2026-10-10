@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import MainLayout from '$lib/components/MainLayout.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
-	import Sidebar from '$lib/components/Sidebar.svelte';
 	import ToggleButton from '$lib/components/ToggleButton.svelte';
 	import Username from '$lib/components/Username.svelte';
 	import { fetchMut } from '$lib/graph';
@@ -50,103 +50,109 @@
 
 <svelte:head><title>{name} | Feed The News</title></svelte:head>
 
-<div class="min-h-screen">
-	<div class="flex">
-		<Sidebar />
+<MainLayout onSignIn={() => (signInOpen = true)}>
+	<div class="mx-auto w-full max-w-2xl">
+		<section class="rounded-xl bg-white p-8 shadow-sm">
+			<div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+				{#if data.profile.avatar}
+					<img
+						src={data.profile.avatar}
+						alt={`${name}'s avatar`}
+						class="h-20 w-20 shrink-0 rounded-full object-cover ring-1 ring-stone-200"
+					/>
+				{/if}
 
-		<main class="flex-1">
-			<div class="mx-auto w-full max-w-5xl px-6 py-12">
-		{#if data.profile.avatar}
-			<img src={data.profile.avatar} alt={`${name}'s avatar`} class="h-24 w-24 rounded-full object-cover" />
-		{/if}
-	<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
-		<Username name={name} platformType={data.profile.platformType} />
-	</h1>
+				<div class="min-w-0">
+					<div class="flex flex-wrap items-center gap-3">
+						<h1 class="font-serif text-3xl font-bold tracking-tight text-stone-900">
+							<Username name={name} platformType={data.profile.platformType} />
+						</h1>
+						{#if data.profile.isMember}
+							<span
+								class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+									class="h-3.5 w-3.5"
+									aria-hidden="true"
+								>
+									<path
+										fill-rule="evenodd"
+										d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+								Subscriber
+							</span>
+						{/if}
+					</div>
 
-	{#if data.profile.description}
-		<p class="mt-2 max-w-md text-sm text-stone-600">{data.profile.description}</p>
-	{/if}
+					{#if data.profile.description}
+						<p class="mt-3 line-clamp-3 text-sm leading-relaxed text-stone-600" title={data.profile.description}>
+							{data.profile.description}
+						</p>
+					{/if}
+				</div>
+			</div>
 
-		{#if page.data.sessionUser && page.data.sessionUser.name !== name}
-			<div class="mt-8 max-w-md">
-				<div class="flex justify-end">
-					<ToggleButton active={sponsored} disabled={submitting} onclick={toggleSponsor}>
-						{sponsored ? 'Sponsored' : 'Sponsor'}
-					</ToggleButton>
+			<dl class="mt-8 grid grid-cols-3 divide-x divide-stone-200">
+				<div class="px-4 text-center sm:px-6">
+					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsoring</dt>
+					<dd class="mt-1 text-2xl font-bold text-stone-900">
+						{data.profile.countSponsoring > 0 ? data.profile.countSponsoring : '—'}
+					</dd>
+				</div>
+				<div class="px-4 text-center sm:px-6">
+					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsors</dt>
+					<dd class="mt-1 text-2xl font-bold text-stone-900">
+						{data.profile.isMaker && data.profile.countSponsors > 0 ? data.profile.countSponsors : '—'}
+					</dd>
+				</div>
+				<div class="px-4 text-center sm:px-6">
+					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Subscriber</dt>
+					<dd class="mt-1 text-2xl font-bold text-stone-900">
+						{data.profile.isMember ? 'Yes' : '—'}
+					</dd>
+				</div>
+			</dl>
+
+			{#if (page.data.sessionUser && page.data.sessionUser.name !== name) || data.profile.isMaker || data.profile.platformType === PlatformType.ATPROTO}
+				<div class="mt-8 flex flex-wrap items-center gap-3 border-t border-stone-200 pt-6">
+					{#if page.data.sessionUser && page.data.sessionUser.name !== name}
+						<ToggleButton active={sponsored} disabled={submitting} onclick={toggleSponsor}>
+							{sponsored ? 'Sponsored' : 'Sponsor'}
+						</ToggleButton>
+					{/if}
+					{#if data.profile.isMaker && patreonName}
+						<a
+							href={`https://www.patreon.com/${patreonName}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+						>
+							Subscribe on Patreon
+						</a>
+					{/if}
+					{#if data.profile.platformType === PlatformType.ATPROTO}
+						<a
+							href={`https://bsky.app/profile/${name}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-block text-sm font-medium text-[#1185fe] hover:underline"
+						>
+							Open Bluesky
+						</a>
+					{/if}
 				</div>
 				{#if status}
 					<p class="mt-2 text-sm text-red-600">{status.message}</p>
 				{/if}
-			</div>
-		{/if}
-
-		<dl
-			class="mt-4 grid max-w-md grid-cols-1 gap-x-8 gap-y-4 rounded-lg bg-white p-6 shadow-sm sm:grid-cols-2"
-		>
-		{#if data.profile.isMember}
-			<div>
-				<dt class="text-sm font-medium text-stone-500">
-					<span
-						class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-amber-800"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-							class="h-4 w-4"
-							aria-hidden="true"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Subscriber
-					</span>
-				</dt>
-			</div>
-		{/if}
-		{#if data.profile.countSponsoring > 0}
-			<div>
-				<dt class="text-sm font-medium text-stone-500">Sponsoring</dt>
-				<dd class="mt-1 text-sm font-semibold text-stone-900">{data.profile.countSponsoring}</dd>
-			</div>
-		{/if}
-			{#if data.profile.isMaker}
-				<div>
-					<dt class="text-sm font-medium text-stone-500">Sponsors</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{data.profile.countSponsors}</dd>
-				</div>
 			{/if}
-		</dl>
-
-	<div class="mt-4 flex items-center gap-3">
-		{#if data.profile.isMaker && patreonName}
-			<a
-				href={`https://www.patreon.com/${patreonName}`}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-			>
-				Subscribe on Patreon
-			</a>
-		{/if}
-		{#if data.profile.platformType === PlatformType.ATPROTO}
-			<a
-				href={`https://bsky.app/profile/${name}`}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-block text-sm font-medium text-[#1185fe] hover:underline"
-			>
-				Open on Bluesky
-			</a>
-		{/if}
+		</section>
 	</div>
-	</div>
-		</main>
-	</div>
-</div>
+</MainLayout>
 
 {#if signInOpen}
 	<SignInModal onClose={() => (signInOpen = false)} />

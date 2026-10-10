@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
+	interface Props {
+		onSignIn?: () => void;
+	}
+
+	let { onSignIn }: Props = $props();
+
 	const menu: { label: string; href: string }[] = [
 		{ label: 'Home', href: '/' },
 		{ label: 'Search', href: '/search' },
@@ -41,5 +47,24 @@
 				</a>
 			{/each}
 		</nav>
+	</div>
+
+	<div class="border-t border-stone-200 p-4">
+		{#if page.data.sessionUser}
+			<a
+				href="/member/profile"
+				class="block rounded-lg px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-900"
+			>
+				{page.data.sessionUser.name}
+			</a>
+		{:else if onSignIn}
+			<button
+				type="button"
+				onclick={onSignIn}
+				class="w-full rounded-md bg-stone-900 px-4 py-2.5 text-sm font-medium text-stone-50 hover:bg-stone-700"
+			>
+				Sign In
+			</button>
+		{/if}
 	</div>
 </aside>
