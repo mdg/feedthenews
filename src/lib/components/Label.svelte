@@ -4,9 +4,10 @@
 	interface Props {
 		label: string;
 		tone?: Tone;
+		capitalize?: boolean;
 	}
 
-	let { label, tone = 'stone' }: Props = $props();
+	let { label, tone = 'stone', capitalize = true }: Props = $props();
 
 	const tones: Record<Tone, string> = {
 		green: 'bg-green-100 text-green-800',
@@ -17,7 +18,9 @@
 </script>
 
 <span
-	class="inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium {tones[tone]}"
+	class="inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium {capitalize
+		? 'capitalize'
+		: ''} {tones[tone]}"
 >
 	{label}
 </span>

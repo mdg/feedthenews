@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import MainLayout from '$lib/components/MainLayout.svelte';
 	import MemberContent from '$lib/components/MemberContent.svelte';
+	import Label from '$lib/components/Label.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { fetchQuery, fetchMut } from '$lib/graph';
@@ -177,25 +178,30 @@
 					<dt class="text-sm font-medium text-stone-500">Phone</dt>
 					<dd class="mt-1 text-sm font-semibold text-stone-900">{profile.phone ?? '—'}</dd>
 				</div>
-				<div>
-					<dt class="text-sm font-medium text-stone-500">Privacy</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{profile.privacy}</dd>
-				</div>
-				<div>
-					<dt class="text-sm font-medium text-stone-500">Status</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{profile.status}</dd>
-				</div>
-				<div>
-					<dt class="text-sm font-medium text-stone-500">User type</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{profile.userType}</dd>
-				</div>
-				{#if profile.isStaff}
-					<div>
-						<dt class="text-sm font-medium text-stone-500">Staff</dt>
-						<dd class="mt-1 text-sm font-semibold text-stone-900">Yes</dd>
-					</div>
-				{/if}
-			</dl>
+			<div class="sm:col-span-2">
+				<dt class="text-sm font-medium text-stone-500">Status</dt>
+				<dd class="mt-1 flex flex-wrap items-center gap-1.5">
+					<Label
+						label={String(profile.privacy).toLowerCase()}
+						tone={profile.privacy === 'PUBLIC' ? 'green' : 'amber'}
+					/>
+					<Label
+						label={String(profile.status).toLowerCase()}
+						tone={profile.status === 'ACTIVE'
+							? 'green'
+							: ['BANNED', 'DELETED', 'CLOSED'].includes(profile.status)
+								? 'red'
+								: 'amber'}
+					/>
+					{#if profile.isStaff}
+						<Label label="Staff" tone="amber" />
+					{/if}
+					{#if profile.userType !== 'USER'}
+						<Label label={String(profile.userType).toLowerCase()} tone="stone" />
+					{/if}
+				</dd>
+			</div>
+		</dl>
 		{:else}
 			<p class="mt-8 text-sm text-stone-600">No profile available.</p>
 		{/if}
