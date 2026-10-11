@@ -42,25 +42,10 @@ export type PublicUser = {
   userType: UserType;
 };
 
-export type RootMaker = {
-  avatar?: Maybe<Scalars['String']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  did?: Maybe<Scalars['String']['output']>;
-  isMaker: Scalars['Boolean']['output'];
-  isSubscriber: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  patreon?: Maybe<Scalars['String']['output']>;
-  platformType: PlatformType;
-  sessionUser?: Maybe<SessionUserUserData>;
-  sponsorships: SponsorshipSet;
-  status: UserStatus;
-  userType: UserType;
-};
-
 export type RootQueryType = {
   search: RootSearch;
-  sessionMaker?: Maybe<RootMaker>;
-  sessionUser?: Maybe<RootUser>;
+  sessionMaker?: Maybe<SessionMaker>;
+  sessionUser?: Maybe<SessionUser>;
   topics: TopicSet;
   user: PublicUser;
   /** Get the current News API version */
@@ -76,7 +61,22 @@ export type RootSearch = {
   makers: UserSet;
 };
 
-export type RootUser = {
+export type SessionMaker = {
+  avatar?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  did?: Maybe<Scalars['String']['output']>;
+  isMaker: Scalars['Boolean']['output'];
+  isSubscriber: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  patreon?: Maybe<Scalars['String']['output']>;
+  platformType: PlatformType;
+  sessionUser?: Maybe<SessionUserUserData>;
+  sponsorships: SponsorshipSet;
+  status: UserStatus;
+  userType: UserType;
+};
+
+export type SessionUser = {
   avatar?: Maybe<Scalars['String']['output']>;
   countSponsoring: Scalars['Int']['output'];
   countSponsors: Scalars['Int']['output'];
@@ -97,6 +97,11 @@ export type RootUser = {
   subscription?: Maybe<SubRef>;
   topics: Array<Maybe<UserTopic>>;
   userType: UserType;
+};
+
+
+export type SessionUserSubscriptionArgs = {
+  includeInactive?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type SessionUserUserData = {
