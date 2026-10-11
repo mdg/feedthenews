@@ -20,6 +20,41 @@
 	let cancelling = $state(false);
 	let cancelError = $state(false);
 
+	const amounts = [5, 10, 20];
+	let selectedAmount = $state(5);
+	let otherAmount = $state<number | null>(null);
+	let subscribing = $state(false);
+	let subscribeError = $state(false);
+
+	const subscribeAmount = $derived(selectedAmount > 0 ? selectedAmount : otherAmount);
+
+	async function subscribe() {
+		const amt = subscribeAmount;
+		if (!amt || subscribing) return;
+
+		const csrf = page.data.csrf_token as string | null;
+		if (!csrf) {
+			subscribeError = true;
+			return;
+		}
+
+		subscribing = true;
+		subscribeError = false;
+
+		try {
+			await fetchMut(csrf).Subscribe({ amt });
+			await fetchQuery()
+				.GetSubscription()
+				.then((res) => {
+					subscription = res.sessionUser?.subscription ?? null;
+				});
+		} catch {
+			subscribeError = true;
+		} finally {
+			subscribing = false;
+		}
+	}
+
 	$effect(() => {
 		error = false;
 
@@ -159,16 +194,66 @@
 					</div>
 				</div>
 			{/if}
+			{#if subscription.status === SubscriptionStatus.CANCELLED}
+				{@render subscribeForm()}
+			{/if}
 		{:else}
-			<div class="mt-8 rounded-xl bg-white p-8 text-center shadow-sm">
-				<p class="text-sm text-stone-600">You don't have a subscription.</p>
-				<a
-					href="/member/subscribe"
-					class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-				>
-					Subscribe
-				</a>
-			</div>
+			{@render subscribeForm()}
 		{/if}
 	</MemberContent>
 </MainLayout>
+
+{#snippet subscribeForm()}
+	<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+		<p class="text-sm text-stone-600">
+			{subscription
+				? 'Your subscription was cancelled. Subscribe again to resume sponsoring journalists.'
+				: 'Subscribe to start sponsoring your favorite journalists.'}
+		</p>
+
+		<div class="mt-4 flex flex-wrap items-center gap-2">
+			{#each amounts as amount (amount)}
+				<button
+					type="button"
+					onclick={() => (selectedAmount = amount)}
+					class="rounded-md border px-4 py-2 text-sm font-medium {selectedAmount === amount
+						? 'border-stone-900 bg-stone-900 text-stone-50'
+						: 'border-stone-300 text-stone-700 hover:bg-stone-100'}"
+				>
+					${amount}
+				</button>
+			{/each}
+			<label
+				class="flex items-center gap-2 rounded-md border border-stone-300 px-3 py-2 {selectedAmount === 0
+					? 'border-stone-900 ring-1 ring-stone-900'
+					: ''}"
+			>
+				<input type="radio" class="sr-only" name="amount" value="other" bind:group={selectedAmount} />
+				<span class="text-sm text-stone-700">Other $</span>
+				<input
+					type="number"
+					min="1"
+					bind:value={otherAmount}
+					onclick={() => (selectedAmount = 0)}
+					onfocus={() => (selectedAmount = 0)}
+					class="w-16 rounded border-stone-300 text-sm shadow-sm focus:border-stone-500 focus:ring-stone-500"
+				/>
+			</label>
+		</div>
+
+		{#if subscribeError}
+			<p class="mt-2 text-sm text-red-600">Could not subscribe. Please try again.</p>
+		{/if}
+
+		<div class="mt-4">
+			<button
+				type="button"
+				disabled={!subscribeAmount || subscribing}
+				onclick={subscribe}
+				class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				{subscribing ? 'Subscribing…' : 'Subscribe'}
+			</button>
+		</div>
+	</div>
+{/snippet}

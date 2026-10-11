@@ -184,6 +184,13 @@ export type SponsorMutationVariables = Exact<{
 
 export type SponsorMutationResult = { sessionUser: { sponsor: { status: SubscriptionStatus } } };
 
+export type SubscribeMutationVariables = Exact<{
+  amt: Scalars['Int']['input'];
+}>;
+
+
+export type SubscribeMutationResult = { sessionUser: { subscribe: { status: SubscriptionStatus } } };
+
 
 export const CancelSponsorshipDocument = gql`
     mutation CancelSponsorship($maker: String!) {
@@ -219,6 +226,15 @@ export const SponsorDocument = gql`
   }
 }
     `;
+export const SubscribeDocument = gql`
+    mutation Subscribe($amt: Int!) {
+  sessionUser {
+    subscribe(amt: $amt) {
+      status
+    }
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -233,6 +249,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     Sponsor(variables: SponsorMutationVariables, options?: C): Promise<SponsorMutationResult> {
       return requester<SponsorMutationResult, SponsorMutationVariables>(SponsorDocument, variables, options) as Promise<SponsorMutationResult>;
+    },
+    Subscribe(variables: SubscribeMutationVariables, options?: C): Promise<SubscribeMutationResult> {
+      return requester<SubscribeMutationResult, SubscribeMutationVariables>(SubscribeDocument, variables, options) as Promise<SubscribeMutationResult>;
     }
   };
 }

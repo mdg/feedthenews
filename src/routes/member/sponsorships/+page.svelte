@@ -53,7 +53,7 @@
 		{:else}
 			{#if !sessionUser?.isSubscriber}
 				<p class="mt-8 text-sm text-stone-600">
-					<a href="/member/subscribe" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
+					<a href="/member/subscription" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
 						Subscribe
 					</a>
 					to sponsor these users
