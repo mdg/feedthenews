@@ -26,7 +26,11 @@
 	let subscribing = $state(false);
 	let subscribeError = $state(false);
 
-	const subscribeAmount = $derived(selectedAmount > 0 ? selectedAmount : otherAmount);
+	const subscribeAmount = $derived(
+		selectedAmount > 0
+			? selectedAmount
+			: Math.min(50, Math.max(6, otherAmount || 30))
+	);
 
 	async function subscribe() {
 		const amt = subscribeAmount;
@@ -223,22 +227,36 @@
 					${amount}
 				</button>
 			{/each}
-			<label
-				class="flex items-center gap-2 rounded-md border border-stone-300 px-3 py-2 {selectedAmount === 0
-					? 'border-stone-900 ring-1 ring-stone-900'
-					: ''}"
-			>
-				<input type="radio" class="sr-only" name="amount" value="other" bind:group={selectedAmount} />
-				<span class="text-sm text-stone-700">Other $</span>
-				<input
-					type="number"
-					min="1"
-					bind:value={otherAmount}
-					onclick={() => (selectedAmount = 0)}
-					onfocus={() => (selectedAmount = 0)}
-					class="w-16 rounded border-stone-300 text-sm shadow-sm focus:border-stone-500 focus:ring-stone-500"
-				/>
-			</label>
+				<button
+					type="button"
+					class="flex items-center gap-2 rounded-md border border-stone-300 px-3 py-2 {selectedAmount === 0
+						? 'border-stone-900 ring-1 ring-stone-900'
+						: ''}"
+					onclick={(e) => {
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+						(e.currentTarget.querySelector('input') as HTMLInputElement | null)?.focus();
+					}}
+				>
+					<span class="text-sm text-stone-700">Other $</span>
+					<input
+						type="number"
+						min="6"
+						max="50"
+						placeholder="30"
+						bind:value={otherAmount}
+						onclick={(e) => {
+						e.stopPropagation();
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+					}}
+						onfocus={() => {
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+					}}
+						class="w-16 rounded border-stone-300 text-sm shadow-sm focus:border-stone-500 focus:ring-stone-500"
+					/>
+				</button>
 		</div>
 
 		{#if subscribeError}
