@@ -21,11 +21,6 @@
 	let cancelError = $state(false);
 
 	$effect(() => {
-		if (!isSubscriber) {
-			loading = false;
-			return;
-		}
-
 		error = false;
 
 		fetchQuery()
@@ -73,6 +68,14 @@
 			: null
 	);
 
+	const statusAtLabel = $derived(
+		subscription?.statusAt
+			? new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
+					new Date(String(subscription.statusAt))
+				)
+			: null
+	);
+
 	const tone = $derived(
 		subscription?.status === 'ACTIVE'
 			? 'green'
@@ -88,17 +91,7 @@
 
 <MainLayout>
 	<MemberContent title="Subscription" {loading}>
-		{#if !isSubscriber}
-			<div class="mt-8 rounded-xl bg-white p-8 text-center shadow-sm">
-				<p class="text-sm text-stone-600">You don't have an active subscription.</p>
-				<a
-					href="/member/subscribe"
-					class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-				>
-					Subscribe
-				</a>
-			</div>
-		{:else if error}
+		{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
 		{:else if subscription}
 			<dl
@@ -109,14 +102,20 @@
 					<dd class="mt-1 text-sm font-semibold text-stone-900">${subscription.amt} / month</dd>
 				</div>
 				<div>
+					<dt class="text-sm font-medium text-stone-500">Created</dt>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{insertedAt ?? '—'}</dd>
+				</div>
+				<div>
 					<dt class="text-sm font-medium text-stone-500">Status</dt>
 					<dd class="mt-1">
 						<Label label={String(subscription.status).toLowerCase()} tone={tone} />
 					</dd>
 				</div>
 				<div>
-					<dt class="text-sm font-medium text-stone-500">Since</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{insertedAt ?? '—'}</dd>
+					<dt class="text-sm font-medium text-stone-500">
+						{subscription.status === 'CANCELLED' ? 'Cancelled At' : 'Activated At'}
+					</dt>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">{statusAtLabel ?? '—'}</dd>
 				</div>
 			</dl>
 
@@ -160,6 +159,16 @@
 					</div>
 				</div>
 			{/if}
+		{:else}
+			<div class="mt-8 rounded-xl bg-white p-8 text-center shadow-sm">
+				<p class="text-sm text-stone-600">You don't have a subscription.</p>
+				<a
+					href="/member/subscribe"
+					class="mt-4 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+				>
+					Subscribe
+				</a>
+			</div>
 		{/if}
 	</MemberContent>
 </MainLayout>

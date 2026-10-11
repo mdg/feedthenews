@@ -1,6 +1,6 @@
 query GetSubscription {
 	sessionUser {
-		subscription {
+		subscription(includeInactive: true) {
 			amt
 			status
 			insertedAt

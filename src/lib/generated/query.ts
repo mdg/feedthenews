@@ -293,7 +293,7 @@ export const GetSponsorshipsDocument = gql`
 export const GetSubscriptionDocument = gql`
     query GetSubscription {
   sessionUser {
-    subscription {
+    subscription(includeInactive: true) {
       amt
       status
       insertedAt
