@@ -43,6 +43,7 @@ export type RootUserMut = {
   setName: Scalars['String']['output'];
   sponsor: Sponsorship;
   subscribe: SubRef;
+  topic?: Maybe<UserTopic>;
 };
 
 
@@ -69,6 +70,14 @@ export type RootUserMutSponsorArgs = {
 
 export type RootUserMutSubscribeArgs = {
   amt: Scalars['Int']['input'];
+};
+
+
+export type RootUserMutTopicArgs = {
+  asMaker?: InputMaybe<Scalars['Boolean']['input']>;
+  asSponsor?: InputMaybe<Scalars['Boolean']['input']>;
+  privacy?: InputMaybe<UserPrivacy>;
+  topicSlug: Scalars['String']['input'];
 };
 
 export type SessionUserUserData = {
@@ -101,6 +110,17 @@ export enum SubscriptionStatus {
   PENDING = 'PENDING'
 }
 
+export type TopicRef = {
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
+export enum UserPrivacy {
+  ANONYMOUS = 'ANONYMOUS',
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC'
+}
+
 export type UserRef = {
   avatar?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
@@ -124,7 +144,15 @@ export enum UserStatus {
   PENDING = 'PENDING'
 }
 
+export type UserTopic = {
+  asMaker: Scalars['Boolean']['output'];
+  asSponsor: Scalars['Boolean']['output'];
+  privacy: UserPrivacy;
+  topic: TopicRef;
+};
+
 export enum UserType {
+  ALT = 'ALT',
   IMPORT = 'IMPORT',
   SYSTEM = 'SYSTEM',
   USER = 'USER'
@@ -136,6 +164,11 @@ export type CancelSponsorshipMutationVariables = Exact<{
 
 
 export type CancelSponsorshipMutationResult = { sessionUser: { cancelSponsorship: { status: SubscriptionStatus } } };
+
+export type CancelSubscriptionMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CancelSubscriptionMutationResult = { sessionUser: { cancelSubscription?: { status: SubscriptionStatus } | null } };
 
 export type SetUserNameMutationVariables = Exact<{
   newName: Scalars['String']['input'];
@@ -156,6 +189,15 @@ export const CancelSponsorshipDocument = gql`
     mutation CancelSponsorship($maker: String!) {
   sessionUser {
     cancelSponsorship(maker: $maker) {
+      status
+    }
+  }
+}
+    `;
+export const CancelSubscriptionDocument = gql`
+    mutation CancelSubscription {
+  sessionUser {
+    cancelSubscription {
       status
     }
   }
@@ -182,6 +224,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     CancelSponsorship(variables: CancelSponsorshipMutationVariables, options?: C): Promise<CancelSponsorshipMutationResult> {
       return requester<CancelSponsorshipMutationResult, CancelSponsorshipMutationVariables>(CancelSponsorshipDocument, variables, options) as Promise<CancelSponsorshipMutationResult>;
+    },
+    CancelSubscription(variables?: CancelSubscriptionMutationVariables, options?: C): Promise<CancelSubscriptionMutationResult> {
+      return requester<CancelSubscriptionMutationResult, CancelSubscriptionMutationVariables>(CancelSubscriptionDocument, variables, options) as Promise<CancelSubscriptionMutationResult>;
     },
     SetUserName(variables: SetUserNameMutationVariables, options?: C): Promise<SetUserNameMutationResult> {
       return requester<SetUserNameMutationResult, SetUserNameMutationVariables>(SetUserNameDocument, variables, options) as Promise<SetUserNameMutationResult>;

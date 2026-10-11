@@ -61,6 +61,7 @@ export type RootQueryType = {
   search: RootSearch;
   sessionMaker?: Maybe<RootMaker>;
   sessionUser?: Maybe<RootUser>;
+  topics: TopicSet;
   user: PublicUser;
   /** Get the current News API version */
   version: Scalars['String']['output'];
@@ -94,6 +95,7 @@ export type RootUser = {
   sponsorships: SponsorshipSet;
   status: UserStatus;
   subscription?: Maybe<SubRef>;
+  topics: Array<Maybe<UserTopic>>;
   userType: UserType;
 };
 
@@ -132,6 +134,16 @@ export enum SubscriptionStatus {
   PENDING = 'PENDING'
 }
 
+export type TopicRef = {
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
+export type TopicSet = {
+  items: Array<TopicRef>;
+  next?: Maybe<Scalars['String']['output']>;
+};
+
 export enum UserPrivacy {
   ANONYMOUS = 'ANONYMOUS',
   PRIVATE = 'PRIVATE',
@@ -166,7 +178,15 @@ export enum UserStatus {
   PENDING = 'PENDING'
 }
 
+export type UserTopic = {
+  asMaker: Scalars['Boolean']['output'];
+  asSponsor: Scalars['Boolean']['output'];
+  privacy: UserPrivacy;
+  topic: TopicRef;
+};
+
 export enum UserType {
+  ALT = 'ALT',
   IMPORT = 'IMPORT',
   SYSTEM = 'SYSTEM',
   USER = 'USER'

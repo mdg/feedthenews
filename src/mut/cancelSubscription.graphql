@@ -1,0 +1,7 @@
+mutation CancelSubscription {
+	sessionUser {
+		cancelSubscription {
+			status
+		}
+	}
+}

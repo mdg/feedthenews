@@ -50,7 +50,16 @@
 	<MemberContent title="Sponsorships" {loading}>
 		{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your sponsorships. Please try again.</p>
-		{:else if sponsorships.length > 0}
+		{:else}
+			{#if !sessionUser?.isSubscriber}
+				<p class="mt-8 text-sm text-stone-600">
+					<a href="/member/subscribe" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
+						Subscribe
+					</a>
+					to sponsor these users
+				</p>
+			{/if}
+			{#if sponsorships.length > 0}
 			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
 				{#each sponsorships as sponsorship, i (i)}
 					<li class="flex items-center gap-4 px-6 py-4">
@@ -94,6 +103,7 @@
 			</ul>
 		{:else}
 			<p class="mt-8 text-sm text-stone-500">No active sponsorships</p>
+			{/if}
 		{/if}
 	</MemberContent>
 </MainLayout>
