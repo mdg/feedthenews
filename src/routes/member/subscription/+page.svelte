@@ -21,7 +21,7 @@
 	let cancelError = $state(false);
 
 	const amounts = [5, 10, 20];
-	let selectedAmount = $state(5);
+	let selectedAmount = $state(10);
 	let otherAmount = $state<number | null>(null);
 	let subscribing = $state(false);
 	let subscribeError = $state(false);
@@ -46,7 +46,14 @@
 		subscribeError = false;
 
 		try {
-			await fetchMut(csrf).Subscribe({ amt });
+			const res = await fetchMut(csrf).Subscribe({ amt });
+			const checkoutUrl = res.sessionUser?.subscribe.checkoutUrl;
+
+			if (checkoutUrl) {
+				window.location.href = checkoutUrl;
+				return;
+			}
+
 			await fetchQuery()
 				.GetSubscription()
 				.then((res) => {
@@ -130,7 +137,77 @@
 
 <MainLayout>
 	<MemberContent title="Subscription" {loading}>
-		{#if error}
+		<div>
+			{#snippet subscribeForm()}
+	<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+		<p class="text-sm text-stone-600">
+			{subscription
+				? 'Your subscription was cancelled. Subscribe again to resume sponsoring journalists.'
+				: 'Subscribe to start sponsoring your favorite journalists.'}
+		</p>
+
+		<div class="mt-4 flex flex-wrap items-center gap-2">
+			{#each amounts as amount (amount)}
+				<button
+					type="button"
+					onclick={() => (selectedAmount = amount)}
+					class="rounded-md border px-4 py-2 text-sm font-medium {selectedAmount === amount
+						? 'border-stone-900 bg-stone-900 text-stone-50'
+						: 'border-stone-300 text-stone-700 hover:bg-stone-100'}"
+				>
+					${amount}
+				</button>
+			{/each}
+				<button
+					type="button"
+					class="flex items-center gap-2 rounded-md border border-stone-300 px-3 py-2 {selectedAmount === 0
+						? 'border-stone-900 ring-1 ring-stone-900'
+						: ''}"
+					onclick={(e) => {
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+						(e.currentTarget.querySelector('input') as HTMLInputElement | null)?.focus();
+					}}
+				>
+					<span class="text-sm text-stone-700">Other $</span>
+					<input
+						type="number"
+						min="6"
+						max="50"
+						placeholder="30"
+						bind:value={otherAmount}
+						onclick={(e) => {
+						e.stopPropagation();
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+					}}
+						onfocus={() => {
+						selectedAmount = 0;
+						otherAmount = otherAmount || 30;
+					}}
+						class="w-16 rounded border-stone-300 text-sm shadow-sm focus:border-stone-500 focus:ring-stone-500"
+					/>
+				</button>
+		</div>
+
+		{#if subscribeError}
+			<p class="mt-2 text-sm text-red-600">Could not subscribe. Please try again.</p>
+		{/if}
+
+		<div class="mt-4">
+			<button
+				type="button"
+				disabled={!subscribeAmount || subscribing}
+				onclick={subscribe}
+				class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				{subscribing ? 'Subscribing…' : 'Subscribe'}
+			</button>
+		</div>
+	</div>
+			{/snippet}
+
+			{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
 		{:else if subscription}
 			<dl
@@ -204,74 +281,6 @@
 		{:else}
 			{@render subscribeForm()}
 		{/if}
+		</div>
 	</MemberContent>
 </MainLayout>
-
-{#snippet subscribeForm()}
-	<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
-		<p class="text-sm text-stone-600">
-			{subscription
-				? 'Your subscription was cancelled. Subscribe again to resume sponsoring journalists.'
-				: 'Subscribe to start sponsoring your favorite journalists.'}
-		</p>
-
-		<div class="mt-4 flex flex-wrap items-center gap-2">
-			{#each amounts as amount (amount)}
-				<button
-					type="button"
-					onclick={() => (selectedAmount = amount)}
-					class="rounded-md border px-4 py-2 text-sm font-medium {selectedAmount === amount
-						? 'border-stone-900 bg-stone-900 text-stone-50'
-						: 'border-stone-300 text-stone-700 hover:bg-stone-100'}"
-				>
-					${amount}
-				</button>
-			{/each}
-				<button
-					type="button"
-					class="flex items-center gap-2 rounded-md border border-stone-300 px-3 py-2 {selectedAmount === 0
-						? 'border-stone-900 ring-1 ring-stone-900'
-						: ''}"
-					onclick={(e) => {
-						selectedAmount = 0;
-						otherAmount = otherAmount || 30;
-						(e.currentTarget.querySelector('input') as HTMLInputElement | null)?.focus();
-					}}
-				>
-					<span class="text-sm text-stone-700">Other $</span>
-					<input
-						type="number"
-						min="6"
-						max="50"
-						placeholder="30"
-						bind:value={otherAmount}
-						onclick={(e) => {
-						e.stopPropagation();
-						selectedAmount = 0;
-						otherAmount = otherAmount || 30;
-					}}
-						onfocus={() => {
-						selectedAmount = 0;
-						otherAmount = otherAmount || 30;
-					}}
-						class="w-16 rounded border-stone-300 text-sm shadow-sm focus:border-stone-500 focus:ring-stone-500"
-					/>
-				</button>
-		</div>
-
-		{#if subscribeError}
-			<p class="mt-2 text-sm text-red-600">Could not subscribe. Please try again.</p>
-		{/if}
-
-		<div class="mt-4">
-			<button
-				type="button"
-				disabled={!subscribeAmount || subscribing}
-				onclick={subscribe}
-				class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
-			>
-				{subscribing ? 'Subscribing…' : 'Subscribe'}
-			</button>
-		</div>
-	</div>
-{/snippet}

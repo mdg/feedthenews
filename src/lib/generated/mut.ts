@@ -189,7 +189,7 @@ export type SubscribeMutationVariables = Exact<{
 }>;
 
 
-export type SubscribeMutationResult = { sessionUser: { subscribe: { status: SubscriptionStatus } } };
+export type SubscribeMutationResult = { sessionUser: { subscribe: { status: SubscriptionStatus, checkoutUrl?: string | null } } };
 
 
 export const CancelSponsorshipDocument = gql`
@@ -231,6 +231,7 @@ export const SubscribeDocument = gql`
   sessionUser {
     subscribe(amt: $amt) {
       status
+      checkoutUrl
     }
   }
 }
