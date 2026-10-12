@@ -46,7 +46,6 @@ export type RootQueryType = {
   search: RootSearch;
   sessionMaker?: Maybe<SessionMaker>;
   sessionUser?: Maybe<SessionUser>;
-  topics: TopicSet;
   user: PublicUser;
   /** Get the current News API version */
   version: Scalars['String']['output'];
@@ -59,6 +58,7 @@ export type RootQueryTypeUserArgs = {
 
 export type RootSearch = {
   makers: UserSet;
+  topics: TopicSet;
 };
 
 export type SessionMaker = {
@@ -202,6 +202,11 @@ export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetDashboardQueryResult = { sessionUser?: { sponsorships: { items: Array<{ status: SubscriptionStatus, anonymous: boolean, insertedAt: any, maker?: { name: string } | null }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { sponsorships: { items: Array<{ insertedAt: any, sponsor?: { name: string } | null }> } } | null };
 
+export type GetDiscoverQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDiscoverQueryResult = { search: { topics: { items: Array<{ name: string, slug: string }> }, makers: { items: Array<{ name: string, platformType: PlatformType, avatar?: string | null }> } } };
+
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -251,6 +256,25 @@ export const GetDashboardDocument = gql`
         sponsor {
           name
         }
+      }
+    }
+  }
+}
+    `;
+export const GetDiscoverDocument = gql`
+    query GetDiscover {
+  search {
+    topics {
+      items {
+        name
+        slug
+      }
+    }
+    makers {
+      items {
+        name
+        platformType
+        avatar
       }
     }
   }
@@ -324,6 +348,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     GetDashboard(variables?: GetDashboardQueryVariables, options?: C): Promise<GetDashboardQueryResult> {
       return requester<GetDashboardQueryResult, GetDashboardQueryVariables>(GetDashboardDocument, variables, options) as Promise<GetDashboardQueryResult>;
+    },
+    GetDiscover(variables?: GetDiscoverQueryVariables, options?: C): Promise<GetDiscoverQueryResult> {
+      return requester<GetDiscoverQueryResult, GetDiscoverQueryVariables>(GetDiscoverDocument, variables, options) as Promise<GetDiscoverQueryResult>;
     },
     GetProfile(variables?: GetProfileQueryVariables, options?: C): Promise<GetProfileQueryResult> {
       return requester<GetProfileQueryResult, GetProfileQueryVariables>(GetProfileDocument, variables, options) as Promise<GetProfileQueryResult>;

@@ -1,0 +1,17 @@
+query GetDiscover {
+	search {
+		topics {
+			items {
+				name
+				slug
+			}
+		}
+		makers {
+			items {
+				name
+				platformType
+				avatar
+			}
+		}
+	}
+}

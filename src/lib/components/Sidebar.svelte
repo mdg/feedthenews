@@ -12,7 +12,7 @@
 	const menu = $derived.by(() => {
 		const items: { label: string; href: string }[] = [
 			{ label: 'Home', href: '/' },
-			// { label: 'Discover', href: '/discover' },
+			{ label: 'Discover', href: '/discover' },
 			...(isSubscriber ? [] : [{ label: 'Subscribe', href: '/member/subscription' }]),
 			{ label: 'Sponsorships', href: '/member/sponsorships' },
 			...(isSubscriber ? [{ label: 'Subscription', href: '/member/subscription' }] : [])
