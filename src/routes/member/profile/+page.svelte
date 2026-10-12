@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
 	import MainLayout from '$lib/components/MainLayout.svelte';
 	import MemberContent from '$lib/components/MemberContent.svelte';
 	import Label from '$lib/components/Label.svelte';
@@ -24,11 +23,6 @@
 	let status: { kind: 'error' | 'success'; message: string } | null = $state(null);
 
 	$effect(() => {
-		if (!sessionUser) {
-			goto('/welcome');
-			return;
-		}
-
 		loading = true;
 		error = false;
 

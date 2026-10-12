@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
 	import MainLayout from '$lib/components/MainLayout.svelte';
 	import MemberContent from '$lib/components/MemberContent.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
@@ -16,11 +15,6 @@
 	let error = $state(false);
 
 	$effect(() => {
-		if (!sessionUser) {
-			goto('/welcome');
-			return;
-		}
-
 		loading = true;
 		error = false;
 
