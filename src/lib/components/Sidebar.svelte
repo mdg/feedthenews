@@ -7,15 +7,14 @@
 
 	let { onSignIn }: Props = $props();
 
-	const isSubscriber = $derived(page.data.sessionUser?.isSubscriber);
+	const isStaff = $derived(page.data.sessionUser?.isStaff);
 
 	const menu = $derived.by(() => {
 		const items: { label: string; href: string }[] = [
 			{ label: 'Home', href: '/' },
 			{ label: 'Discover', href: '/discover' },
-			...(isSubscriber ? [] : [{ label: 'Subscribe', href: '/member/subscription' }]),
 			{ label: 'Sponsorships', href: '/member/sponsorships' },
-			...(isSubscriber ? [{ label: 'Subscription', href: '/member/subscription' }] : [])
+			...(isStaff ? [{ label: 'Subscription', href: '/member/subscription' }] : [])
 			// { label: 'Sponsors', href: '/sponsors' },
 			// { label: 'History', href: '/history' }
 		];
