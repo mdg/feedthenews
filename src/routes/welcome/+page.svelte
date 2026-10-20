@@ -56,7 +56,7 @@
 				class="mt-8 rounded-lg shadow-sm"
 			/>
 
-			<p>Think of it like a monthly GoFundMe.</p>
+			<p>Think of it like a monthly GoFundMe or Buy Me a Coffee.</p>
 		</div>
 
 		{#if !page.data.sessionUser}
