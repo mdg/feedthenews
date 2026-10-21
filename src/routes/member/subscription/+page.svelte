@@ -46,7 +46,7 @@
 		subscribeError = false;
 
 		try {
-			const res = await fetchMut(csrf).Subscribe({ amt });
+			const res = await fetchMut(csrf).Subscribe({ amtCents: Math.round(amt * 100) });
 			const checkoutUrl = res.sessionUser?.subscribe.checkoutUrl;
 
 			if (checkoutUrl) {
@@ -215,7 +215,7 @@
 			>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Monthly amount</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">${subscription.amt} / month</dd>
+					<dd class="mt-1 text-sm font-semibold text-stone-900">${subscription.amt / 100} / month</dd>
 				</div>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Created</dt>

@@ -69,7 +69,7 @@ export type RootUserMutSponsorArgs = {
 
 
 export type RootUserMutSubscribeArgs = {
-  amt: Scalars['Int']['input'];
+  amtCents: Scalars['Int']['input'];
 };
 
 
@@ -185,7 +185,7 @@ export type SponsorMutationVariables = Exact<{
 export type SponsorMutationResult = { sessionUser: { sponsor: { status: SubscriptionStatus } } };
 
 export type SubscribeMutationVariables = Exact<{
-  amt: Scalars['Int']['input'];
+  amtCents: Scalars['Int']['input'];
 }>;
 
 
@@ -227,9 +227,9 @@ export const SponsorDocument = gql`
 }
     `;
 export const SubscribeDocument = gql`
-    mutation Subscribe($amt: Int!) {
+    mutation Subscribe($amtCents: Int!) {
   sessionUser {
-    subscribe(amt: $amt) {
+    subscribe(amtCents: $amtCents) {
       status
       checkoutUrl
     }

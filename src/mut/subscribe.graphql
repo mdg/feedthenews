@@ -1,6 +1,6 @@
-mutation Subscribe($amt: Int!) {
+mutation Subscribe($amtCents: Int!) {
 	sessionUser {
-		subscribe(amt: $amt) {
+		subscribe(amtCents: $amtCents) {
 			status
 			checkoutUrl
 		}
