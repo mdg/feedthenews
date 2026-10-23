@@ -17,6 +17,16 @@ export type Scalars = {
   NaiveDateTime: { input: any; output: any; }
 };
 
+export enum AcctStatus {
+  CLOSED = 'CLOSED',
+  OPEN = 'OPEN'
+}
+
+export enum AcctType {
+  PAYOUT = 'PAYOUT',
+  SPEND = 'SPEND'
+}
+
 export enum PlatformType {
   ACTIVITYPUB = 'ACTIVITYPUB',
   ATPROTO = 'ATPROTO',
@@ -69,6 +79,7 @@ export type SessionMaker = {
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
+  payoutAcct?: Maybe<UserAcct>;
   platformType: PlatformType;
   sessionUser?: Maybe<SessionUserUserData>;
   sponsorships: SponsorshipSet;
@@ -85,6 +96,7 @@ export type SessionUser = {
   email?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
   isStaff: Scalars['Boolean']['output'];
+  isStripeCustomer?: Maybe<Scalars['Boolean']['output']>;
   isSubscriber: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
@@ -92,6 +104,7 @@ export type SessionUser = {
   platformType: PlatformType;
   privacy: UserPrivacy;
   sessionUser?: Maybe<SessionUserUserData>;
+  spendAcct?: Maybe<UserAcct>;
   sponsorships: SponsorshipSet;
   status: UserStatus;
   subscription?: Maybe<SubRef>;
@@ -124,12 +137,27 @@ export type SponsorshipSet = {
   next?: Maybe<Scalars['String']['output']>;
 };
 
+export type Stmt = {
+  balance: Scalars['Int']['output'];
+  id?: Maybe<Scalars['String']['output']>;
+  insertedAt?: Maybe<Scalars['NaiveDateTime']['output']>;
+  month: Scalars['Int']['output'];
+  openingBalance: Scalars['Int']['output'];
+  prevStmtId?: Maybe<Scalars['String']['output']>;
+  transactions: Array<UserTx>;
+  year: Scalars['Int']['output'];
+};
+
 export type SubRef = {
   amt: Scalars['Int']['output'];
   checkoutUrl?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
   insertedAt: Scalars['NaiveDateTime']['output'];
   status: SubscriptionStatus;
   statusAt: Scalars['NaiveDateTime']['output'];
+  stripeSubscriptionId?: Maybe<Scalars['String']['output']>;
+  stripeUrl?: Maybe<Scalars['String']['output']>;
+  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 export enum SubscriptionStatus {
@@ -147,6 +175,35 @@ export type TopicRef = {
 export type TopicSet = {
   items: Array<TopicRef>;
   next?: Maybe<Scalars['String']['output']>;
+};
+
+export enum TxStatus {
+  CANCELLED = 'CANCELLED',
+  EXPIRED = 'EXPIRED',
+  PENDING = 'PENDING',
+  POSTED = 'POSTED'
+}
+
+export enum TxType {
+  FUNDING = 'FUNDING',
+  GRANT = 'GRANT',
+  PAYOUT = 'PAYOUT'
+}
+
+export type UserAcct = {
+  acctType: AcctType;
+  current?: Maybe<Stmt>;
+  lastStmt?: Maybe<Stmt>;
+  name: Scalars['String']['output'];
+  status: AcctStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
+  stmt?: Maybe<Stmt>;
+};
+
+
+export type UserAcctStmtArgs = {
+  month: Scalars['Int']['input'];
+  year: Scalars['Int']['input'];
 };
 
 export enum UserPrivacy {
@@ -190,6 +247,17 @@ export type UserTopic = {
   topic: TopicRef;
 };
 
+export type UserTx = {
+  amt: Scalars['Int']['output'];
+  anonymous: Scalars['Boolean']['output'];
+  desc: Scalars['String']['output'];
+  insertedAt: Scalars['NaiveDateTime']['output'];
+  invoiceId?: Maybe<Scalars['String']['output']>;
+  otherUser?: Maybe<UserRef>;
+  txStatus: TxStatus;
+  txType: TxType;
+};
+
 export enum UserType {
   ALT = 'ALT',
   IMPORT = 'IMPORT',
@@ -220,7 +288,7 @@ export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSubscriptionQueryResult = { sessionUser?: { subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any } | null } | null };
+export type GetSubscriptionQueryResult = { sessionUser?: { isStripeCustomer?: boolean | null, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any } | null } | null };
 
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
@@ -317,6 +385,7 @@ export const GetSponsorshipsDocument = gql`
 export const GetSubscriptionDocument = gql`
     query GetSubscription {
   sessionUser {
+    isStripeCustomer
     subscription(includeInactive: true) {
       amt
       status

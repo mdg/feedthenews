@@ -1,5 +1,6 @@
 query GetSubscription {
 	sessionUser {
+		isStripeCustomer
 		subscription(includeInactive: true) {
 			amt
 			status

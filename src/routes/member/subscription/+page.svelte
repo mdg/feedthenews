@@ -14,6 +14,7 @@
 	let subscription = $state<
 		NonNullable<GetSubscriptionQueryResult['sessionUser']>['subscription']
 	>(undefined);
+	let isStripeCustomer = $state(false);
 	let loading = $state(true);
 	let error = $state(false);
 	let confirmOpen = $state(false);
@@ -58,6 +59,7 @@
 				.GetSubscription()
 				.then((res) => {
 					subscription = res.sessionUser?.subscription ?? null;
+					isStripeCustomer = res.sessionUser?.isStripeCustomer ?? false;
 				});
 		} catch {
 			subscribeError = true;
@@ -73,6 +75,7 @@
 			.GetSubscription()
 			.then((res) => {
 				subscription = res.sessionUser?.subscription ?? null;
+				isStripeCustomer = res.sessionUser?.isStripeCustomer ?? false;
 			})
 			.catch(() => {
 				error = true;
@@ -81,6 +84,16 @@
 				loading = false;
 			});
 	});
+
+	async function openStripeAccount() {
+		const csrf = page.data.csrf_token as string | null;
+		if (!csrf) return;
+		try {
+			const res = await fetchMut(csrf).StripeSession();
+			const url = res.sessionUser?.stripeSession;
+			if (url) window.open(url, '_blank');
+		} catch {}
+	}
 
 	async function cancelSubscription() {
 		if (cancelling) return;
@@ -210,17 +223,13 @@
 			{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your subscription. Please try again.</p>
 		{:else if subscription}
-			<dl
-				class="mt-8 grid grid-cols-1 gap-x-8 gap-y-4 rounded-xl bg-white p-6 shadow-sm sm:grid-cols-2"
-			>
+			<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+				<dl class="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Monthly amount</dt>
 					<dd class="mt-1 text-sm font-semibold text-stone-900">${subscription.amt / 100} / month</dd>
 				</div>
-				<div>
-					<dt class="text-sm font-medium text-stone-500">Created</dt>
-					<dd class="mt-1 text-sm font-semibold text-stone-900">{insertedAt ?? '—'}</dd>
-				</div>
+					<!-- insertedAt: {subscription?.insertedAt ?? ''} -->
 				<div>
 					<dt class="text-sm font-medium text-stone-500">Status</dt>
 					<dd class="mt-1">
@@ -229,11 +238,30 @@
 				</div>
 				<div>
 					<dt class="text-sm font-medium text-stone-500">
-						{subscription.status === 'CANCELLED' ? 'Cancelled At' : 'Activated At'}
+						{subscription.status === 'PENDING'
+							? 'Created On'
+							: subscription.status === 'ACTIVE'
+								? 'Activated On'
+								: subscription.status === 'CANCELLED'
+									? 'Cancelled On'
+									: 'Status At'}
 					</dt>
 					<dd class="mt-1 text-sm font-semibold text-stone-900">{statusAtLabel ?? '—'}</dd>
 				</div>
 			</dl>
+
+			{#if isStripeCustomer}
+				<div class="mt-4">
+					<button
+						type="button"
+						onclick={openStripeAccount}
+						class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900"
+					>
+						See Stripe Account
+					</button>
+				</div>
+			{/if}
+			</div>
 
 			{#if isActive && !confirmOpen}
 				<div class="mt-4">

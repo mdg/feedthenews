@@ -42,6 +42,7 @@ export type RootUserMut = {
   setIsMaker: Scalars['Boolean']['output'];
   setName: Scalars['String']['output'];
   sponsor: Sponsorship;
+  stripeSession?: Maybe<Scalars['String']['output']>;
   subscribe: SubRef;
   topic?: Maybe<UserTopic>;
 };
@@ -98,9 +99,13 @@ export type Sponsorship = {
 export type SubRef = {
   amt: Scalars['Int']['output'];
   checkoutUrl?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
   insertedAt: Scalars['NaiveDateTime']['output'];
   status: SubscriptionStatus;
   statusAt: Scalars['NaiveDateTime']['output'];
+  stripeSubscriptionId?: Maybe<Scalars['String']['output']>;
+  stripeUrl?: Maybe<Scalars['String']['output']>;
+  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 export enum SubscriptionStatus {
@@ -184,6 +189,11 @@ export type SponsorMutationVariables = Exact<{
 
 export type SponsorMutationResult = { sessionUser: { sponsor: { status: SubscriptionStatus } } };
 
+export type StripeSessionMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StripeSessionMutationResult = { sessionUser: { stripeSession?: string | null } };
+
 export type SubscribeMutationVariables = Exact<{
   amtCents: Scalars['Int']['input'];
 }>;
@@ -226,6 +236,13 @@ export const SponsorDocument = gql`
   }
 }
     `;
+export const StripeSessionDocument = gql`
+    mutation StripeSession {
+  sessionUser {
+    stripeSession
+  }
+}
+    `;
 export const SubscribeDocument = gql`
     mutation Subscribe($amtCents: Int!) {
   sessionUser {
@@ -250,6 +267,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     Sponsor(variables: SponsorMutationVariables, options?: C): Promise<SponsorMutationResult> {
       return requester<SponsorMutationResult, SponsorMutationVariables>(SponsorDocument, variables, options) as Promise<SponsorMutationResult>;
+    },
+    StripeSession(variables?: StripeSessionMutationVariables, options?: C): Promise<StripeSessionMutationResult> {
+      return requester<StripeSessionMutationResult, StripeSessionMutationVariables>(StripeSessionDocument, variables, options) as Promise<StripeSessionMutationResult>;
     },
     Subscribe(variables: SubscribeMutationVariables, options?: C): Promise<SubscribeMutationResult> {
       return requester<SubscribeMutationResult, SubscribeMutationVariables>(SubscribeDocument, variables, options) as Promise<SubscribeMutationResult>;
