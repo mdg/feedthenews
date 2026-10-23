@@ -250,31 +250,27 @@
 				</div>
 			</dl>
 
-			{#if subscription?.status === 'PENDING' && subscription?.checkoutUrl}
-				<div class="mt-4">
-					<button
-						type="button"
-						onclick={() => (window.location.href = String(subscription?.checkoutUrl))}
-						class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-					>
-						Activate Subscription
-					</button>
+			<div class="mt-4 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					{#if subscription?.status === 'PENDING' && subscription?.checkoutUrl}
+						<button
+							type="button"
+							onclick={() => (window.location.href = String(subscription?.checkoutUrl))}
+							class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+						>
+							Activate Subscription
+						</button>
+					{:else if isStripeCustomer}
+						<button
+							type="button"
+							onclick={openStripeAccount}
+							class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900"
+						>
+							See Stripe Account
+						</button>
+					{/if}
 				</div>
-			{:else if isStripeCustomer}
-				<div class="mt-4">
-					<button
-						type="button"
-						onclick={openStripeAccount}
-						class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 hover:text-stone-900"
-					>
-						See Stripe Account
-					</button>
-				</div>
-			{/if}
-			</div>
-
-			{#if isActive && !confirmOpen}
-				<div class="mt-4">
+				{#if isActive && !confirmOpen}
 					<button
 						type="button"
 						onclick={() => (confirmOpen = true)}
@@ -282,8 +278,11 @@
 					>
 						Cancel Subscription
 					</button>
-				</div>
-			{:else if confirmOpen}
+				{/if}
+			</div>
+			</div>
+
+			{#if confirmOpen}
 				<div class="mt-4 rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
 					<p class="text-sm text-stone-600">
 						Are you sure you want to cancel your subscription? Your sponsorships will stop.
