@@ -6,6 +6,8 @@
 	import { fetchQuery, fetchMut } from '$lib/graph';
 	import type { GetSubscriptionQueryResult } from '$lib/generated/query';
 	import { SubscriptionStatus } from '$lib/generated/query';
+	import UserTxList from '$lib/components/UserTxList.svelte';
+	import type { UserTx } from '$lib/generated/query';
 
 	let { data: layoutData } = $props();
 
@@ -15,6 +17,7 @@
 		NonNullable<GetSubscriptionQueryResult['sessionUser']>['subscription']
 	>(undefined);
 	let isStripeCustomer = $state(false);
+	let transactions = $state<UserTx[]>([]);
 	let loading = $state(true);
 	let error = $state(false);
 	let confirmOpen = $state(false);
@@ -60,6 +63,7 @@
 				.then((res) => {
 					subscription = res.sessionUser?.subscription ?? null;
 					isStripeCustomer = res.sessionUser?.isStripeCustomer ?? false;
+					transactions = res.sessionUser?.subscription?.transactions.items ?? [];
 				});
 		} catch {
 			subscribeError = true;
@@ -76,6 +80,7 @@
 			.then((res) => {
 				subscription = res.sessionUser?.subscription ?? null;
 				isStripeCustomer = res.sessionUser?.isStripeCustomer ?? false;
+				transactions = res.sessionUser?.subscription?.transactions?.items ?? [];
 			})
 			.catch(() => {
 				error = true;
@@ -281,6 +286,13 @@
 				{/if}
 			</div>
 			</div>
+
+			{#if transactions.length}
+				<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+					<h2 class="text-sm font-medium text-stone-500">Transactions</h2>
+					<UserTxList {transactions} />
+				</div>
+			{/if}
 
 			{#if confirmOpen}
 				<div class="mt-4 rounded-xl border border-stone-200 bg-white p-6 shadow-sm">

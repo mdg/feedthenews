@@ -7,6 +7,17 @@ query GetSubscription {
 			insertedAt
 			statusAt
 			checkoutUrl
+			transactions {
+				items {
+					amt
+					anonymous
+					desc
+					insertedAt
+					statusAt
+					txStatus
+					txType
+				}
+			}
 		}
 	}
 }

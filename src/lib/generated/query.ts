@@ -107,7 +107,7 @@ export type SessionUser = {
   spendAcct?: Maybe<UserAcct>;
   sponsorships: SponsorshipSet;
   status: UserStatus;
-  subscription?: Maybe<SubRef>;
+  subscription?: Maybe<UserSub>;
   topics: Array<Maybe<UserTopic>>;
   userType: UserType;
 };
@@ -144,20 +144,8 @@ export type Stmt = {
   month: Scalars['Int']['output'];
   openingBalance: Scalars['Int']['output'];
   prevStmtId?: Maybe<Scalars['String']['output']>;
-  transactions: Array<UserTx>;
+  transactions: UserTxSet;
   year: Scalars['Int']['output'];
-};
-
-export type SubRef = {
-  amt: Scalars['Int']['output'];
-  checkoutUrl?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  insertedAt: Scalars['NaiveDateTime']['output'];
-  status: SubscriptionStatus;
-  statusAt: Scalars['NaiveDateTime']['output'];
-  stripeSubscriptionId?: Maybe<Scalars['String']['output']>;
-  stripeUrl?: Maybe<Scalars['String']['output']>;
-  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 export enum SubscriptionStatus {
@@ -240,6 +228,19 @@ export enum UserStatus {
   PENDING = 'PENDING'
 }
 
+export type UserSub = {
+  amt: Scalars['Int']['output'];
+  checkoutUrl?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  insertedAt: Scalars['NaiveDateTime']['output'];
+  status: SubscriptionStatus;
+  statusAt: Scalars['NaiveDateTime']['output'];
+  stripeSubscriptionId?: Maybe<Scalars['String']['output']>;
+  stripeUrl?: Maybe<Scalars['String']['output']>;
+  transactions: UserTxSet;
+  uuid?: Maybe<Scalars['String']['output']>;
+};
+
 export type UserTopic = {
   asMaker: Scalars['Boolean']['output'];
   asSponsor: Scalars['Boolean']['output'];
@@ -254,8 +255,14 @@ export type UserTx = {
   insertedAt: Scalars['NaiveDateTime']['output'];
   invoiceId?: Maybe<Scalars['String']['output']>;
   otherUser?: Maybe<UserRef>;
+  statusAt: Scalars['NaiveDateTime']['output'];
   txStatus: TxStatus;
   txType: TxType;
+};
+
+export type UserTxSet = {
+  items: Array<UserTx>;
+  next?: Maybe<Scalars['String']['output']>;
 };
 
 export enum UserType {
@@ -288,7 +295,7 @@ export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSubscriptionQueryResult = { sessionUser?: { isStripeCustomer?: boolean | null, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any, checkoutUrl?: string | null } | null } | null };
+export type GetSubscriptionQueryResult = { sessionUser?: { isStripeCustomer?: boolean | null, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any, checkoutUrl?: string | null, transactions: { items: Array<{ amt: number, anonymous: boolean, desc: string, insertedAt: any, statusAt: any, txStatus: TxStatus, txType: TxType }> } } | null } | null };
 
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
@@ -392,6 +399,17 @@ export const GetSubscriptionDocument = gql`
       insertedAt
       statusAt
       checkoutUrl
+      transactions {
+        items {
+          amt
+          anonymous
+          desc
+          insertedAt
+          statusAt
+          txStatus
+          txType
+        }
+      }
     }
   }
 }
