@@ -33,7 +33,7 @@ const handleSession: Handle = async ({ event, resolve }) => {
 		event.cookies.set(CSRF_COOKIE_NAME, value, {
 			httpOnly: true,
 			secure,
-			sameSite: 'strict',
+			sameSite: 'lax',
 			path: '/'
 		});
 	}
