@@ -250,7 +250,17 @@
 				</div>
 			</dl>
 
-			{#if isStripeCustomer}
+			{#if subscription?.status === 'PENDING' && subscription?.checkoutUrl}
+				<div class="mt-4">
+					<button
+						type="button"
+						onclick={() => (window.location.href = String(subscription?.checkoutUrl))}
+						class="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+					>
+						Activate Subscription
+					</button>
+				</div>
+			{:else if isStripeCustomer}
 				<div class="mt-4">
 					<button
 						type="button"

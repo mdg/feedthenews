@@ -288,7 +288,7 @@ export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSubscriptionQueryResult = { sessionUser?: { isStripeCustomer?: boolean | null, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any } | null } | null };
+export type GetSubscriptionQueryResult = { sessionUser?: { isStripeCustomer?: boolean | null, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any, statusAt: any, checkoutUrl?: string | null } | null } | null };
 
 export type GetUserQueryVariables = Exact<{
   user: Scalars['String']['input'];
@@ -391,6 +391,7 @@ export const GetSubscriptionDocument = gql`
       status
       insertedAt
       statusAt
+      checkoutUrl
     }
   }
 }
