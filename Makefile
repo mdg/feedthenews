@@ -1,6 +1,6 @@
 
-dev :
-	pnpm run dev
+dev : tmp
+	pnpm run dev > tmp/ui.log
 
 code :
 	pnpm run codegen
@@ -24,3 +24,6 @@ test-main : test
 	@echo "Checking for uncommitted changes in generated files..."
 	git diff --exit-code src/lib/generated/ || (echo "Error: Generated files have uncommitted changes. Please commit the changes after running 'make code'" && exit 1)
 	@echo "Generated code up to date!"
+
+tmp :
+	mkdir -p tmp
