@@ -287,13 +287,6 @@
 			</div>
 			</div>
 
-			{#if transactions.length}
-				<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
-					<h2 class="text-sm font-medium text-stone-500">Transactions</h2>
-					<UserTxList {transactions} />
-				</div>
-			{/if}
-
 			{#if confirmOpen}
 				<div class="mt-4 rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
 					<p class="text-sm text-stone-600">
@@ -326,6 +319,13 @@
 			{/if}
 			{#if subscription.status === SubscriptionStatus.CANCELLED}
 				{@render subscribeForm()}
+			{/if}
+
+			{#if transactions.length}
+				<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+					<h2 class="text-sm font-medium text-stone-500">Transactions</h2>
+					<UserTxList {transactions} />
+				</div>
 			{/if}
 		{:else}
 			{@render subscribeForm()}
