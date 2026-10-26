@@ -12,6 +12,7 @@
 	let sponsorships = $state<
 		NonNullable<GetSponsorshipsQueryResult['sessionUser']>['sponsorships']['items']
 	>([]);
+	let balance = $state(0);
 	let loading = $state(true);
 	let error = $state(false);
 
@@ -23,6 +24,7 @@
 			.GetSponsorships()
 			.then((res) => {
 				sponsorships = res.sessionUser?.sponsorships.items ?? [];
+				balance = res.sessionUser?.spendAcct?.current?.balance ?? 0;
 			})
 			.catch(() => {
 				error = true;
@@ -33,6 +35,11 @@
 	});
 
 	const dateFmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
+
+	const recipients = $derived(sponsorships.length);
+	const perRecipientCents = $derived(
+		recipients > 0 ? Math.floor(balance / recipients) : 0
+	);
 	function formatDate(value: unknown) {
 		return value ? dateFmt.format(new Date(String(value))) : '—';
 	}
@@ -54,6 +61,14 @@
 				</p>
 			{/if}
 			{#if sponsorships.length > 0}
+			<div class="mt-8 rounded-xl bg-white p-6 shadow-sm">
+				<p class="text-sm text-stone-600">
+					Current balance: <span class="font-semibold text-stone-900">${(balance / 100).toFixed(2)}</span>
+				</p>
+				<p class="mt-1 text-sm text-stone-600">
+					{recipients} recipient{recipients === 1 ? '' : 's'} · ${(perRecipientCents / 100).toFixed(2)} each
+				</p>
+			</div>
 			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
 				{#each sponsorships as sponsorship, i (i)}
 					<li class="flex items-center gap-4 px-6 py-4">

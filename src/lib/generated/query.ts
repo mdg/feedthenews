@@ -290,7 +290,7 @@ export type GetProfileQueryResult = { sessionUser?: { name: string, email?: stri
 export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSponsorshipsQueryResult = { sessionUser?: { sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
+export type GetSponsorshipsQueryResult = { sessionUser?: { spendAcct?: { current?: { balance: number } | null } | null, sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
 
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -371,6 +371,11 @@ export const GetProfileDocument = gql`
 export const GetSponsorshipsDocument = gql`
     query GetSponsorships {
   sessionUser {
+    spendAcct {
+      current {
+        balance
+      }
+    }
     sponsorships {
       items {
         status

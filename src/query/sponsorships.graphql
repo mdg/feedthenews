@@ -1,5 +1,10 @@
 query GetSponsorships {
 	sessionUser {
+		spendAcct {
+			current {
+				balance
+			}
+		}
 		sponsorships {
 			items {
 				status
