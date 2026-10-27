@@ -18,8 +18,10 @@
 		const csrf = page.data.csrf_token as string | null;
 		if (!csrf) return;
 		try {
-			await fetchMut(csrf).Sponsor({ maker: maker.name });
-			maker.sessionUserSponsorship = { status: 'ACTIVE' };
+			const res = await fetchMut(csrf).Sponsor({ maker: maker.name });
+			if (res.sessionUser?.sponsor?.status === 'ACTIVE') {
+				maker.sessionUserSponsorship = { status: 'ACTIVE' };
+			}
 		} catch {}
 	}
 </script>
