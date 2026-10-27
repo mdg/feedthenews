@@ -4,6 +4,7 @@
 	import MemberContent from '$lib/components/MemberContent.svelte';
 	import Label from '$lib/components/Label.svelte';
 	import Username from '$lib/components/Username.svelte';
+	import MakerList from '$lib/components/MakerList.svelte';
 	import { fetchQuery } from '$lib/graph';
 	import type { GetSponsorshipsQueryResult } from '$lib/generated/query';
 
@@ -69,47 +70,7 @@
 					{recipients} recipient{recipients === 1 ? '' : 's'} · ${(perRecipientCents / 100).toFixed(2)} each
 				</p>
 			</div>
-			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
-				{#each sponsorships as sponsorship, i (i)}
-					<li class="flex items-center gap-4 px-6 py-4">
-						{#if sponsorship.avatar}
-							<img
-								src={sponsorship.avatar}
-								alt={`${sponsorship.name}'s avatar`}
-								class="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-stone-200"
-							/>
-						{/if}
-
-						<div class="min-w-0 flex-1">
-							<a
-								href={`/@${sponsorship.name ?? ''}`}
-								class="text-sm font-semibold text-stone-900 hover:underline"
-							>
-								<Username
-									name={sponsorship.name ?? 'Unknown'}
-									platformType={sponsorship.platformType ?? ''}
-								/>
-							</a>
-							<p class="mt-0.5 text-xs text-stone-500">
-								Since {formatDate(sponsorship.sessionUserSponsorship?.statusAt)}
-							</p>
-						</div>
-
-						<div class="flex shrink-0 items-center gap-1.5">
-							{#if sponsorship.sessionUserSponsorship?.anonymous}
-								<Label label="Anonymous" tone="amber" />
-							{/if}
-							{#if sponsorship.sessionUserSponsorship?.matching}
-								<Label label="Matching" tone="stone" />
-							{/if}
-							<Label
-								label={String(sponsorship.sessionUserSponsorship?.status ?? '').toLowerCase()}
-								tone={sponsorship.sessionUserSponsorship?.status === 'ACTIVE' ? 'green' : 'stone'}
-							/>
-						</div>
-					</li>
-				{/each}
-			</ul>
+			<MakerList makers={sponsorships} />
 		{:else}
 			<p class="mt-8 text-sm text-stone-500">No active sponsorships</p>
 			{/if}

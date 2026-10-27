@@ -5,7 +5,7 @@
 	import Username from '$lib/components/Username.svelte';
 	import { fetchQuery } from '$lib/graph';
 	import type { GetDiscoverQueryResult } from '$lib/generated/query';
-	import UserRow from '$lib/components/UserRow.svelte';
+	import MakerList from '$lib/components/MakerList.svelte';
 
 	let topics = $state<GetDiscoverQueryResult['search']['topics']['items']>([]);
 	let makers = $state<GetDiscoverQueryResult['search']['makers']['items']>([]);
@@ -87,11 +87,7 @@
 			{/if}
 
 			{#if makers.length > 0}
-				<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
-					{#each makers as maker (maker.name)}
-						<UserRow {maker} />
-					{/each}
-				</ul>
+				<MakerList {makers} />
 			{:else}
 				<p class="mt-8 text-sm text-stone-500">No journalists found</p>
 			{/if}
