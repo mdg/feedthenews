@@ -5,17 +5,16 @@ query GetSponsorships {
 				balance
 			}
 		}
-		sponsorships {
+		sponsoredMakers {
 			items {
-				status
-				anonymous
-				matching
-				insertedAt
-				statusAt
-				maker {
-					name
-					platformType
-					avatar
+				name
+				platformType
+				avatar
+				sessionUserSponsorship {
+					status
+					statusAt
+					anonymous
+					matching
 				}
 			}
 			next

@@ -47,7 +47,8 @@ export type PublicUser = {
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
-  sessionUser?: Maybe<SessionUserUserData>;
+  sessionUserSponsorship?: Maybe<SessionUserSponsorship>;
+  sponsorOfSessionMaker?: Maybe<SessionUserSponsorship>;
   status: UserStatus;
   userType: UserType;
 };
@@ -81,8 +82,9 @@ export type SessionMaker = {
   patreon?: Maybe<Scalars['String']['output']>;
   payoutAcct?: Maybe<UserAcct>;
   platformType: PlatformType;
-  sessionUser?: Maybe<SessionUserUserData>;
-  sponsorships: SponsorshipSet;
+  sessionUserSponsorship?: Maybe<SessionUserSponsorship>;
+  sponsorOfSessionMaker?: Maybe<SessionUserSponsorship>;
+  sponsors: UserSet;
   status: UserStatus;
   userType: UserType;
 };
@@ -103,9 +105,10 @@ export type SessionUser = {
   phone?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
   privacy: UserPrivacy;
-  sessionUser?: Maybe<SessionUserUserData>;
+  sessionUserSponsorship?: Maybe<SessionUserSponsorship>;
   spendAcct?: Maybe<UserAcct>;
-  sponsorships: SponsorshipSet;
+  sponsorOfSessionMaker?: Maybe<SessionUserSponsorship>;
+  sponsoredMakers: UserSet;
   status: UserStatus;
   subscription?: Maybe<UserSub>;
   topics: Array<Maybe<UserTopic>>;
@@ -117,25 +120,19 @@ export type SessionUserSubscriptionArgs = {
   includeInactive?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type SessionUserUserData = {
-  followed: Scalars['Boolean']['output'];
-  sponsored: Scalars['Boolean']['output'];
-};
-
-export type Sponsorship = {
+export type SessionUserSponsorship = {
   anonymous: Scalars['Boolean']['output'];
-  insertedAt: Scalars['NaiveDateTime']['output'];
-  maker?: Maybe<UserRef>;
   matching: Scalars['Boolean']['output'];
-  sponsor?: Maybe<UserRef>;
-  status: SubscriptionStatus;
-  statusAt: Scalars['NaiveDateTime']['output'];
+  status: SponsorshipStatus;
+  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
 };
 
-export type SponsorshipSet = {
-  items: Array<Sponsorship>;
-  next?: Maybe<Scalars['String']['output']>;
-};
+export enum SponsorshipStatus {
+  ACTIVE = 'ACTIVE',
+  BLOCKED = 'BLOCKED',
+  CANCELLED = 'CANCELLED',
+  PAUSED = 'PAUSED'
+}
 
 export type Stmt = {
   balance: Scalars['Int']['output'];
@@ -209,7 +206,8 @@ export type UserRef = {
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
-  sessionUser?: Maybe<SessionUserUserData>;
+  sessionUserSponsorship?: Maybe<SessionUserSponsorship>;
+  sponsorOfSessionMaker?: Maybe<SessionUserSponsorship>;
   status: UserStatus;
   userType: UserType;
 };
@@ -275,12 +273,12 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { sessionUser?: { sponsorships: { items: Array<{ status: SubscriptionStatus, anonymous: boolean, insertedAt: any, maker?: { name: string } | null }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { sponsorships: { items: Array<{ insertedAt: any, sponsor?: { name: string } | null }> } } | null };
+export type GetDashboardQueryResult = { sessionUser?: { sponsoredMakers: { items: Array<{ name: string }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { sponsors: { items: Array<{ name: string }> } } | null };
 
 export type GetDiscoverQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDiscoverQueryResult = { search: { topics: { items: Array<{ name: string, slug: string }> }, makers: { items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUser?: { sponsored: boolean } | null }> } } };
+export type GetDiscoverQueryResult = { search: { topics: { items: Array<{ name: string, slug: string }> }, makers: { items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUserSponsorship?: { status: SponsorshipStatus } | null }> } } };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -290,7 +288,7 @@ export type GetProfileQueryResult = { sessionUser?: { name: string, email?: stri
 export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSponsorshipsQueryResult = { sessionUser?: { spendAcct?: { current?: { balance: number } | null } | null, sponsorships: { next?: string | null, items: Array<{ status: SubscriptionStatus, anonymous: boolean, matching: boolean, insertedAt: any, statusAt: any, maker?: { name: string, platformType: PlatformType, avatar?: string | null } | null }> } } | null };
+export type GetSponsorshipsQueryResult = { sessionUser?: { spendAcct?: { current?: { balance: number } | null } | null, sponsoredMakers: { next?: string | null, items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUserSponsorship?: { status: SponsorshipStatus, statusAt?: any | null, anonymous: boolean, matching: boolean } | null }> } } | null };
 
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -302,20 +300,15 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQueryResult = { user: { name: string, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, description?: string | null, platformType: PlatformType, sessionUser?: { sponsored: boolean } | null } };
+export type GetUserQueryResult = { user: { name: string, isMaker: boolean, patreon?: string | null, countSponsoring: number, countSponsors: number, avatar?: string | null, description?: string | null, platformType: PlatformType, sessionUserSponsorship?: { status: SponsorshipStatus } | null } };
 
 
 export const GetDashboardDocument = gql`
     query GetDashboard {
   sessionUser {
-    sponsorships {
+    sponsoredMakers {
       items {
-        status
-        anonymous
-        insertedAt
-        maker {
-          name
-        }
+        name
       }
     }
     subscription {
@@ -325,12 +318,9 @@ export const GetDashboardDocument = gql`
     }
   }
   sessionMaker {
-    sponsorships {
+    sponsors {
       items {
-        insertedAt
-        sponsor {
-          name
-        }
+        name
       }
     }
   }
@@ -350,8 +340,8 @@ export const GetDiscoverDocument = gql`
         name
         platformType
         avatar
-        sessionUser {
-          sponsored
+        sessionUserSponsorship {
+          status
         }
       }
     }
@@ -379,17 +369,16 @@ export const GetSponsorshipsDocument = gql`
         balance
       }
     }
-    sponsorships {
+    sponsoredMakers {
       items {
-        status
-        anonymous
-        matching
-        insertedAt
-        statusAt
-        maker {
-          name
-          platformType
-          avatar
+        name
+        platformType
+        avatar
+        sessionUserSponsorship {
+          status
+          statusAt
+          anonymous
+          matching
         }
       }
       next
@@ -433,8 +422,8 @@ export const GetUserDocument = gql`
     avatar
     description
     platformType
-    sessionUser {
-      sponsored
+    sessionUserSponsorship {
+      status
     }
   }
 }

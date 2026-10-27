@@ -38,11 +38,9 @@
 			: null
 	);
 
-	const sponsorships = $derived(dashboard?.sessionUser?.sponsorships.items ?? []);
+	const sponsorships = $derived(dashboard?.sessionUser?.sponsoredMakers.items ?? []);
 	const sponsors = $derived(
-		(dashboard?.sessionMaker?.sponsorships.items ?? []).flatMap((s) =>
-			s.sponsor ? [s.sponsor.name] : []
-		)
+		(dashboard?.sessionMaker?.sponsors.items ?? []).map((s: any) => s.name)
 	);
 	const dateFmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
 	function formatDate(value: unknown) {

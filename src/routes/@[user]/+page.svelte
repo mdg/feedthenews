@@ -10,7 +10,7 @@
 	let { data } = $props();
 
 	let signInOpen = $state(false);
-	let sponsored = $state((() => data.profile.sessionUser?.sponsored ?? false)());
+	let sponsored = $state((() => !!data.profile.sessionUserSponsorship)());
 	let submitting = $state(false);
 	let status: { kind: 'error'; message: string } | null = $state(null);
 

@@ -29,72 +29,71 @@ export enum PlatformType {
 export type RootMutationType = {
   /** Placeholder mutation; replaced once the News domain is defined */
   ping: Scalars['String']['output'];
-  sessionUser: RootUserMut;
+  sessionUser: SessionUserMut;
 };
 
 export type RootQueryType = {
   zero: Scalars['Int']['output'];
 };
 
-export type RootUserMut = {
-  cancelSponsorship: Sponsorship;
+export type SessionUserMut = {
+  cancelSponsorship: UserRef;
   cancelSubscription?: Maybe<SubRef>;
   setIsMaker: Scalars['Boolean']['output'];
   setName: Scalars['String']['output'];
-  sponsor: Sponsorship;
+  sponsor: UserRef;
   stripeSession?: Maybe<Scalars['String']['output']>;
   subscribe: SubRef;
   topic?: Maybe<UserTopic>;
 };
 
 
-export type RootUserMutCancelSponsorshipArgs = {
+export type SessionUserMutCancelSponsorshipArgs = {
   maker: Scalars['String']['input'];
 };
 
 
-export type RootUserMutSetIsMakerArgs = {
+export type SessionUserMutSetIsMakerArgs = {
   isMaker?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
-export type RootUserMutSetNameArgs = {
+export type SessionUserMutSetNameArgs = {
   newName: Scalars['String']['input'];
 };
 
 
-export type RootUserMutSponsorArgs = {
+export type SessionUserMutSponsorArgs = {
   anonymous?: InputMaybe<Scalars['Boolean']['input']>;
   maker: Scalars['String']['input'];
 };
 
 
-export type RootUserMutSubscribeArgs = {
+export type SessionUserMutSubscribeArgs = {
   amtCents: Scalars['Int']['input'];
 };
 
 
-export type RootUserMutTopicArgs = {
+export type SessionUserMutTopicArgs = {
   asMaker?: InputMaybe<Scalars['Boolean']['input']>;
   asSponsor?: InputMaybe<Scalars['Boolean']['input']>;
   privacy?: InputMaybe<UserPrivacy>;
   topicSlug: Scalars['String']['input'];
 };
 
-export type SessionUserUserData = {
-  followed: Scalars['Boolean']['output'];
-  sponsored: Scalars['Boolean']['output'];
+export type SessionUserSponsorship = {
+  anonymous: Scalars['Boolean']['output'];
+  matching: Scalars['Boolean']['output'];
+  status: SponsorshipStatus;
+  statusAt?: Maybe<Scalars['NaiveDateTime']['output']>;
 };
 
-export type Sponsorship = {
-  anonymous: Scalars['Boolean']['output'];
-  insertedAt: Scalars['NaiveDateTime']['output'];
-  maker?: Maybe<UserRef>;
-  matching: Scalars['Boolean']['output'];
-  sponsor?: Maybe<UserRef>;
-  status: SubscriptionStatus;
-  statusAt: Scalars['NaiveDateTime']['output'];
-};
+export enum SponsorshipStatus {
+  ACTIVE = 'ACTIVE',
+  BLOCKED = 'BLOCKED',
+  CANCELLED = 'CANCELLED',
+  PAUSED = 'PAUSED'
+}
 
 export type SubRef = {
   amt: Scalars['Int']['output'];
@@ -135,7 +134,8 @@ export type UserRef = {
   name: Scalars['String']['output'];
   patreon?: Maybe<Scalars['String']['output']>;
   platformType: PlatformType;
-  sessionUser?: Maybe<SessionUserUserData>;
+  sessionUserSponsorship?: Maybe<SessionUserSponsorship>;
+  sponsorOfSessionMaker?: Maybe<SessionUserSponsorship>;
   status: UserStatus;
   userType: UserType;
 };
@@ -168,7 +168,7 @@ export type CancelSponsorshipMutationVariables = Exact<{
 }>;
 
 
-export type CancelSponsorshipMutationResult = { sessionUser: { cancelSponsorship: { status: SubscriptionStatus } } };
+export type CancelSponsorshipMutationResult = { sessionUser: { cancelSponsorship: { status: UserStatus } } };
 
 export type CancelSubscriptionMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -187,7 +187,7 @@ export type SponsorMutationVariables = Exact<{
 }>;
 
 
-export type SponsorMutationResult = { sessionUser: { sponsor: { status: SubscriptionStatus } } };
+export type SponsorMutationResult = { sessionUser: { sponsor: { status: UserStatus } } };
 
 export type StripeSessionMutationVariables = Exact<{ [key: string]: never; }>;
 

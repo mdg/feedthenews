@@ -10,7 +10,7 @@
 	const sessionUser = $derived(page.data.sessionUser);
 
 	let sponsorships = $state<
-		NonNullable<GetSponsorshipsQueryResult['sessionUser']>['sponsorships']['items']
+		NonNullable<GetSponsorshipsQueryResult['sessionUser']>['sponsoredMakers']['items']
 	>([]);
 	let balance = $state(0);
 	let loading = $state(true);
@@ -23,7 +23,7 @@
 		fetchQuery()
 			.GetSponsorships()
 			.then((res) => {
-				sponsorships = res.sessionUser?.sponsorships.items ?? [];
+				sponsorships = res.sessionUser?.sponsoredMakers.items ?? [];
 				balance = res.sessionUser?.spendAcct?.current?.balance ?? 0;
 			})
 			.catch(() => {
@@ -72,39 +72,39 @@
 			<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
 				{#each sponsorships as sponsorship, i (i)}
 					<li class="flex items-center gap-4 px-6 py-4">
-						{#if sponsorship.maker?.avatar}
+						{#if sponsorship.avatar}
 							<img
-								src={sponsorship.maker.avatar}
-								alt={`${sponsorship.maker.name}'s avatar`}
+								src={sponsorship.avatar}
+								alt={`${sponsorship.name}'s avatar`}
 								class="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-stone-200"
 							/>
 						{/if}
 
 						<div class="min-w-0 flex-1">
 							<a
-								href={`/@${sponsorship.maker?.name ?? ''}`}
+								href={`/@${sponsorship.name ?? ''}`}
 								class="text-sm font-semibold text-stone-900 hover:underline"
 							>
 								<Username
-									name={sponsorship.maker?.name ?? 'Unknown'}
-									platformType={sponsorship.maker?.platformType ?? ''}
+									name={sponsorship.name ?? 'Unknown'}
+									platformType={sponsorship.platformType ?? ''}
 								/>
 							</a>
 							<p class="mt-0.5 text-xs text-stone-500">
-								Since {formatDate(sponsorship.insertedAt)}
+								Since {formatDate(sponsorship.sessionUserSponsorship?.statusAt)}
 							</p>
 						</div>
 
 						<div class="flex shrink-0 items-center gap-1.5">
-							{#if sponsorship.anonymous}
+							{#if sponsorship.sessionUserSponsorship?.anonymous}
 								<Label label="Anonymous" tone="amber" />
 							{/if}
-							{#if sponsorship.matching}
+							{#if sponsorship.sessionUserSponsorship?.matching}
 								<Label label="Matching" tone="stone" />
 							{/if}
 							<Label
-								label={String(sponsorship.status).toLowerCase()}
-								tone={sponsorship.status === 'ACTIVE' ? 'green' : 'stone'}
+								label={String(sponsorship.sessionUserSponsorship?.status ?? '').toLowerCase()}
+								tone={sponsorship.sessionUserSponsorship?.status === 'ACTIVE' ? 'green' : 'stone'}
 							/>
 						</div>
 					</li>

@@ -1,13 +1,8 @@
 query GetDashboard {
 	sessionUser {
-		sponsorships {
+		sponsoredMakers {
 			items {
-				status
-				anonymous
-				insertedAt
-				maker {
-					name
-				}
+				name
 			}
 		}
 		subscription {
@@ -17,12 +12,9 @@ query GetDashboard {
 		}
 	}
 	sessionMaker {
-		sponsorships {
+		sponsors {
 			items {
-				insertedAt
-				sponsor {
-					name
-				}
+				name
 			}
 		}
 	}

@@ -8,8 +8,8 @@ query GetUser($user: String!) {
 		avatar
 		description
 		platformType
-		sessionUser {
-			sponsored
+		sessionUserSponsorship {
+			status
 		}
 	}
 }
