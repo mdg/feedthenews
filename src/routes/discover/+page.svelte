@@ -5,6 +5,7 @@
 	import Username from '$lib/components/Username.svelte';
 	import { fetchQuery } from '$lib/graph';
 	import type { GetDiscoverQueryResult } from '$lib/generated/query';
+	import UserRow from '$lib/components/UserRow.svelte';
 
 	let topics = $state<GetDiscoverQueryResult['search']['topics']['items']>([]);
 	let makers = $state<GetDiscoverQueryResult['search']['makers']['items']>([]);
@@ -88,39 +89,7 @@
 			{#if makers.length > 0}
 				<ul class="mt-8 divide-y divide-stone-200 rounded-xl bg-white shadow-sm">
 					{#each makers as maker (maker.name)}
-						<li class="flex items-center gap-4 px-6 py-4">
-							{#if maker.avatar}
-								<img
-									src={maker.avatar}
-									alt={`${maker.name}'s avatar`}
-									class="h-16 w-16 shrink-0 rounded-full object-cover ring-1 ring-stone-200"
-								/>
-							{/if}
-
-							<div class="min-w-0 flex-1">
-								<a
-									href={`/@${maker.name}`}
-									class="text-sm font-semibold text-stone-900 hover:underline"
-								>
-									<Username name={maker.name} platformType={maker.platformType} />
-								</a>
-							</div>
-
-							{#if maker.sessionUser?.sponsored}
-								<span
-									class="shrink-0 rounded-md bg-stone-200 px-4 py-2 text-sm font-medium text-stone-700"
-								>
-									Sponsored
-								</span>
-							{:else}
-								<a
-									href={`/@${maker.name}`}
-									class="shrink-0 rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-								>
-									Sponsor
-								</a>
-							{/if}
-						</li>
+						<UserRow {maker} />
 					{/each}
 				</ul>
 			{:else}
