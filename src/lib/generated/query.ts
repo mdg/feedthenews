@@ -280,7 +280,7 @@ export type GetDashboardQueryResult = { sessionUser?: { sponsorships: { items: A
 export type GetDiscoverQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDiscoverQueryResult = { search: { topics: { items: Array<{ name: string, slug: string }> }, makers: { items: Array<{ name: string, platformType: PlatformType, avatar?: string | null }> } } };
+export type GetDiscoverQueryResult = { search: { topics: { items: Array<{ name: string, slug: string }> }, makers: { items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUser?: { sponsored: boolean } | null }> } } };
 
 export type GetProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -350,6 +350,9 @@ export const GetDiscoverDocument = gql`
         name
         platformType
         avatar
+        sessionUser {
+          sponsored
+        }
       }
     }
   }

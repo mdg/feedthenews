@@ -11,6 +11,9 @@ query GetDiscover {
 				name
 				platformType
 				avatar
+				sessionUser {
+					sponsored
+				}
 			}
 		}
 	}

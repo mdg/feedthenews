@@ -106,12 +106,20 @@
 								</a>
 							</div>
 
-							<a
-								href={`/@${maker.name}`}
-								class="shrink-0 rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
-							>
-								Sponsor
-							</a>
+							{#if maker.sessionUser?.sponsored}
+								<span
+									class="shrink-0 rounded-md bg-stone-200 px-4 py-2 text-sm font-medium text-stone-700"
+								>
+									Sponsored
+								</span>
+							{:else}
+								<a
+									href={`/@${maker.name}`}
+									class="shrink-0 rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-stone-50 hover:bg-stone-700"
+								>
+									Sponsor
+								</a>
+							{/if}
 						</li>
 					{/each}
 				</ul>
