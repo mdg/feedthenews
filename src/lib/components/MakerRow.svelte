@@ -44,7 +44,7 @@
 		</a>
 	</div>
 
-	{#if maker.sessionUserSponsorship}
+	{#if maker.sessionUserSponsorship?.status === 'ACTIVE'}
 		<button
 			type="button"
 			onclick={cancel}
