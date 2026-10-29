@@ -1,5 +1,6 @@
 query GetSponsorships {
 	sessionUser {
+		grantAt
 		spendAcct {
 			current {
 				balance

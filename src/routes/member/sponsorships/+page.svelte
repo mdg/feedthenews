@@ -14,6 +14,7 @@
 		NonNullable<GetSponsorshipsQueryResult['sessionUser']>['sponsoredMakers']['items']
 	>([]);
 	let balance = $state(0);
+	let grantAt = $state<string | null>(null);
 	let loading = $state(true);
 	let error = $state(false);
 
@@ -26,6 +27,7 @@
 			.then((res) => {
 				sponsorships = res.sessionUser?.sponsoredMakers.items ?? [];
 				balance = res.sessionUser?.spendAcct?.current?.balance ?? 0;
+				grantAt = res.sessionUser?.grantAt ?? null;
 			})
 			.catch(() => {
 				error = true;
@@ -69,6 +71,11 @@
 				<p class="mt-1 text-sm text-stone-600">
 					{recipients} recipient{recipients === 1 ? '' : 's'} · ${(perRecipientCents / 100).toFixed(2)} each
 				</p>
+				{#if grantAt}
+					<p class="mt-1 text-sm text-stone-600">
+						To be transferred on {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(String(grantAt)))}
+					</p>
+				{/if}
 			</div>
 			<MakerList makers={sponsorships} />
 		{:else}

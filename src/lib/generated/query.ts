@@ -96,6 +96,7 @@ export type SessionUser = {
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
+  grantAt?: Maybe<Scalars['NaiveDateTime']['output']>;
   isMaker: Scalars['Boolean']['output'];
   isStaff: Scalars['Boolean']['output'];
   isStripeCustomer?: Maybe<Scalars['Boolean']['output']>;
@@ -215,6 +216,7 @@ export type UserRef = {
 export type UserSet = {
   items: Array<UserRef>;
   next?: Maybe<Scalars['String']['output']>;
+  numAnonymous?: Maybe<Scalars['Int']['output']>;
 };
 
 export enum UserStatus {
@@ -288,7 +290,7 @@ export type GetProfileQueryResult = { sessionUser?: { name: string, email?: stri
 export type GetSponsorshipsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSponsorshipsQueryResult = { sessionUser?: { spendAcct?: { current?: { balance: number } | null } | null, sponsoredMakers: { next?: string | null, items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUserSponsorship?: { status: SponsorshipStatus, statusAt?: any | null, anonymous: boolean, matching: boolean } | null }> } } | null };
+export type GetSponsorshipsQueryResult = { sessionUser?: { grantAt?: any | null, spendAcct?: { current?: { balance: number } | null } | null, sponsoredMakers: { next?: string | null, items: Array<{ name: string, platformType: PlatformType, avatar?: string | null, sessionUserSponsorship?: { status: SponsorshipStatus, statusAt?: any | null, anonymous: boolean, matching: boolean } | null }> } } | null };
 
 export type GetSubscriptionQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -364,6 +366,7 @@ export const GetProfileDocument = gql`
 export const GetSponsorshipsDocument = gql`
     query GetSponsorships {
   sessionUser {
+    grantAt
     spendAcct {
       current {
         balance
