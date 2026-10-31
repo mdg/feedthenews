@@ -70,19 +70,28 @@
 				{/if}
 
 				{#if sponsorships.length > 0}
-					<p class="text-sm text-stone-600">
+					<h3 class="font-serif text-2xl font-bold tracking-tight text-stone-900">
 						Sponsoring
 						<a
 							href="/member/sponsorships"
-							class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700"
+							class="underline underline-offset-4 hover:text-stone-700"
 							>{sponsorships.length} journalist{sponsorships.length === 1 ? '' : 's'}</a
 						> with
-						<span class="font-semibold text-stone-900"
-							><Amt cents={dashboard?.sessionUser?.spendAcct?.current?.balance ?? 0} /></span
-						>
-						{#if dashboard?.sessionUser?.grantAt}
-							to be transferred on {formatDate(dashboard.sessionUser.grantAt)}
-						{/if}
+						<Amt cents={dashboard?.sessionUser?.spendAcct?.current?.balance ?? 0} />
+					</h3>
+					{#if dashboard?.sessionUser?.grantAt}
+						<p class="text-sm text-stone-600">
+							<span class="block text-base font-normal text-stone-600">
+								To be transferred on {formatDate(dashboard.sessionUser.grantAt)}
+							</span>
+						</p>
+					{/if}
+					<p class="text-sm text-stone-600">
+						Sponsor
+						<a href="/discover" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
+							more journalists
+						</a>
+						at any time
 					</p>
 				{:else}
 					<p class="text-sm text-stone-600">
