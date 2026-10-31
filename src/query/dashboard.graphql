@@ -1,5 +1,8 @@
 query GetDashboard {
 	sessionUser {
+		isMaker
+		patreon
+		isSubscriber
 		sponsoredMakers {
 			items {
 				name
@@ -12,6 +15,7 @@ query GetDashboard {
 		}
 	}
 	sessionMaker {
+		patreon
 		sponsors {
 			items {
 				name

@@ -1,6 +1,9 @@
 
 dev : tmp
-	pnpm run dev > tmp/ui.log
+	pnpm run dev
+
+tee-dev : tmp
+	pnpm run dev | tee tmp/ui.log
 
 code :
 	pnpm run codegen

@@ -76,18 +76,27 @@
 			</div>
 
 			<dl class="mt-8 grid grid-cols-2 divide-x divide-stone-200">
-				<div class="px-4 text-center sm:px-6">
-					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsoring</dt>
-					<dd class="mt-1 text-2xl font-bold text-stone-900">
-						{data.profile.countSponsoring > 0 ? data.profile.countSponsoring : '—'}
-					</dd>
-				</div>
-				<div class="px-4 text-center sm:px-6">
-					<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsors</dt>
-					<dd class="mt-1 text-2xl font-bold text-stone-900">
-						{data.profile.isMaker && data.profile.countSponsors > 0 ? data.profile.countSponsors : '—'}
-					</dd>
-				</div>
+				{#if data.profile.isMaker}
+					<div class="px-4 text-center sm:px-6">
+						<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsors</dt>
+						<dd class="mt-1 text-2xl font-bold text-stone-900">
+							{data.profile.countSponsors > 0 ? data.profile.countSponsors : '—'}
+						</dd>
+					</div>
+					<div class="px-4 text-center sm:px-6">
+						<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsoring</dt>
+						<dd class="mt-1 text-2xl font-bold text-stone-900">
+							{data.profile.countSponsoring > 0 ? data.profile.countSponsoring : '—'}
+						</dd>
+					</div>
+				{:else}
+					<div class="px-4 text-center sm:px-6">
+						<dt class="text-xs font-medium uppercase tracking-wide text-stone-500">Sponsoring</dt>
+						<dd class="mt-1 text-2xl font-bold text-stone-900">
+							{data.profile.countSponsoring > 0 ? data.profile.countSponsoring : '—'}
+						</dd>
+					</div>
+				{/if}
 			</dl>
 
 			{#if (page.data.sessionUser && page.data.sessionUser.name !== name) || data.profile.isMaker || data.profile.platformType === PlatformType.ATPROTO}

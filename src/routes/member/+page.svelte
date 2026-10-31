@@ -55,6 +55,51 @@
 		{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your dashboard. Please try again.</p>
 		{:else}
+			<section class="mt-8 space-y-4">
+				{#if sessionUser?.isSubscriber && insertedAtLabel}
+					<p class="text-sm text-stone-600">
+						Subscriber since {insertedAtLabel}
+					</p>
+				{:else if !sessionUser?.isSubscriber}
+					<p class="text-sm text-stone-600">
+						<a href="/member/subscription" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
+							Subscribe now to sponsor your favorite journalists
+						</a>
+					</p>
+				{/if}
+
+				{#if sponsorships.length > 0}
+					<p class="text-sm text-stone-600">
+						You sponsor {sponsorships.length} journalist{sponsorships.length === 1 ? '' : 's'}.
+					</p>
+				{:else}
+					<p class="text-sm text-stone-600">
+						<a href="/discover" class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700">
+							Find journalists to sponsor
+						</a>
+					</p>
+				{/if}
+
+				{#if dashboard?.sessionUser?.isMaker}
+					<p class="text-sm text-stone-600">
+						{sponsors.length} sponsor{sponsors.length === 1 ? '' : 's'}
+					</p>
+					{#if dashboard?.sessionUser?.patreon}
+						<p class="text-sm text-stone-600">
+							Patreon Username:
+							<a
+								href={`https://www.patreon.com/${dashboard.sessionUser.patreon.replace(/^https?:\/\/(www\.)?patreon\.com\//i, '').replace(/\/+$/, '')}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700"
+							>
+								{dashboard.sessionUser.patreon.replace(/^https?:\/\/(www\.)?patreon\.com\//i, '').replace(/\/+$/, '')}
+							</a>
+						</p>
+					{/if}
+				{/if}
+			</section>
+
 			{#if dashboard?.sessionMaker}
 				<section class="mt-8">
 					<h2 class="font-serif text-xl font-bold tracking-tight text-stone-900">Sponsors</h2>

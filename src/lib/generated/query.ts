@@ -74,6 +74,8 @@ export type RootSearch = {
 
 export type SessionMaker = {
   avatar?: Maybe<Scalars['String']['output']>;
+  countSponsoring: Scalars['Int']['output'];
+  countSponsors: Scalars['Int']['output'];
   description?: Maybe<Scalars['String']['output']>;
   did?: Maybe<Scalars['String']['output']>;
   isMaker: Scalars['Boolean']['output'];
@@ -275,7 +277,7 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { sessionUser?: { sponsoredMakers: { items: Array<{ name: string }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { sponsors: { items: Array<{ name: string }> } } | null };
+export type GetDashboardQueryResult = { sessionUser?: { isMaker: boolean, patreon?: string | null, isSubscriber: boolean, sponsoredMakers: { items: Array<{ name: string }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { patreon?: string | null, sponsors: { items: Array<{ name: string }> } } | null };
 
 export type GetDiscoverQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -308,6 +310,9 @@ export type GetUserQueryResult = { user: { name: string, isMaker: boolean, patre
 export const GetDashboardDocument = gql`
     query GetDashboard {
   sessionUser {
+    isMaker
+    patreon
+    isSubscriber
     sponsoredMakers {
       items {
         name
@@ -320,6 +325,7 @@ export const GetDashboardDocument = gql`
     }
   }
   sessionMaker {
+    patreon
     sponsors {
       items {
         name
