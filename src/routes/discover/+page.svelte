@@ -23,7 +23,9 @@
 			.GetDiscover()
 			.then((res) => {
 				topics = res.search.topics.items;
-				makers = res.search.makers.items;
+				makers = res.search.makers.items.filter(
+					(maker) => maker.sessionUserSponsorship?.status !== 'ACTIVE'
+				);
 			})
 			.catch(() => {
 				error = true;
