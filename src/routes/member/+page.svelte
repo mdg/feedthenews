@@ -3,6 +3,7 @@
 	import MainLayout from '$lib/components/MainLayout.svelte';
 	import MemberContent from '$lib/components/MemberContent.svelte';
 	import SignInModal from '$lib/components/SignInModal.svelte';
+	import Amt from '$lib/components/Amt.svelte';
 	import { fetchQuery } from '$lib/graph';
 	import type { GetDashboardQueryResult } from '$lib/generated/query';
 
@@ -55,7 +56,7 @@
 		{#if error}
 			<p class="mt-8 text-sm text-red-600">Could not load your dashboard. Please try again.</p>
 		{:else}
-			<section class="mt-8 space-y-4">
+			<section class="mt-8 space-y-4 rounded-xl bg-white p-6 shadow-sm">
 				{#if sessionUser?.isSubscriber && insertedAtLabel}
 					<p class="text-sm text-stone-600">
 						Subscriber since {insertedAtLabel}
@@ -70,7 +71,18 @@
 
 				{#if sponsorships.length > 0}
 					<p class="text-sm text-stone-600">
-						You sponsor {sponsorships.length} journalist{sponsorships.length === 1 ? '' : 's'}.
+						Sponsoring
+						<a
+							href="/member/sponsorships"
+							class="font-medium text-stone-900 underline underline-offset-2 hover:text-stone-700"
+							>{sponsorships.length} journalist{sponsorships.length === 1 ? '' : 's'}</a
+						> with
+						<span class="font-semibold text-stone-900"
+							><Amt cents={dashboard?.sessionUser?.spendAcct?.current?.balance ?? 0} /></span
+						>
+						{#if dashboard?.sessionUser?.grantAt}
+							to be transferred on {formatDate(dashboard.sessionUser.grantAt)}
+						{/if}
 					</p>
 				{:else}
 					<p class="text-sm text-stone-600">

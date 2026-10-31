@@ -173,6 +173,7 @@ export enum TxStatus {
 }
 
 export enum TxType {
+  FEE = 'FEE',
   FUNDING = 'FUNDING',
   GRANT = 'GRANT',
   PAYOUT = 'PAYOUT'
@@ -277,7 +278,7 @@ export enum UserType {
 export type GetDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDashboardQueryResult = { sessionUser?: { isMaker: boolean, patreon?: string | null, isSubscriber: boolean, sponsoredMakers: { items: Array<{ name: string }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { patreon?: string | null, sponsors: { items: Array<{ name: string }> } } | null };
+export type GetDashboardQueryResult = { sessionUser?: { isMaker: boolean, patreon?: string | null, isSubscriber: boolean, grantAt?: any | null, spendAcct?: { current?: { balance: number } | null } | null, sponsoredMakers: { items: Array<{ name: string }> }, subscription?: { amt: number, status: SubscriptionStatus, insertedAt: any } | null } | null, sessionMaker?: { patreon?: string | null, sponsors: { items: Array<{ name: string }> } } | null };
 
 export type GetDiscoverQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -313,6 +314,12 @@ export const GetDashboardDocument = gql`
     isMaker
     patreon
     isSubscriber
+    grantAt
+    spendAcct {
+      current {
+        balance
+      }
+    }
     sponsoredMakers {
       items {
         name

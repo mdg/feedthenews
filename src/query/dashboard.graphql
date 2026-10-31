@@ -3,6 +3,12 @@ query GetDashboard {
 		isMaker
 		patreon
 		isSubscriber
+		grantAt
+		spendAcct {
+			current {
+				balance
+			}
+		}
 		sponsoredMakers {
 			items {
 				name
